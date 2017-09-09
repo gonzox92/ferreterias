@@ -17,7 +17,18 @@ class ProductoController extends Controller
     {
         $nombre = request()->nombre != null ? request()->nombre : '';
         $limit = request()->limit != null ? request()->limit : '10';
-        $where = join(' OR ', array_map(array($this, 'convert'), explode(',', $nombre)));
+        $isAutocomplete = request()->limit != null ? boolval(request()->isAutocomplete) : true;
+        $palabras = explode(',', $nombre);
+        $where = join(' OR ', array_map(array($this, 'convert'), $palabras));
+
+        if ($isAutocomplete) {
+            foreach ($palabras as $palabra) {
+                if ($palabra != '') {
+                    DB::insert('INSERT INTO busquedas (palabra, contador) VALUES (:palabra, 1) ON DUPLICATE KEY UPDATE contador = contador + 1',
+                        ['palabra' => $palabra]);
+                }
+            }
+        }
 
         $productos = DB::table('productos')
             ->join('almacenes', 'productos.idAlmacen', '=', 'almacenes.id')
