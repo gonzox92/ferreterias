@@ -31,7 +31,11 @@ class PropietarioController extends Controller
         
         try
         {
-            $almacen['almacenes'] = $almacen->almacenes($nombre);
+            if ($almacen != null) {
+                $almacen['almacenes'] = $almacen->almacenes($nombre);
+            } else {
+                $almacen['almacenes'] = $vendedor->almacen();
+            }
             return response()->json($almacen, 200);
         }
         catch(Exception $ex)
