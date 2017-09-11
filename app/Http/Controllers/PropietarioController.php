@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Propietario;
+use App\Vendedor;
 
 class PropietarioController extends Controller
 {
@@ -26,7 +27,9 @@ class PropietarioController extends Controller
         $nombre = request()->nombre != null ? request()->nombre : '';
         
         $almacen = Propietario::find($id);
-        $almacen['almacenes'] = $almacen->almacenes($nombre);
+        $vendedor = Vendedor::find($id);
+        $almacen['almacenes'] = $almacen != null ? $almacen->almacenes($nombre) : 
+            $vendedor != null ? $vendedor->almacen() : [];
 
         return response()->json($almacen, 200);
     }

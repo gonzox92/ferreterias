@@ -8,7 +8,7 @@ class Almacen extends Model
 {
     protected $table = 'almacenes';
 
-    protected $fillable = ['idPropietario', 'aNombre', 'aImagen', 'aDireccion', 'aUbicacion'];
+    protected $fillable = ['idPropietario', 'aNombre', 'aImagen', 'aDireccion', 'aUbicacion', 'aEntrega'];
 
     public function productos($nombre = '', $descripcion = '', $precio1 = ['>', '0'], $precio2 = ['<', '10000'])
     {

@@ -93,3 +93,10 @@ Route::post('fileentry/add',['as' => 'addentry', 'uses' => 'FileEntryController@
 
 // Busquedas
 Route::get('busquedas', 'BusquedasController@index');
+
+// Ordenes de Venta
+Route::get('ordenes', 'OrdenVentaController@index');
+Route::get('ordenes/{id}', 'OrdenVentaController@show');
+Route::post('ordenes', 'OrdenVentaController@store');
+Route::put('ordenes/{id}', 'OrdenVentaController@update');
+Route::delete('ordenes/{id}', 'OrdenVentaController@delete');
