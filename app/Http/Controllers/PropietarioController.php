@@ -28,10 +28,17 @@ class PropietarioController extends Controller
         
         $almacen = Propietario::find($id);
         $vendedor = Vendedor::find($id);
-        $almacen['almacenes'] = $almacen != null ? $almacen->almacenes($nombre) : 
-            $vendedor != null ? $vendedor->almacen() : [];
-
-        return response()->json($almacen, 200);
+        
+        try
+        {
+            $almacen['almacenes'] = $almacen->almacenes($nombre);
+            return response()->json($almacen, 200);
+        }
+        catch(Exception $ex)
+        {
+            $almacen['almacenes'] = $vendedor->almacen();
+            return response()->json($almacen, 200);
+        }
     }
 
     public function showProductos($id) 
