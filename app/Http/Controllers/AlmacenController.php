@@ -10,7 +10,10 @@ class AlmacenController extends Controller
 {
     public function index($nombre = '')
     {
-        return Almacen::all();
+        $nombre = request()->nombre != null ? request()->nombre : '';
+        $almacenes = Almacen::where('aNombre', 'LIKE', '%' . $nombre . '%')->get();
+
+        return response()->json($almacenes, 200);
     }
 
     public function show($id)
@@ -28,7 +31,7 @@ class AlmacenController extends Controller
         $valor2 = request()->valor2 != null ? request()->valor2 : '<,10000';
         
         $almacen = Almacen::find($id);
-        $almacen['productos'] = $almacen->productos($nombre, $descripcion, explode(',', $valor1), explode(',', $valor2));
+        $almacen['productos'] = $almacen == NULL ? [] : $almacen->productos($nombre, $descripcion, explode(',', $valor1), explode(',', $valor2));
 
         return response()->json($almacen, 200);
     }

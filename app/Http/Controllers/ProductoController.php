@@ -10,31 +10,81 @@ class ProductoController extends Controller
 {
     function convert($name)
     {
-        return("pNombre LIKE '%$name%'");
+        return("productos.pNombre LIKE '%$name%'");
     }
 
     public function index()
     {
         $nombre = request()->nombre != null ? request()->nombre : '';
         $limit = request()->limit != null ? request()->limit : '10';
-        $isAutocomplete = request()->limit != null ? boolval(request()->isAutocomplete) : true;
+        $isAutocomplete = request()->isAutocomplete != null ? request()->isAutocomplete : 'true';
+        $orderByPrice = request()->orderByPrice != null ? request()->orderByPrice : '';
+        $idPropietario = request()->idPropietario != null ? request()->idPropietario : '';
+        $idVendedor = request()->idVendedor != null ? request()->idVendedor : '';
+
         $palabras = explode(',', $nombre);
         $where = join(' OR ', array_map(array($this, 'convert'), $palabras));
 
-        if ($isAutocomplete) {
-            foreach ($palabras as $palabra) {
-                if ($palabra != '') {
+        if ($isAutocomplete)
+        {
+            foreach ($palabras as $palabra)
+            {
+                if ($palabra != '')
+                {
                     DB::insert('INSERT INTO busquedas (palabra, contador) VALUES (:palabra, 1) ON DUPLICATE KEY UPDATE contador = contador + 1',
                         ['palabra' => $palabra]);
                 }
             }
         }
 
-        $productos = DB::table('productos')
-            ->join('almacenes', 'productos.idAlmacen', '=', 'almacenes.id')
-            ->select('productos.*', 'almacenes.aNombre', 'almacenes.aDireccion', 'almacenes.aUbicacion')
-            ->whereRaw($where)
-            ->paginate($limit);
+        $productos = [];
+
+        if ($isAutocomplete == 'true')
+        {
+            $productos = DB::table('productos')
+                ->select('productos.pNombre')
+                ->whereRaw('productos.pNombre LIKE \'%' . $nombre . '%\'')
+                ->limit(5)
+                ->distinct()
+                ->get();
+        }
+        else if ($idPropietario != '')
+        {
+            $where = $where . ' AND propietarios.id = ' . $idPropietario;
+
+            $productos = DB::table('almacenes')
+                ->join('propietarios', 'propietarios.id', '=', 'almacenes.idPropietario')
+                ->join('productos', 'productos.idAlmacen', '=', 'almacenes.id')
+                ->select('productos.*', 'almacenes.aNombre', 'almacenes.aDireccion', 'almacenes.aUbicacion', 'almacenes.aImagen')
+                ->whereRaw($where);
+        }
+        else if ($idVendedor != '')
+        {
+            $where = $where . ' AND vendedores.id = ' . $idVendedor;
+            
+            $productos = DB::table('almacenes')
+                ->join('vendedores', 'vendedores.idAlmacen', '=', 'almacenes.id')
+                ->join('productos', 'productos.idAlmacen', '=', 'almacenes.id')
+                ->select('productos.*', 'almacenes.aNombre', 'almacenes.aDireccion', 'almacenes.aUbicacion', 'almacenes.aImagen')
+                ->whereRaw($where);
+        }
+        else
+        {
+            $productos = DB::table('productos')
+                ->join('almacenes', 'productos.idAlmacen', '=', 'almacenes.id')
+                ->select('productos.*', 'almacenes.aNombre', 'almacenes.aDireccion', 'almacenes.aUbicacion', 'almacenes.aImagen')
+                ->whereRaw($where);
+        }
+
+        if ($orderByPrice != '')
+        {
+            $productos = $productos->orderBy('productos.pPrecio', $orderByPrice);
+        }
+            
+        if ($isAutocomplete == 'false')
+        {
+            $productos = $productos->paginate($limit);
+        }
             
         return response()->json($productos, 200);
     }
