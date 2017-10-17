@@ -31,7 +31,7 @@ class ProductoController extends Controller
             {
                 if ($palabra != '')
                 {
-                    DB::insert('INSERT INTO busquedas (palabra, contador) VALUES (:palabra, 1) ON DUPLICATE KEY UPDATE contador = contador + 1',
+                    DB::insert('INSERT INTO busquedas (palabra, contador, updated_at) VALUES (:palabra, 1, NOW()) ON DUPLICATE KEY UPDATE contador = contador + 1',
                         ['palabra' => $palabra]);
                 }
             }
