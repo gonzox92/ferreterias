@@ -1,0 +1,7 @@
+node_modules/
+bower_components/
+release/
+client/node_modules
+client/bower_components
+client/release
+client/.temp
