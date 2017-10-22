@@ -7,8 +7,7 @@
 
   apiConfig.$inject = ['RestangularProvider'];
   function apiConfig(RestangularProvider) {
-    RestangularProvider.setBaseUrl('https://ferreterias.herokuapp.com/api');
-    // RestangularProvider.setBaseUrl('http://localhost:8000/api');
+    RestangularProvider.setBaseUrl('http://localhost:8000/api');
   }
 
 })();

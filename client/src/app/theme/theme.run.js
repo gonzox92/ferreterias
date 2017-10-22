@@ -38,8 +38,7 @@
       }
     }, 7000);
 
-    $rootScope.baseURL = 'https://ferreterias.herokuapp.com/';
-    // $rootScope.baseURL = 'http://localhost:8000/';
+    $rootScope.baseURL = 'http://localhost:8000/';
     $rootScope.$baSidebarService = baSidebarService;
     $rootScope.$isLogged = !_.isEmpty(localStorageService.get('user'));
   }
