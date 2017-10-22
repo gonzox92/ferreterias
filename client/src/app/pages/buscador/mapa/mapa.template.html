@@ -1,0 +1,65 @@
+<style> 
+  .ferreterias-list {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .map-container {
+    height: 100%;
+  }
+
+  .item-producto-mapa {
+    margin-bottom: 10px;
+    display: flex;
+    border-bottom: 1px solid rgba(68, 68, 68, 0.31);
+  }
+
+  .imagen-producto {
+    width: 80px;
+    height: 80px;
+    display: block;
+    float: left;
+  }
+
+  .descripcion {
+    width: calc(100% - 90px);
+    float: right;
+    margin: 0 0 0 auto;
+  }
+
+  .descripcion p {
+    line-height: 12px;
+    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 300;
+  }
+</style>
+
+<div class="col-xs-4 col-sm-3 ferreterias-list">
+  <div class="item-producto-mapa" ng-repeat="producto in vm.productos">
+    <img class="imagen-producto" src="{{ producto.pImagen }}">
+    <div class="descripcion">
+      <h3>{{ producto.pNombre }}</h3>
+      <p>
+        {{ producto.pDescripcion }}<br><br>
+        
+        <b>{{ producto.pPrecio }} Bs</b>
+      </p>
+      <a href="" ng-click="vm.goToFerreteria(producto.idAlmacen)">{{ producto.aNombre }}</a>
+    </div>
+  </div>
+</div>
+<div class="col-xs-8 col-sm-9 map-container">
+  <ng-map id="mapBusqueda"
+          zoom="8"
+          center="[-17.3940591,-66.1638756]"
+          default-style="true"
+          lazy-init="true"
+          map-initialized="vm.initializeMap(map)">  
+    <marker ng-repeat="almacen in vm.almacenes track by $index" position="{{ almacen.ubicacion }}" draggable="false"></marker>
+  </ng-map>
+</div>

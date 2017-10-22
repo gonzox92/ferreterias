@@ -1,0 +1,151 @@
+<style>
+  .card {
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+  }
+
+  .card-img-top {
+    border-top-right-radius: calc(.25rem - 1px);
+    border-top-left-radius: calc(.25rem - 1px);
+    height: 120px;
+  }
+  
+  .card-block {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    background-color: #fff !important;
+    text-align: left !important;
+    padding: 1.25rem;
+  }
+
+  .tab-content .tab-pane p {
+    font-size: 12px !important;
+  }
+
+  .nav.nav-tabs {
+    background-color: transparent;
+    margin: 20px 0 0;
+  }
+
+  .nav.nav-tabs > li:first-of-type a {
+    border-radius: 0;
+  }
+
+  .nav-tabs > li > a {
+    color: #666666 !important;
+  }
+
+  .nav-tabs > li.active > a {
+    color: #fff !important;
+  }
+
+  .show-grid div[class^=col-] div {
+    padding: 0;
+  }
+
+  .show-grid div[class^=col-] div.card-block {
+    padding: 12px;
+  }
+
+  .show-grid div[class^=col-] div {
+    height: 380px;
+  }
+
+  .show-grid div[class^=col-] div.card-block {
+    height: 380px;
+    overflow: auto;
+  }
+</style>
+
+<div class="row">
+  <div class="col-md-12">
+    <form class="row form-inline" ng-submit="vm.find()">
+      <div class="form-group col-sm-6 col-xs-12">
+        <input type="text" class="form-control input-lg" id="exampleInputName2" placeholder="Busqueda de productos" ng-model="vm.nombre"
+          placeholder="Locations loaded via $http" uib-typeahead="producto for producto in vm.getProductos($viewValue)" 
+          typeahead-loading="vm.loadingLocations" typeahead-no-results="vm.noResults">
+        <i ng-show="vm.loadingLocations" class="glyphicon glyphicon-refresh"></i>
+        <div ng-show="vm.noResults">
+          <i class="glyphicon glyphicon-remove"></i> Sin resultados
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg">
+        <i class="fa fa-search" aria-hidden="true"></i> Buscar
+      </button>
+    </form>
+
+  </div>
+</div>
+
+<uib-tabset active="$tabSetStatus.activeTab">
+  <uib-tab>
+    <uib-tab-heading>
+      <i class="fa fa-list" aria-hidden="true"></i> Lista
+    </uib-tab-heading>
+
+    <div class="panel-body">
+      <div class="row show-grid">
+        <div class="col-xs-6 col-md-2" ng-repeat="producto in vm.productos">
+            <div class="card">
+              <img class="card-img-top" src="{{ producto.pImagen }}" alt="imagen">
+              <div class="card-block">
+                <h4 class="card-title">{{ producto.pNombre }}</h4>
+                <p class="card-text">
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i><b> Descripcion:</b> {{ producto.pDescripcion }}
+                </p>
+                <p class="card-text">
+                  <i class="fa fa-money" aria-hidden="true"></i><b> Precio:</b> {{ producto.pPrecio }}
+                </p>
+                <p class="card-text">
+                  <i class="ion-checkmark-circled" aria-hidden="true"></i><b> Cantidad:</b> {{ producto.pCantidadEnMano }}
+                </p>
+                <p class="card-text">
+                  <i class="ion-clipboard" aria-hidden="true"></i><b> Ferreteria:</b> {{ producto.aNombre }}
+                </p>
+                <p class="card-text">
+                  <i class="fa fa-location-arrow" aria-hidden="true"></i><b> Direccion:</b> {{ producto.aDireccion }}
+                </p>
+
+                <ul class="btn-list clearfix">
+                  <li>
+                    <button type="button" class="btn btn-primary btn-with-icon" ng-click="vm.goToFerreteria(producto.idAlmacen)">
+                      <i class="ion-clipboard"></i>Ferreteria
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <ul uib-pagination total-items="vm.total" ng-model="vm.page" max-size="vm.maxSize" items-per-page="vm.itemsPerPage" class="pagination-sm" boundary-links="true" force-ellipses="true" ng-change="vm.pageChanged()"
+        first-text="Primero" last-text="Ultimo" next-text="Siguiente" previous-text="Previo"></ul>
+    </div>
+  </uib-tab>
+
+  <uib-tab select="vm.displayMap()">
+    <uib-tab-heading>
+      <i class="fa fa-map-marker" aria-hidden="true"></i> Mapa
+    </uib-tab-heading>
+
+    <div ng-if="vm.showMap" map-lazy-load="https://maps.google.com/maps/api/js"
+         map-lazy-load-params="https://maps.google.com/maps/api/js" >
+      <ng-map id="mapBusqueda" zoom="8" center="current-location" default-style="true">  
+        <marker ng-repeat="position in vm.positions track by $index" position="{{position.pos}}" draggable="false"></marker>
+      </ng-map>
+    </div>
+</uib-tab>
+</uib-tabset>

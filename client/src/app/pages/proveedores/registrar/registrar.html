@@ -1,0 +1,36 @@
+<div class="widgets">  
+  <div class="row">
+    <div class="col-md-6">
+      <div
+          ba-panel
+          ba-panel-title="Registro de Proveedores"
+          ba-panel-class="with-scroll">
+        <form name="productForm" ng-submit="vm.upload()">
+          <div class="form-group">
+            <label for="input01">Nombre</label>
+            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.proveedor.pNombre" required>
+          </div>
+          <div class="form-group">
+            <label for="input02">Descripcion</label>
+            <input type="text" class="form-control" id="input02" name="nombre" placeholder="Descripcion" ng-model="vm.proveedor.pDescripcion" required>
+          </div>
+          <div class="form-group">
+            <label for="input02">Imagen</label>
+            <div class="drop-box">
+              <img
+                ngf-select
+                ngf-thumbnail="vm.file || '/assets/pictures/empty.png'"
+                ng-model="vm.file"
+                accept="image/*"
+                ngf-max-size="2MB"
+                required>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-info">Registrar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+    

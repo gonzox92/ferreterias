@@ -1,0 +1,57 @@
+<div class="widgets">  
+  <div class="row">
+    <div class="col-md-6">
+      <div
+          ba-panel
+          ba-panel-title="# {{ vm.propietario.id }}"
+          ba-panel-class="with-scroll">
+        <form name="productForm" ng-submit="vm.submit()">
+            <div class="form-group">
+              <label for="input01">CI</label>
+              <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.vendedor.vCI" required>
+            </div>
+            <div class="form-group">
+              <label for="input02">Nombre</label>
+              <input type="text" class="form-control" id="input02" name="nombre" placeholder="Nombre" ng-model="vm.vendedor.vNombre" required>
+            </div>
+            <div class="form-group">
+                <label for="input05">Apellidos</label>
+                <input type="text" class="form-control" id="input05" name="nombre" placeholder="Apellidos" ng-model="vm.vendedor.vApellidos" required>
+              </div>
+            <div class="form-group">
+              <label for="input03">Direccion</label>
+              <input type="text" class="form-control" id="input03" placeholder="Descripcion" ng-model="vm.vendedor.vDireccion" required>
+            </div>
+            <div class="form-group">
+              <label for="input04">Telefono</label>
+              <input type="text" class="form-control" id="input04" placeholder="Telefono" ng-model="vm.vendedor.vTelefono" required>
+            </div>
+            <div class="form-group">
+              <label for="input03">Almacen</label>
+              <ui-select ng-model="vm.vendedor.idAlmacen"
+                          class="btn-group bootstrap-select form-control"
+                          ng-disabled="false"
+                          append-to-body="true"
+                          search-enabled="true">
+                <ui-select-match placeholder="Almacen">
+                  {{$select.selected.aNombre}}
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="almacen.id as almacen in vm.almacenes | filter: {aNombre: $select.search}">
+                  <div ng-bind-html="almacen.aNombre | highlight: $select.search"></div>
+                  <small>
+                    Direccion: {{ almacen.aDireccion }}
+                  </small>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+
+          <div class="buttons" style="text-align: right;">
+            <button class="btn btn-info" ng-click="vm.goTo(item.id)">Editar</button>
+            <button class="btn btn-danger" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

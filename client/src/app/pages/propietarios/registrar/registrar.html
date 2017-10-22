@@ -1,0 +1,36 @@
+<div class="widgets">
+
+  <div class="row">
+    <div class="col-md-6">
+      <div
+          ba-panel
+          ba-panel-title="Registro de Propietario"
+          ba-panel-class="with-scroll">
+        <form name="productForm" ng-submit="vm.submit()">
+          <div class="form-group">
+            <label for="input01">CI</label>
+            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.propietario.pCI" required>
+          </div>
+          <div class="form-group">
+            <label for="input02">Nombre</label>
+            <input type="text" class="form-control" id="input02" name="nombre" placeholder="Nombre" ng-model="vm.propietario.pNombre" required>
+          </div>
+          <div class="form-group">
+              <label for="input05">Apellidos</label>
+              <input type="text" class="form-control" id="input05" name="nombre" placeholder="Apellidos" ng-model="vm.propietario.pApellidos" required>
+            </div>
+          <div class="form-group">
+            <label for="input03">Direccion</label>
+            <input type="text" class="form-control" id="input03" placeholder="Descripcion" ng-model="vm.propietario.pDireccion" required>
+          </div>
+          <div class="form-group">
+            <label for="input04">Telefono</label>
+            <input type="text" class="form-control" id="input04" placeholder="Telefono" ng-model="vm.propietario.pTelefono" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Registrar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

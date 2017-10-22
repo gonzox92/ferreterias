@@ -1,0 +1,65 @@
+<div class="widgets">
+  <div class="row">
+    <div class="col-md-6">
+      <div
+          ba-panel
+          ba-panel-title="Registro de Ferreteria"
+          ba-panel-class="with-scroll">
+        <form name="productForm" ng-submit="vm.upload()">
+          <div class="form-group">
+            <label for="input01">Nombre</label>
+            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.almacen.aNombre" required>
+            <p ng-show="productForm.nombre.$invalid && !productForm.nombre.$pristine" class="sr-only">Nombre del producto es requerido.</p>
+          </div>
+          <div class="form-group">
+            <label for="input02">Imagen</label>
+            <div class="drop-box">
+                <img
+                  ngf-select
+                  ngf-thumbnail="vm.file || '/assets/pictures/empty.png'"
+                  ng-model="vm.file"
+                  accept="image/*"
+                  ngf-max-size="2MB"
+                  required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input03">Direccion</label>
+            <input type="text" class="form-control" id="input03" placeholder="Descripcion" ng-model="vm.almacen.aDireccion" required>
+          </div>
+          <div class="form-group">
+            <label for="input03">Horario</label>
+            <input type="text" class="form-control" id="input03" placeholder="Lun - Vie 08:00 - 19:00" ng-model="vm.almacen.aHorario" required>
+          </div>
+          <div class="form-group" ng-if="vm.user.privilegio === 'administrador'">
+            <label for="input03">Propietario</label>
+            <ui-select ng-model="vm.almacen.idPropietario"
+                        class="btn-group bootstrap-select form-control"
+                        ng-disabled="false"
+                        append-to-body="true"
+                        search-enabled="true">
+              <ui-select-match placeholder="Propietario">
+                {{$select.selected.pNombre}}
+              </ui-select-match>
+              <ui-select-choices
+                  repeat="propietario.id as propietario in vm.propietarios | filter: {pNombre: $select.search}">
+                <div ng-bind-html="propietario.pNombre | highlight: $select.search"></div>
+                <small>
+                  C.I: {{ propietario.pCI }}
+                </small>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+          <div class="form-group">
+            <label for="input04">Ubicacion</label>
+            <ng-map default-style="true" center="[-17.387015, -66.162159]" zoom="14">
+              <marker position="[-17.387015, -66.162159]" draggable="true" title="{{vm.almacen.aNombre}}"></marker>
+            </ng-map>
+          </div>
+        
+          <button type="submit" class="btn btn-info">Registrar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

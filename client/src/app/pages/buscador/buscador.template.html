@@ -1,0 +1,177 @@
+<style>
+  .paginacion {
+    text-align: center;
+  }
+
+  .widgets.busqueda {
+    height: 100%;
+  }
+
+  .list-group-item .imagen-producto {
+    width: 60px;
+    height: 60px;
+    float: left;
+    margin-right: 10px;
+  }
+
+  UL.dropdown-menu {
+    position: fixed;
+  }
+
+  .buscador > .panel {
+    background: url('http://www.marketingguerrilla.es/wp-content/uploads/2014/08/herramientas-marketing-online.jpg') no-repeat center center;
+    background-size: cover;
+  }
+
+  .buscador form {
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .buscador form .form-group {
+    flex: 1;
+  }
+
+  .panel.with-scroll .panel-body {
+    height: 300px;
+    overflow: hidden;
+
+    -webkit-transition: height 0.8s;
+    -moz-transition: height 0.8s;
+    transition: height 0.8s;
+  }
+
+  .panel.with-scroll .panel-body.results {
+    height: 160px;
+  }
+
+  .show-map {
+    width: 100%;
+    height: 160px;
+    margin-bottom: 12px;
+    background: url('https://static.tacdn.com/img2/maps/img_map.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+  }
+
+  .show-map button.btn {
+    margin: auto;
+  }
+
+  .item-producto {
+    margin-bottom: 20px;
+  }
+
+  .item-producto img {
+    width: 100%;
+    height: 140px;
+    margin-bottom: 12px;
+  }
+
+  .item-producto p {
+    display: block;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ngdialog.ngdialog-theme-default .ngdialog-content {
+    width: calc(100% - 100px);
+    height: 100%;
+  }
+
+  .ngdialog.ngdialog-theme-default .ngdialog-content ng-map {
+    height: 100%! important;
+  }
+</style>
+
+<div class="widgets busqueda">
+  <div class="row">
+    <div class="col-md-12 buscador"
+          ba-panel
+          ba-panel-class="with-scroll"
+          ba-panel-title="">
+        
+        <h2 style="text-align: center; color: #fff;">Encuentre el producto ideal</h2>
+        <form class="row form-inline" ng-submit="vm.buscar()">
+          <div class="form-group col-sm-6 col-xs-5">
+            <input type="text" class="form-control input-lg" id="exampleInputName2" autocomplete="off"
+                  ng-model="vm.busqueda.palabras"
+                  uib-typeahead="producto for producto in vm.getAutocomplete($viewValue)" 
+                  typeahead-loading="vm.loadingLocations" typeahead-no-results="vm.noResults">
+            <i ng-show="vm.loadingLocations" class="glyphicon glyphicon-refresh"></i>
+            <div ng-show="vm.noResults">
+              <i class="glyphicon glyphicon-remove"></i> Sin resultados
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-with-icon">
+            <i class="fa fa-search" aria-hidden="true"></i> Buscar
+          </button>
+        </form>
+    </div>
+  </div>
+
+  <spinner ng-hide="vm.isLoading"></spinner>
+
+  <div class="row" ng-show="vm.isLoading">
+    <div class="col-xs-12 col-sm-3">
+      <div class="show-map">
+          <button type="button" class="btn btn-primary btn-with-icon" ng-click="vm.openMap()">
+            <i class="fa fa-map-o"></i>Mostrar Mapa
+          </button>
+      </div>
+      <h5>Ordenar por Precio</h5>
+      <div class="input-demo radio-demo row">
+        <div class="col-md-12">
+          <label class="radio-inline custom-radio nowrap">
+            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-value="vm.option1">
+            <span>Menor a Mayor</span>
+          </label>
+        </div>
+        <div class="col-md-12">
+          <label class="radio-inline custom-radio nowrap">
+            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-value="vm.option2">
+            <span>Mayor a Menor</span>
+          </label>
+        </div>
+      </div>
+      <br>
+      <!-- <h5>Ordenar por Ubicacion</h5>
+      <ba-switcher switcher-style="primary" switcher-value="vm.isClose"></ba-switcher> -->
+    </div>
+
+    <div class="col-xs-12 col-sm-9">
+      <div class="col-xs-12 col-sm-6 col-md-3 item-producto" ng-repeat="producto in vm.productos">
+        <img class="imagen-producto" src="{{ producto.pImagen }}">
+        <h3>{{ producto.pNombre }}</h3>
+        <p>
+          {{ producto.pDescripcion }}<br><br>
+          
+          <b>{{ producto.pPrecio }} Bs</b>
+        </p>
+        <a href="" ng-click="vm.goToFerreteria(producto.idAlmacen)">{{ producto.aNombre }}</a>
+      </div>
+    </div>
+
+    <div class="paginacion" ng-if="vm.hayListaProductos">
+        <ul uib-pagination total-items="vm.total"
+            ng-model="vm.page"
+            max-size="vm.maxSize"
+            items-per-page="vm.itemsPerPage"
+            class="pagination-sm"
+            boundary-links="true"
+            force-ellipses="true"
+            ng-change="vm.buscar()"
+            first-text="Primero"
+            last-text="Ultimo"
+            next-text="Siguiente"
+            previous-text="Previo"></ul>
+    </div>
+  </div>
+</div>

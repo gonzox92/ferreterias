@@ -1,0 +1,28 @@
+<style>
+    .table > tbody > tr > td {
+      font-weight: 300;
+      display: table-cell;
+      vertical-align: inherit;
+    }
+  </style>
+  
+  <div class="table-responsive">
+    <table class="table">
+        <tr>
+          <th># Orden</th>
+          <th># Productos</th>
+          <th>Total Bs</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+        </tr>
+  
+        <tr ng-repeat="item in vm.ordenes">
+          <td>{{ item.id }}</td>
+          <td>{{ item.productos }}</td>
+          <td>{{ item.total }}</td>
+          <td>-</td>
+          <td>{{ item.fechaRegistro }}</td>
+        </tr>
+    </table>
+  </div>
+  

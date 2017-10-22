@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="form-group">
+        <label for="input01">CI</label>
+        <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.nombre" required>
+    </div>
+        <div class="form-group">
+        <label for="input02">Nombre</label>
+    <input type="text" class="form-control" id="input02" name="nombre" placeholder="Nombre" ng-model="vm.ci" required>
+</div>
+  <table class="table table-striped table-hover table-bordered">
+        <tbody>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Precio Total</th>
+            </tr>
+            <tr ng-repeat="producto in productos">
+                <td>{{ producto.pNombre }}</td>
+                <td>{{ producto.cantidad }}</td>
+                <td>{{ producto.pPrecio }} Bs</td>
+                <td>{{ producto.total }} Bs</td>
+            </tr>
+            <tr>
+                <th colspan="3"><span class="pull-right">Sub Total</span></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th colspan="3"><span class="pull-right">Pago por Entrega</span></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th colspan="3"><span class="pull-right">Total</span></th>
+                <th>{{ vm.getTotal() }}</th>
+            </tr>
+            <tr>
+                <td colspan="4">
+                  <a class="pull-right btn btn-success" ng-click="vm.confirmar()">Confirmar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>          
+</div>

@@ -1,0 +1,55 @@
+<style>
+  .al-user-profile.market {
+    float: left;
+  }
+
+  .user-profile {
+    min-width: 110px;
+  }
+
+  .counter {
+    position: absolute;
+    color: #fff;
+    background-color: #e85656;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 25px;
+    bottom: 0;
+    right: 15px;
+    top: 25px;
+  }
+</style>
+
+<div class="page-top clearfix" scroll-position="scrolled" max-height="50" ng-class="{'scrolled': scrolled}">
+  <a href="#/dashboard" class="al-logo clearfix"><span>Ferreteria</span></a>
+  <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
+
+  <div class="user-profile clearfix">
+    <!-- <div class="al-user-profile market" uib-dropdown>
+      <a uib-dropdown-toggle class="profile-toggle-link" ng-click="market()">
+        <div class="counter" ng-if="productos.length > 0">
+          {{ productos.length }}
+        </div>
+        <img ng-src="assets/img/theme/icon/kameleon/Shop.svg" src="assets/img/theme/icon/kameleon/Shop.svg">
+      </a>
+    </div> -->
+
+    <div class="al-user-profile" uib-dropdown>
+      <a uib-dropdown-toggle class="profile-toggle-link">
+        <img ng-src="{{::( 'empty-profile' | profilePicture )}}">
+      </a>
+      <ul class="top-dropdown-menu profile-dropdown" uib-dropdown-menu ng-if="$isLogged ">
+        <li><i class="dropdown-arr"></i></li>
+        <li><a href="#/profile"><i class="fa fa-user"></i>{{ getProfile() }}</a></li>
+        <li><a href class="signout" ng-click="logout()"><i class="fa fa-power-off"></i>Salir</a></li>
+      </ul>
+      <ul class="top-dropdown-menu profile-dropdown" uib-dropdown-menu ng-if="!$isLogged ">
+        <li><i class="dropdown-arr"></i></li>
+        <li><a href="#/login"><i class="fa fa-user"></i>Login</a></li>
+      </ul>
+    </div>
+    <msg-center></msg-center>
+  </div>
+</div>

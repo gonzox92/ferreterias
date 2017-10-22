@@ -1,0 +1,55 @@
+<form class="input-group" ng-submit="vm.buscar()">
+    <div class="datepicker row">
+      <div class="col-xlg-6 col-md-6 col-sm-6" style="width: 40%;">
+        <label>Fecha de Inicio: <em>{{vm.startDate | date:'fullDate' }}</em></label>
+        <p class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup="{{vm.format}}" datepicker-options="vm.options" ng-model="vm.startDate" is-open="vm.startDateOpened" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="vm.open('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+
+      <div class="col-xlg-6 col-md-6 col-sm-6" style="width: 40%;">
+        <label>Fecha de Fin: <em>{{vm.endDate | date:'fullDate' }}</em></label>
+        <p class="input-group">
+            <input type="text" class="form-control" uib-datepicker-popup="{{vm.format}}" datepicker-options="vm.options" ng-model="vm.endDate" is-open="vm.endDateOpened" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="vm.open('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-with-icon" style="position: absolute; bottom: 16px;" ng-click="vm.generateReport()">
+        <i class="ion-funnel"></i>Buscar
+      </button>
+    </div>
+</form>
+
+<spinner ng-hide="vm.isLoading"></spinner>
+
+<div class="datepicker row" ng-show="vm.haveResults">
+  <div class="col-xlg-6 col-md-6 col-sm-6" style="min-height: 500px;">
+    <div class="horizontal-scroll">
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <th class="browser-icons"></th>
+          <th>Producto</th>
+          <th class="align-right">Busquedas</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in vm.productos track by $index">
+          <td ng-class="nowrap">{{ $index + 1 }}</td>
+          <td class="align-right">{{ item.palabra }}</td>
+          <td class="align-right">{{ item.contador }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="pieChart" class="col-xlg-6 col-md-6 col-sm-6" style="height: 500px;">
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<style>
+  .table > tbody > tr > td {
+    font-weight: 300;
+    display: table-cell;
+    vertical-align: inherit;
+  }
+</style>
+
+<form class="input-group" ng-submit="vm.buscar()">
+  <input type="text" class="form-control with-warning-addon" placeholder="Vendedor" aria-describedby="basic-addon2" ng-model="vm.busqueda.nombre">
+  <span class="input-group-addon input-group-addon-primary addon-right searchable" id="basic-addon2" ng-click="vm.buscar()">Buscar</span>
+</form>
+
+<button type="button" class="btn btn-primary btn-with-icon" ng-click="vm.addVendedor()"><i class="fa fa-plus"></i>Registrar</button>
+
+<div class="table-responsive">
+  <table class="table">
+      <tr>
+        <th>#</th>
+        <th>CI</th>
+        <th>Nombre</th>
+        <th>Apellidos</th>
+        <th>Direccion</th>
+        <th>Telefono</th>
+      </tr>
+
+      <tr ng-repeat="item in vm.vendedores">
+        <td>{{ item.id }}</td>
+        <td>{{ item.vCI }}</td>
+        <td>{{ item.vNombre }}</td>
+        <td>{{ item.vApellidos }}</td>
+        <td>{{ item.vDireccion }}</td>
+        <td>{{ item.vTelefono }}</td>
+        <td>
+          <div class="buttons">
+            <button class="btn btn-primary editable-table-button btn-xs" ng-click="vm.user(item.idUser)"><i class="fa fa-user"></i> Usuario</button>
+            <button class="btn btn-info editable-table-button btn-xs" ng-click="vm.goTo(item.id)">Editar</button>
+            <button class="btn btn-danger editable-table-button btn-xs" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
+          </div>
+        </td>
+      </tr>
+  </table>
+</div>
