@@ -109,12 +109,13 @@ gulp.task('URL', function () {
 });
 
 gulp.task('git', function () {
-  return gulp.src('../*')
-    .pipe(git.checkout('master', { args: '-- public/.htaccess' }))
-    .pipe(git.checkout('master', { args: '-- index.php' }))
-    .pipe(git.add({ args: 'public/.'}))
-    .pipe(git.commit('Build: ', { args: '-m ' + (new Date()).toString() }))
-    .pipe(git.push('heroku', 'master'));
+  git.checkout('master', {args:'-- ../public/.htaccess'});
+  git.checkout('master', {args:'-- ../public/index.php'});
+  
+  // return gulp.src(path.join(conf.paths.dist, '/'))
+  //   .pipe(git.add({ args: '../public/.'}))
+  //   .pipe(git.commit('Build: ' + (new Date()).toString()))
+  //   .pipe(git.push('heroku', 'master'));
 });
 
 gulp.task('build', ['html', 'fonts', 'other', 'git']);
