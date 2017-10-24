@@ -118,4 +118,4 @@ gulp.task('git', function () {
     .pipe(git.push('heroku', 'master'));
 });
 
-gulp.task('build', ['html', 'fonts', 'other', 'git']);
+gulp.task('build', ['html', 'fonts', 'other']);
