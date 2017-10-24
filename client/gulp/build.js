@@ -3,6 +3,8 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
+var run = require('gulp-run-command').default;
+var git = require('gulp-git');
 
 var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
@@ -43,6 +45,7 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe(assets = $.useref.assets())
     .pipe($.rev())
     .pipe(jsFilter)
+    .pipe($.replace('http://localhost:8000', 'https://ferreterias.herokuapp.com'))
     .pipe($.sourcemaps.init())
     .pipe($.ngAnnotate())
     .pipe($.uglify({ preserveComments: $.uglifySaveLicense })).on('error', conf.errorHandler('Uglify'))
@@ -51,7 +54,6 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe(cssFilter)
     .pipe($.sourcemaps.init())
     .pipe($.replace('../../bower_components/bootstrap-sass/assets/fonts/bootstrap/', '../fonts/'))
-    .pipe($.replace('http://localhost:8000', 'https://ferreterias.herokuapp.com'))
     .pipe($.minifyCss({ processImport: false }))
     .pipe($.sourcemaps.write('maps'))
     .pipe(cssFilter.restore)
@@ -100,4 +102,19 @@ gulp.task('clean', function () {
   );
 });
 
-gulp.task('build', ['html', 'fonts', 'other']);
+gulp.task('URL', function () {
+  return gulp.src(path.join(conf.paths.dist, '/scripts/app-*.js'))
+    .pipe($.replace('http://localhost:8000', 'https://ferreterias.herokuapp.com'))
+    .pipe(gulp.dest(path.join(conf.paths.dist, '/')))
+});
+
+gulp.task('git', function () {
+  return gulp.src('../*')
+    .pipe(git.checkout('master', { args: '-- public/.htaccess' }))
+    .pipe(git.checkout('master', { args: '-- index.php' }))
+    .pipe(git.add({ args: 'public/.'}))
+    .pipe(git.commit('Build: ', { args: '-m ' + (new Date()).toString() }))
+    .pipe(git.push('heroku', 'master'));
+});
+
+gulp.task('build', ['html', 'fonts', 'other', 'git']);
