@@ -17,22 +17,31 @@
     function link(scope, element, attrs) {
       $rootScope.productos = localStorageService.get('productos') || [];
 
+      scope.user = localStorageService.get('user') || {};
+      scope.profileImage = scope.user.imagen ? $rootScope.baseURL + 'api/fileentry/get/' + scope.user.imagen : 
+        '/assets/img/app/profile/empty-profile.png';
+
       scope.logout = function () {
         localStorageService.set('user', null);
         $rootScope.$isLogged = false;
         $state.go('login');
 
         $rootScope.reloadMenuItems();
-      };
-
-      scope.getProfile = function () {
-        var user = localStorageService.get('user') || {name: 'Perfil'};
-        return user.name;
+        $rootScope.updateProfileImage();
       };
 
       scope.market = function () {
         $state.go('venta.registro');
       };
+
+      $rootScope.updateProfileImage = function(image) {
+        scope.profileImage = image ? $rootScope.baseURL + 'api/fileentry/get/' + image : 
+        '/assets/img/app/profile/empty-profile.png';
+      };
+      
+      $rootScope.updateProfileName = function(name) {
+        scope.user.name = name;
+      }
     }
   }
 

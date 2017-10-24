@@ -36,11 +36,21 @@
       if (!$rootScope.$pageFinishedLoading) {
         $rootScope.$pageFinishedLoading = true;
       }
-    }, 7000);
+    }, 100);
 
     $rootScope.baseURL = 'http://localhost:8000/';
     $rootScope.$baSidebarService = baSidebarService;
     $rootScope.$isLogged = !_.isEmpty(localStorageService.get('user'));
+
+    if (!$rootScope.$isLogged) {
+      $state.go('login');
+    }
+
+    $rootScope.$on('$locationChangeSuccess', function() {
+      if (!$rootScope.$isLogged) {
+        $state.go('login');
+      }
+    })
   }
 
 })();

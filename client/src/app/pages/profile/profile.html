@@ -10,7 +10,14 @@
             <div class="col-sm-9">
               <div class="userpic">
                 <div class="userpic-wrapper">
-                  <img src="assets/img/app/profile/empty-profile.png" ng-click="uploadPicture()">
+                  <!-- <img src="assets/img/app/profile/empty-profile.png" ng-click="uploadPicture()"> -->
+                  <img
+                    ngf-select
+                    ngf-thumbnail="vm.getProfileImage()"
+                    ng-model="vm.user.imagen"
+                    accept="image/*"
+                    ngf-max-size="2MB"
+                    required>
                 </div>
                 <i class="ion-ios-close-outline" ng-click="removePicture()" ng-if="!noPicture"></i>
                 <a href class="change-userpic" ng-click="uploadPicture()">Cambiar foto de Perfil</a>
@@ -23,45 +30,42 @@
       </div>
   
       <div class="row">
-        <!-- <div class="col-md-6">
-          <div class="form-group row clearfix">
-            <label for="inputFirstName" class="col-sm-3 control-label">Nombre</label>
-  
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="inputFirstName" placeholder="" value="{{ vm.nombre }}">
-            </div>
-          </div>
-          <div class="form-group row clearfix">
-            <label for="inputLastName" class="col-sm-3 control-label">Apellidos</label>
-  
-            <div class="col-sm-9">
-              <input type="text" class="form-control" id="inputLastName" placeholder="" value="{{ vm.apellidos }}">
-            </div>
-          </div>
-        </div> -->
         <div class="col-md-6">
-          <!-- <div class="form-group row clearfix">
-            <label class="col-sm-3 control-label">Privilegio:</label>
-  
-            <div class="col-sm-9">
-              <select class="form-control" ng-model="vm.user.privilegio">
-                <option value="administrador">Administrador</option>
-                <option value="propietario">Propietario</option>
-                <option value="vendedor">Vendedor</option>
-              </select>
-            </div>
-          </div> -->
           <div class="form-group row clearfix">
             <label for="inputFirstName" class="col-sm-3 control-label">Usuario</label>
   
             <div class="col-sm-9">
-              <input type="text" class="form-control" id="username" placeholder="" ng-model="vm.user.name">
+              <input type="text" class="form-control" id="username" placeholder="" ng-model="vm.user.name" readonly>
+            </div>
+          </div>
+
+          <div class="form-group row clearfix">
+            <label for="inputFirstName" class="col-sm-3 control-label">Nombre</label>
+  
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="username" placeholder="" ng-model="vm.user.nombreCompleto">
+            </div>
+          </div>
+
+          <div class="form-group row clearfix">
+            <label for="inputFirstName" class="col-sm-3 control-label">Email</label>
+  
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="username" placeholder="" ng-model="vm.user.email">
+            </div>
+          </div>
+
+          <div class="form-group row clearfix">
+            <label for="inputFirstName" class="col-sm-3 control-label">Privilegio</label>
+  
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="username" placeholder="" ng-model="vm.user.privilegio" readonly>
             </div>
           </div>
         </div>
       </div>
   
-      <h3 class="with-line">Change Password</h3>
+      <h3 class="with-line">Cambiar Password</h3>
   
       <div class="row">
         <div class="col-md-6">
@@ -85,7 +89,7 @@
       </div>
   
       <button type="button" class="btn btn-primary btn-with-icon save-profile" ng-click="vm.updateProfile()">
-        <i class="ion-android-checkmark-circle"></i>Actualizar PErfil
+        <i class="ion-android-checkmark-circle"></i>Actualizar Perfil
       </button>
     </div>
   </div>

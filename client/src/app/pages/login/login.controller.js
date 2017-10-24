@@ -18,6 +18,8 @@
           localStorageService.set('user', resp.user);
           $rootScope.$isLogged = true;
           $rootScope.reloadMenuItems();
+          $rootScope.updateProfileImage(resp.user.imagen);
+          $rootScope.updateProfileName(resp.user.name);
 
           if (resp.user.privilegio === 'administrador') {
             $state.go('dashboard.global');
