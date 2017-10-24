@@ -112,10 +112,10 @@ gulp.task('git', function () {
   git.checkout('master', {args:'-- ../public/.htaccess'});
   git.checkout('master', {args:'-- ../public/index.php'});
   
-  // return gulp.src(path.join(conf.paths.dist, '/'))
-  //   .pipe(git.add({ args: '../public/.'}))
-  //   .pipe(git.commit('Build: ' + (new Date()).toString()))
-  //   .pipe(git.push('heroku', 'master'));
+  return gulp.src(path.join(conf.paths.dist, '/'))
+    .pipe(git.add({ args: '../public/.'}))
+    .pipe(git.commit('Build: ' + (new Date()).toString()))
+    .pipe(git.push('heroku', 'master'));
 });
 
 gulp.task('build', ['html', 'fonts', 'other', 'git']);
