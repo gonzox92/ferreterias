@@ -73,6 +73,7 @@ Route::delete('propietarios/{id}', 'PropietarioController@delete');
 // Usuarios
 Route::post('usuarios/login', 'UserController@logIn');
 Route::post('usuarios', 'UserController@store');
+Route::get('usuarios', 'UserController@index');
 Route::get('usuarios/{id}', 'UserController@show');
 Route::put('usuarios/{id}', 'UserController@update');
 Route::delete('usuarios/{id}', 'UserController@delete');

@@ -16,7 +16,7 @@
       $state.go('propietarios.item', {id: id});
     }
 
-    vm.remove = function ($index, id) {
+    vm.remove = function ($index, propietario) {
       var deleteMessage = $uibModal.open({
         animation: true,
         templateUrl: 'app/pages/propietarios/borrar/borrar.template.html',
@@ -26,8 +26,10 @@
       });
 
       deleteMessage.result.then(function() {
-        Restangular.one('propietarios', id).remove().then(function() {
-          vm.propietarios.splice($index, 1);
+        Restangular.one('propietarios', propietario.id).remove().then(function() {
+          Restangular.one('usuarios', propietario.idUser).remove().then(function() {
+            vm.propietarios.splice($index, 1);
+          });
         });
       }, function() {
         $log.log('Borrar fue cancelado')

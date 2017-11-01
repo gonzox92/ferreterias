@@ -12,9 +12,14 @@ class PropietarioController extends Controller
     public function index()
     {
         $nombre = request()->nombre != null ? request()->nombre : '';
-        $productos = Propietario::where('pNombre', 'like', '%'. $nombre .'%')->get();
+        $propietarios = Propietario::where('pNombre', 'like', '%'. $nombre .'%')->get();
 
-        return response()->json($productos, 200);
+        // $propietarios = DB::table('propietarios')
+        //     ->join('users', 'propietarios.idUser', '=', 'users.id')
+        //     ->select('propietarios.*', 'users.id', 'users.name')
+        //     ->where('pNombre', 'like', '%'. $nombre .'%');
+
+        return response()->json($propietarios, 200);
     }
 
     public function show(Propietario $id)

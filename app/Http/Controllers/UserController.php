@@ -19,6 +19,15 @@ class UserController extends Controller
 
         return response()->json(['user' => $user], 200);
     }
+    
+    public function index()
+    {
+        $sql = request()->sql != null ? request()->sql : '1 = 1';
+        $users = User::whereRaw($sql)->get();
+
+        return response()->json($users, 200);
+    }
+
 
     public function show($id)
     {
@@ -43,7 +52,7 @@ class UserController extends Controller
         return response()->json($id, 200);
     }
 
-    public function delete(Almacen $id)
+    public function delete(User $id)
     {
         $id->delete();
 
