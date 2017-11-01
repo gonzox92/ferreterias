@@ -8,7 +8,7 @@
   function routeConfig($stateProvider) {
     $stateProvider
         .state('almacenes', {
-          url: '/almacenes',
+          url: '/ferreterias',
           template : '<ui-view autoscroll="true" autoscroll-body-top></ui-view>',
           abstract: true,
           title: 'Ferreterias',
@@ -48,7 +48,7 @@
           templateUrl: 'app/pages/almacenes/item/item.template.html',
           controller: 'almacenesItemController',
           controllerAs: 'vm',
-          title: 'Almacen',
+          title: 'Ferreteria',
           sidebarMeta: {
             order: 200,
             visible: false

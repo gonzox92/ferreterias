@@ -21,7 +21,16 @@
           </div>
           <div class="form-group">
               <label for="input03">Imagen</label>
-              <img style="width: 100%; max-height: 300px;" src="{{vm.almacen.aImagen}}">
+              <!-- <img style="width: 100%; max-height: 300px;" src="{{vm.almacen.aImagen}}"> -->
+              <div class="drop-box">
+                  <img
+                    ngf-select
+                    ngf-thumbnail="vm.file || vm.almacen.aImagen || '/assets/pictures/empty.png'"
+                    ng-model="vm.file"
+                    accept="image/*"
+                    ngf-max-size="2MB"
+                    required>
+              </div>
             </div>
           <div class="form-group">
             <label for="input02">Ubicacion</label>
@@ -30,7 +39,7 @@
             </ng-map>
           </div>
           <div class="buttons" style="text-align: right;">
-            <button class="btn btn-info" ng-click="vm.goTo(item.id)">Editar</button>
+            <button class="btn btn-info" ng-click="vm.upload()">Editar</button>
             <button class="btn btn-danger" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
           </div>
         </form>

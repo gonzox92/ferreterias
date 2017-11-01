@@ -18,8 +18,7 @@
       $rootScope.productos = localStorageService.get('productos') || [];
 
       scope.user = localStorageService.get('user') || {};
-      scope.profileImage = scope.user.imagen ? $rootScope.baseURL + 'api/fileentry/get/' + scope.user.imagen : 
-        '/assets/img/app/profile/empty-profile.png';
+      scope.profileImage = scope.user.imagen || '/assets/img/app/profile/empty-profile.png';
 
       scope.logout = function () {
         localStorageService.set('user', null);
@@ -35,8 +34,7 @@
       };
 
       $rootScope.updateProfileImage = function(image) {
-        scope.profileImage = image ? $rootScope.baseURL + 'api/fileentry/get/' + image : 
-        '/assets/img/app/profile/empty-profile.png';
+        scope.profileImage = image || '/assets/img/app/profile/empty-profile.png';
       };
       
       $rootScope.updateProfileName = function(name) {
