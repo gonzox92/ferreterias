@@ -4,13 +4,17 @@
   angular.module('BlurAdmin.pages.almacenes')
       .controller('almacenesItemController', almacenesItemController);
 
-  almacenesItemController.$inject = ['$log', '$state', '$stateParams', '$uibModal', '$rootScope',
+  almacenesItemController.$inject = ['$log', '$scope', '$state', '$stateParams', '$uibModal', '$rootScope',
     'Restangular', 'serverAPI', 'toastr'];
-  function almacenesItemController($log, $state, $stateParams, $uibModal, $rootScope, Restangular,
+  function almacenesItemController($log, $scope, $state, $stateParams, $uibModal, $rootScope, Restangular,
     serverAPI, toastr) {
     $log.log('almacenesItemController');
     var vm = this;
     vm.almacen = {};
+
+    $scope.$on('mapInitialized', function(evt, evtMap) {
+      vm.map = evtMap;
+    });
 
     vm.remove = function () {
       var deleteMessage = $uibModal.open({
@@ -31,6 +35,9 @@
     };
 
     vm.submit = function() {
+      var currentPosition = vm.map.markers[0].getPosition();
+      vm.almacen.aUbicacion = '[' + currentPosition.lat() + ',' + currentPosition.lng() +  ']';
+
       Restangular.one('almacenes', vm.almacen.id).customPUT(vm.almacen).then(function(resp) {
         toastr.success('Datos actualizados correctamente', 'Actualizado');
         $state.go('almacenes.listar');

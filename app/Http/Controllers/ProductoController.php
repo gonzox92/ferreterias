@@ -52,27 +52,27 @@ class ProductoController extends Controller
         {
             $where = $where . ' AND propietarios.id = ' . $idPropietario;
 
-            $productos = DB::table('almacenes')
-                ->join('propietarios', 'propietarios.id', '=', 'almacenes.idPropietario')
-                ->join('productos', 'productos.idAlmacen', '=', 'almacenes.id')
-                ->select('productos.*', 'almacenes.aNombre', 'almacenes.aDireccion', 'almacenes.aUbicacion', 'almacenes.aImagen')
+            $productos = DB::table('ferreterias')
+                ->join('propietarios', 'propietarios.id', '=', 'ferreterias.idPropietario')
+                ->join('productos', 'productos.idAlmacen', '=', 'ferreterias.id')
+                ->select('productos.*', 'ferreterias.aNombre', 'ferreterias.aDireccion', 'ferreterias.aUbicacion', 'ferreterias.aImagen')
                 ->whereRaw($where);
         }
         else if ($idVendedor != '')
         {
             $where = $where . ' AND vendedores.id = ' . $idVendedor;
             
-            $productos = DB::table('almacenes')
-                ->join('vendedores', 'vendedores.idAlmacen', '=', 'almacenes.id')
-                ->join('productos', 'productos.idAlmacen', '=', 'almacenes.id')
-                ->select('productos.*', 'almacenes.aNombre', 'almacenes.aDireccion', 'almacenes.aUbicacion', 'almacenes.aImagen')
+            $productos = DB::table('ferreterias')
+                ->join('vendedores', 'vendedores.idAlmacen', '=', 'ferreterias.id')
+                ->join('productos', 'productos.idAlmacen', '=', 'ferreterias.id')
+                ->select('productos.*', 'ferreterias.aNombre', 'ferreterias.aDireccion', 'ferreterias.aUbicacion', 'ferreterias.aImagen')
                 ->whereRaw($where);
         }
         else
         {
             $productos = DB::table('productos')
-                ->join('almacenes', 'productos.idAlmacen', '=', 'almacenes.id')
-                ->select('productos.*', 'almacenes.aNombre', 'almacenes.aDireccion', 'almacenes.aUbicacion', 'almacenes.aImagen')
+                ->join('ferreterias', 'productos.idAlmacen', '=', 'ferreterias.id')
+                ->select('productos.*', 'ferreterias.aNombre', 'ferreterias.aDireccion', 'ferreterias.aUbicacion', 'ferreterias.aImagen')
                 ->whereRaw($where);
         }
 

@@ -61,9 +61,9 @@ class PropietarioController extends Controller
         $limit = request()->limit != null ? request()->limit : '6';
 
         $productos = DB::table('productos')
-            ->join('almacenes', 'productos.idAlmacen', '=', 'almacenes.id')
-            ->select('productos.*', 'almacenes.aNombre', 'almacenes.aDireccion', 'almacenes.aUbicacion')
-            ->where('almacenes.idPropietario', '=', $id)
+            ->join('ferreterias', 'productos.idAlmacen', '=', 'ferreterias.id')
+            ->select('productos.*', 'ferreterias.aNombre', 'ferreterias.aDireccion', 'ferreterias.aUbicacion')
+            ->where('ferreterias.idPropietario', '=', $id)
             ->where('pNombre', 'like', '%'. $nombre .'%')
             ->where('pDescripcion', 'like', '%'. $descripcion .'%')
             ->where('pPrecio', $valor1[0], $valor1[1])
@@ -83,7 +83,7 @@ class PropietarioController extends Controller
     {
         $id->update($request->all());
 
-        return response()->json($product, 200);
+        return response()->json($id, 200);
     }
 
     public function delete(Propietario $id)

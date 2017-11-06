@@ -24,8 +24,7 @@
     $scope.$on('mapInitialized', function(evt, evtMap) {
       vm.map = evtMap;
     });
-    console.log(vm.user);
-
+    
     vm.submit = function() {
       var currentPosition = vm.map.markers[0].getPosition();
       vm.almacen.aUbicacion = '[' + currentPosition.lat() + ',' + currentPosition.lng() +  ']';

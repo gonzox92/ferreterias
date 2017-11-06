@@ -42,12 +42,14 @@
     $rootScope.$baSidebarService = baSidebarService;
     $rootScope.$isLogged = !_.isEmpty(localStorageService.get('user'));
 
-    if (!$rootScope.$isLogged) {
+    if (!$rootScope.$isLogged && $state.current.name) {
       $state.go('login');
+    } else {
+      $state.go('buscador');
     }
 
     $rootScope.$on('$locationChangeSuccess', function() {
-      if (!$rootScope.$isLogged) {
+      if (!$rootScope.$isLogged && $state.current.name !== 'buscador') {
         $state.go('login');
       }
     })
