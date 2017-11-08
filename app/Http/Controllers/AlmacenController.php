@@ -27,7 +27,7 @@ class AlmacenController extends Controller
     {
         $nombre = request()->nombre != null ? request()->nombre : '';
         $descripcion = request()->descripcion != null ? request()->descripcion : '';
-        $valor1 = request()->valor1 != null ? request()->valor1 : '>,0';
+        $valor1 = request()->valor1 != null ? request()->valor1 : '>=,0';
         $valor2 = request()->valor2 != null ? request()->valor2 : '<,10000';
         
         $almacen = Almacen::find($id);

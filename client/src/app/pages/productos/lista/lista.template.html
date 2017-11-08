@@ -1,7 +1,68 @@
 <style>
-  .table > tbody > tr > td p {
-    line-height: 22px;
+  .product-list {
+    display: flex;
+    margin: 16px 0;
+    flex-flow: wrap;
+  }
+
+  .product-list > .product-card {
+    width: 25%;
+    margin: 0 16px 16px 0;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12);
+  }
+
+  .product-list > .product-card > .product-image > img {
+    width: 100%;
+    height: 120px;
+  }
+
+  .product-list > .product-card .product-body {
+    padding: 16px;
+  }
+
+  .product-list > .product-card .product-body .product-name {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 8px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .product-list > .product-card .product-body .product-description {
     font-weight: 300;
+    margin: 0 0 12px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .product-list > .product-card .product-actions {
+    padding: 0 16px 16px;
+  }
+  
+  .product-list > .product-card .product-actions > .options.first-line > button {
+    width: 100%;
+    margin: 0 0 8px;
+  }
+
+  .product-list > .product-card .product-actions > .options.second-line > button {
+    width: calc(50% - 2px);
+  }
+
+  @media only screen and (max-width: 768px) {
+    .product-list > .product-card {
+      width: calc(50% - 32px);
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    .product-list > .product-card {
+      width: calc(100% - 0px);
+      margin: 16px 0;
+    }
   }
 </style>
 
@@ -14,8 +75,45 @@
 
 <spinner ng-hide="vm.isLoading"></spinner>
 
-<div class="table-responsive" ng-show="vm.isLoading">
-  <table class="table">
+<div class="product-list" ng-show="vm.isLoading">
+  <div class="product-card" ng-repeat="item in vm.productos">
+    <div class="product-image">
+      <img src="{{ item.pImagen }}" alt="">
+    </div>
+
+    <div class="product-body">
+      <div class="product-name">
+          {{ item.pNombre }}
+      </div>
+
+      <div class="product-description">
+          {{ item.pDescripcion }}
+      </div>
+
+      <div class="product-information">
+        <strong>Precio: </strong> {{ item.pPrecio }} Bs.
+        <strong>Cantidad: </strong> {{ item.pCantidadEnMano }}
+      </div>
+    </div>
+
+    <div class="product-actions">
+      <div class="options first-line">
+        <button type="button" class="btn btn-default btn-with-icon" ng-click="vm.goToProductos(item.id)">
+          <i class="fa fa-sitemap"></i>Categorias
+        </button>
+      </div>
+
+      <div class="options second-line">
+        <button type="button" class="btn btn-info btn-with-icon" ng-click="vm.goTo(item.id)">
+          <i class="ion-edit"></i>Editar
+        </button>
+        <button type="button" class="btn btn-danger btn-with-icon" ng-click="vm.remove($index, item.id)">
+          <i class="fa fa-trash-o"></i>Borrar
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- <table class="table">
       <tr>
         <th>#</th>
         <th>Imagen</th>
@@ -45,5 +143,5 @@
           </div>
         </td>
       </tr>
-  </table>
+  </table> -->
 </div>
