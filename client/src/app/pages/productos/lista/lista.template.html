@@ -6,7 +6,7 @@
   }
 
   .product-list > .product-card {
-    width: 25%;
+    width: calc(20% - 32px);
     margin: 0 16px 16px 0;
     box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12);
   }
@@ -97,15 +97,15 @@
     </div>
 
     <div class="product-actions">
-      <div class="options first-line">
+      <!-- <div class="options first-line">
         <button type="button" class="btn btn-default btn-with-icon" ng-click="vm.goToProductos(item.id)">
           <i class="fa fa-sitemap"></i>Categorias
         </button>
-      </div>
+      </div> -->
 
       <div class="options second-line">
         <button type="button" class="btn btn-info btn-with-icon" ng-click="vm.goTo(item.id)">
-          <i class="ion-edit"></i>Editar
+          <i class="ion-edit"></i>Mostrar
         </button>
         <button type="button" class="btn btn-danger btn-with-icon" ng-click="vm.remove($index, item.id)">
           <i class="fa fa-trash-o"></i>Borrar
@@ -113,35 +113,4 @@
       </div>
     </div>
   </div>
-  <!-- <table class="table">
-      <tr>
-        <th>#</th>
-        <th>Imagen</th>
-        <th>Nombre</th>
-        <th>Descripcion</th>
-        <th>Precio</th>
-        <th>Cantidad</th>
-      </tr>
-
-      <tr ng-repeat="item in vm.productos">
-        <td>{{ $index + 1 }}</td>
-        <td>
-          <img style="max-height: 70px; width: 100px;" src="{{ item.pImagen }}" alt="">
-        </td>
-        <td>{{ item.pNombre }}</td>
-        <td>
-          <p>
-            {{ item.pDescripcion }}
-          </p>
-        </td>
-        <td>{{ item.pPrecio }}</td>
-        <td>{{ item.pCantidadEnMano }}</td>
-        <td>
-          <div class="buttons">
-            <button class="btn btn-info editable-table-button btn-xs" ng-click="vm.goTo(item.id)">Editar</button>
-            <button class="btn btn-danger editable-table-button btn-xs" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
-          </div>
-        </td>
-      </tr>
-  </table> -->
 </div>

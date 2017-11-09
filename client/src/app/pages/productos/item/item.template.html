@@ -1,37 +1,67 @@
-<div class="widgets">
-  <div class="row">
-    <div class="col-md-6">
-      <div
-          ba-panel
-          ba-panel-title="# {{ vm.producto.id }}"
-          ba-panel-class="with-scroll panel-primary bootstrap-panel">
-        <form name="productForm">
-          <div class="form-group">
-            <label for="input01">Nombre</label>
-            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.producto.pNombre" required>
+<style>
+  .mail-navigation-container {
+    border-right: 1px solid #ddd;
+  }
+
+  .panel.xmedium-panel {
+    height: 100%;
+  }
+
+  .message-container {
+    height: 80vh;
+  }
+</style>
+
+<div class="row mail-client-container transparent">
+    <div class="col-md-12">
+      <div ba-panel ba-panel-class="xmedium-panel mail-panel">
+        <div class="letter-layout">
+          <div class="mail-navigation-container" ng-class="{'expanded' : !tabCtrl.navigationCollapsed}">
+            <!-- <div class="text-center">
+              <button type="button" class="btn btn-default compose-button" ng-click="tabCtrl.showCompose('','','')">
+                Compose
+              </button>
+            </div> -->
+            <div ng-repeat="t in vm.tabs" ui-sref-active="active" class="mail-navigation"
+                 ui-sref="{{ t.state }}" ng-click="selectTab(t.label)">
+              {{ t.name }}
+              <!-- <span class="new-mails" ng-show="t.newMails">{{t.newMails}}</span> -->
+            </div>
+            <!-- <div class="labels">
+              <div class="labels-title">
+  
+              </div>
+              <div class="labels-container">
+                <div class="label-item">
+                  <span class="tag label work">Work</span>
+                </div>
+                <div class="label-item">
+                  <span class="tag label family">Family</span>
+                </div>
+                <div class="label-item">
+                  <span class="tag label friend">Friend</span>
+                </div>
+                <div class="label-item">
+                  <span class="tag label study">Study</span>
+                </div>
+              </div>
+            </div>
+            <div class="add-label-container">
+              <i class="ion-plus-round"></i><span class="label-input-stub">Add new label</span>
+            </div> -->
           </div>
-          <div class="form-group">
-            <label for="input02">Descripcion</label>
-            <textarea class="form-control" id="input02" placeholder="Descripcion" ng-model="vm.producto.pDescripcion"></textarea>
+          <div class="message-container" ng-class="{'expanded': vm.navigationCollapsed}">
+            <div class="message">
+              <div class="row">
+                <div class="toggle-navigation-container detail-page">
+                  <a href class="collapse-navigation-link ion-navicon"
+                      ng-click="tabCtrl.navigationCollapsed=!tabCtrl.navigationCollapsed"></a>
+                </div>
+              </div>
+              <ui-view></ui-view>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="input03">Imagen</label>
-            <img style="max-height: 120px; display: block;" src="{{ vm.producto.pImagen }}">
-          </div>
-          <div class="form-group">
-            <label for="input04">Precio</label>
-            <input type="text" class="form-control" id="input04" placeholder="Bs" ng-model="vm.producto.pPrecio">
-          </div>
-          <div class="form-group">
-            <label for="input05">Cantidad en mano</label>
-            <input type="text" class="form-control" id="input05" placeholder="0" ng-model="vm.producto.pCantidadEnMano">
-          </div>
-          <div class="buttons" style="text-align: right;">
-            <button class="btn btn-info" ng-click="vm.goTo(item.id)">Editar</button>
-            <button class="btn btn-danger" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>
-</div>

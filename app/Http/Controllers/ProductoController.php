@@ -105,11 +105,11 @@ class ProductoController extends Controller
         return response()->json($product, 201);
     }
 
-    public function update(Request $request, Producto $product)
+    public function update(Request $request, Producto $id)
     {
-        $product->update($request->all());
+        $id->update($request->all());
 
-        return response()->json($product, 200);
+        return response()->json($id, 200);
     }
 
     public function delete(Producto $id)

@@ -14,7 +14,7 @@
     vm.isLoading = false;
     console.log(vm.user)
     vm.goTo = function(id) {
-      $state.go('productos_item', {id: $stateParams.id, idProducto: id});
+      $state.go('productos_item.detail', {id: $stateParams.id, idProducto: id});
     };
 
     vm.addProduct = function () {
