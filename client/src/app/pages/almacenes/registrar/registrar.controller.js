@@ -1,15 +1,15 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module('BlurAdmin.pages.almacenes')
-      .controller('almacenesRegistroController', almacenesRegistroController);
+    .controller('almacenesRegistroController', almacenesRegistroController);
 
   almacenesRegistroController.$inject = ['$log', '$state', '$rootScope', '$scope', 'localStorageService', 'serverAPI', 'Restangular', 'Upload'];
   function almacenesRegistroController($log, $state, $rootScope, $scope, localStorageService, serverAPI, Restangular, Upload) {
     $log.log('productosRegistroController');
     var vm = this;
     vm.user = localStorageService.get('user');
-    
+
     vm.propietarios = [];
     vm.almacen = {
       idPropietario: 0,
@@ -24,11 +24,11 @@
     $scope.$on('mapInitialized', function(evt, evtMap) {
       vm.map = evtMap;
     });
-    
+
     vm.submit = function() {
       var currentPosition = vm.map.markers[0].getPosition();
-      vm.almacen.aUbicacion = '[' + currentPosition.lat() + ',' + currentPosition.lng() +  ']';
-      vm.almacen.idPropietario = vm.user.privilegio !== 'administrador' ? 
+      vm.almacen.aUbicacion = '[' + currentPosition.lat() + ',' + currentPosition.lng() + ']';
+      vm.almacen.idPropietario = vm.user.privilegio !== 'administrador' ?
         vm.user.propietario.id : vm.almacen.idPropietario;
 
       serverAPI.almacenes.post(vm.almacen).then(function(resp) {
@@ -36,13 +36,13 @@
       });
     };
 
-    vm.upload = function (files) {
+    vm.upload = function(files) {
       if (!vm.file.$error) {
         if (_.isObject(vm.file) && !vm.file.$error) {
           var timestamp = Number(new Date());
           var storageRef = firebase.storage().ref(timestamp.toString());
           var uploadTask = storageRef.put(vm.file);
-  
+
           uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
             function(snapshot) {
               var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;

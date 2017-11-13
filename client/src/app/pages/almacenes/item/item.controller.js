@@ -1,13 +1,13 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module('BlurAdmin.pages.almacenes')
-      .controller('almacenesItemController', almacenesItemController);
+    .controller('almacenesItemController', almacenesItemController);
 
   almacenesItemController.$inject = ['$log', '$scope', '$state', '$stateParams', '$uibModal', '$rootScope',
     'Restangular', 'serverAPI', 'toastr'];
   function almacenesItemController($log, $scope, $state, $stateParams, $uibModal, $rootScope, Restangular,
-    serverAPI, toastr) {
+                                   serverAPI, toastr) {
     $log.log('almacenesItemController');
     var vm = this;
     vm.almacen = {};
@@ -16,7 +16,7 @@
       vm.map = evtMap;
     });
 
-    vm.remove = function () {
+    vm.remove = function() {
       var deleteMessage = $uibModal.open({
         animation: true,
         templateUrl: 'app/pages/almacenes/borrar/borrar.template.html',
@@ -36,7 +36,7 @@
 
     vm.submit = function() {
       var currentPosition = vm.map.markers[0].getPosition();
-      vm.almacen.aUbicacion = '[' + currentPosition.lat() + ',' + currentPosition.lng() +  ']';
+      vm.almacen.aUbicacion = '[' + currentPosition.lat() + ',' + currentPosition.lng() + ']';
 
       Restangular.one('almacenes', vm.almacen.id).customPUT(vm.almacen).then(function(resp) {
         toastr.success('Datos actualizados correctamente', 'Actualizado');
@@ -46,7 +46,7 @@
       });
     };
 
-    vm.upload = function (files) {
+    vm.upload = function(files) {
       if (_.isObject(vm.file) && !vm.file.$error) {
         var timestamp = Number(new Date());
         var storageRef = firebase.storage().ref(timestamp.toString());
@@ -74,14 +74,15 @@
         vm.submit();
       }
     };
-    
-    serverAPI.almacenes.get($stateParams.id).then(function (resp) {      
+
+    serverAPI.almacenes.get($stateParams.id).then(function(resp) {
       vm.almacen = {
         id: resp.id,
         aNombre: resp.aNombre || '',
         aImagen: resp.aImagen || '/assets/pictures/empty.png',
         aDireccion: resp.aDireccion || '',
-        aUbicacion: resp.aUbicacion || 'current-location'
+        aUbicacion: resp.aUbicacion || 'current-location',
+        aHorario: resp.aHorario
       };
     })
   }

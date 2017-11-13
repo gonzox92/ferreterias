@@ -9,23 +9,25 @@
     <form name="productForm" class="entry-details-form">
       <div class="form-group">
         <label for="input01">Nombre</label>
-        <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.producto.pNombre" required>
+        <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre"
+               ng-model="vm.producto.pNombre" required>
       </div>
       <div class="form-group">
         <label for="input02">Descripcion</label>
-        <textarea class="form-control" id="input02" placeholder="Descripcion" ng-model="vm.producto.pDescripcion"></textarea>
+        <textarea class="form-control" id="input02" placeholder="Descripcion"
+                  ng-model="vm.producto.pDescripcion"></textarea>
       </div>
       <div class="form-group">
         <label for="input03">Imagen</label>
         <!-- <img style="max-height: 120px; display: block;" src="{{ vm.producto.pImagen }}"> -->
         <div class="drop-box">
-            <img
-              ngf-select
-              ngf-thumbnail="vm.file || vm.producto.pImagen || '/assets/pictures/empty.png'"
-              ng-model="vm.file"
-              accept="image/*"
-              ngf-max-size="1MB"
-              required>
+          <img
+            ngf-select
+            ngf-thumbnail="vm.file || vm.producto.pImagen || '/assets/pictures/empty.png'"
+            ng-model="vm.file"
+            accept="image/*"
+            ngf-max-size="1MB"
+            required>
         </div>
       </div>
       <div class="form-group">

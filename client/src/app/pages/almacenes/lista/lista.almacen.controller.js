@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module('BlurAdmin.pages.almacenes')
@@ -16,7 +16,7 @@
       $state.go('vendedores.item', {id: id});
     }
 
-    vm.remove = function ($index, id) {
+    vm.remove = function($index, id) {
       var deleteMessage = $uibModal.open({
         animation: true,
         templateUrl: 'app/pages/vendedores/borrar/borrar.template.html',
@@ -34,14 +34,14 @@
       });
     };
 
-    vm.buscar = function () {
+    vm.buscar = function() {
       var id = vm.user.privilegio === 'vendedor' ? vm.user.vendedor.idAlmacen : $stateParams.id;
-      Restangular.one('almacenes', id).getList('vendedores').then(function (resp) {
+      Restangular.one('almacenes', id).getList('vendedores').then(function(resp) {
         vm.vendedores = resp || [];
       });
     };
 
-    vm.user = function (idUser) {
+    vm.user = function(idUser) {
       $state.go('user', {id: idUser});
     };
 

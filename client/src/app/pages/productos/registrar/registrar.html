@@ -3,18 +3,21 @@
   <div class="row">
     <div class="col-md-6">
       <div
-          ba-panel
-          ba-panel-title="Registro de productos"
-          ba-panel-class="with-scroll">
+        ba-panel
+        ba-panel-title="Registro de productos"
+        ba-panel-class="with-scroll">
         <form name="productForm" ng-submit="vm.upload()">
           <div class="form-group">
             <label for="input01">Nombre</label>
-            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.producto.pNombre" required>
-            <p ng-show="productForm.nombre.$invalid && !productForm.nombre.$pristine" class="sr-only">Nombre del producto es requerido.</p>
+            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre"
+                   ng-model="vm.producto.pNombre" required>
+            <p ng-show="productForm.nombre.$invalid && !productForm.nombre.$pristine" class="sr-only">Nombre del
+              producto es requerido.</p>
           </div>
           <div class="form-group">
             <label for="input02">Descripcion</label>
-            <textarea class="form-control" id="input02" placeholder="Descripcion" ng-model="vm.producto.pDescripcion"></textarea>
+            <textarea class="form-control" id="input02" placeholder="Descripcion"
+                      ng-model="vm.producto.pDescripcion"></textarea>
           </div>
           <div class="form-group">
             <label for="input03">Imagen</label>
@@ -39,7 +42,7 @@
                 {{$select.selected.pNombre}}
               </ui-select-match>
               <ui-select-choices
-                  repeat="proveedor.id as proveedor in vm.proveedores | filter: {pNombre: $select.search}">
+                repeat="proveedor.id as proveedor in vm.proveedores | filter: {pNombre: $select.search}">
                 <div ng-bind-html="proveedor.pNombre | highlight: $select.search"></div>
               </ui-select-choices>
             </ui-select>

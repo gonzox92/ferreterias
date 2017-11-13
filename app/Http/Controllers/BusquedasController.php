@@ -13,8 +13,6 @@ class BusquedasController extends Controller
         $from = request()->from != null ? request()->from : '1900-01-01';
         $to = request()->to != null ? request()->to : '2999-12-31';
 
-        // return Busquedas::all();
-
         $busquedas = DB::table('busquedas')
             ->select('*')
             ->whereRaw("updated_at >= '" . $from . "' AND updated_at <= '" . $to . "'")

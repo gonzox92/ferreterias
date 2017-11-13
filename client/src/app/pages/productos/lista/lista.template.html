@@ -1,116 +1,66 @@
 <style>
-  .product-list {
-    display: flex;
-    margin: 16px 0;
-    flex-flow: wrap;
+  .table > tbody > tr > td:first-child {
+    text-align: inherit;
   }
 
-  .product-list > .product-card {
-    width: calc(20% - 32px);
-    margin: 0 16px 16px 0;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12);
-  }
-
-  .product-list > .product-card > .product-image > img {
-    width: 100%;
-    height: 120px;
-  }
-
-  .product-list > .product-card .product-body {
-    padding: 16px;
-  }
-
-  .product-list > .product-card .product-body .product-name {
-    font-size: 16px;
-    font-weight: 500;
-    margin: 0 0 8px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .product-list > .product-card .product-body .product-description {
+  td.child {
     font-weight: 300;
-    margin: 0 0 12px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .product-list > .product-card .product-actions {
-    padding: 0 16px 16px;
-  }
-  
-  .product-list > .product-card .product-actions > .options.first-line > button {
-    width: 100%;
-    margin: 0 0 8px;
-  }
-
-  .product-list > .product-card .product-actions > .options.second-line > button {
-    width: calc(50% - 2px);
-  }
-
-  @media only screen and (max-width: 768px) {
-    .product-list > .product-card {
-      width: calc(50% - 32px);
-    }
-  }
-
-  @media only screen and (max-width: 480px) {
-    .product-list > .product-card {
-      width: calc(100% - 0px);
-      margin: 16px 0;
-    }
   }
 </style>
 
 <form class="input-group" ng-submit="vm.buscar()">
-  <input type="text" class="form-control with-warning-addon" placeholder="Producto" aria-describedby="basic-addon2" ng-model="vm.busqueda.nombre">
+  <input type="text" class="form-control with-warning-addon" placeholder="Categoria" aria-describedby="basic-addon2"
+         ng-model="vm._filter.cNombre">
   <span class="input-group-addon input-group-addon-primary addon-right searchable" id="basic-addon2">Buscar</span>
 </form>
 
-<button type="button" class="btn btn-primary btn-with-icon" ng-click="vm.addProduct()"><i class="fa fa-plus"></i>Registrar</button>
+<spinner ng-show="vm.isLoading"></spinner>
 
-<spinner ng-hide="vm.isLoading"></spinner>
+<tree-dnd
+  ng-hide="vm.isLoading"
+  tree-data="vm.tree_data"
+  tree-control="vm.my_tree"
+  primary-key="id"
+  filter="vm._filter"
+  column-defs="vm.col_defs"
+  expand-on="vm.expanding_property"
+  template-url="tree-dnd-template-render.html">
+</tree-dnd>
 
-<div class="product-list" ng-show="vm.isLoading">
-  <div class="product-card" ng-repeat="item in vm.productos">
-    <div class="product-image">
-      <img src="{{ item.pImagen }}" alt="">
-    </div>
+<script type="text/ng-template" id="tree-dnd-template-render.html">
+  <table ng-class="$tree_class">
+    <thead>
+      <tr>
+        <th ng-class="expandingProperty.titleClass" ng-style="expandingProperty.titleStyle">
+          {{expandingProperty.displayName || expandingProperty.field || expandingProperty}}
+        </th>
+        <th ng-repeat="col in colDefinitions track by $index" ng-class="col.titleClass" ng-style="col.titleStyle">
+          {{col.displayName || col.field}}
+        </th>
+        </tr>
+      </thead>
+      <tbody tree-dnd-nodes>
+        <tr tree-dnd-node="node" ng-repeat="node in tree_nodes track by $index"
+            ng-show="enabledFilter ? node.__filtered_visible__ === true && node.__visible__ : node.__visible__"
+            ng-if="(node.__inited__ || node.__visible__)"
+            ng-click="onSelect(node)"
+            ng-class="(node.__selected__ ? 'active' : '')">
+          <td tree-dnd-node-handle
+              ng-style="expandingProperty.cellStyle ? expandingProperty.cellStyle : {'padding-left': $callbacks.calsIndent(node.__level__)}"
+              ng-class="[expandingProperty.cellClass, node.ParentId ? 'child' : 'parent']"
+              compile="expandingProperty.cellTemplate">
+            <a data-nodrag>
+              <i ng-class="node.__icon_class__" ng-click="toggleExpand(node)" class="tree-icon"></i>
+              <img ng-if="!node.ParentId" src="{{ node.cImagen }}">
+            </a>
 
-    <div class="product-body">
-      <div class="product-name">
-          {{ item.pNombre }}
-      </div>
-
-      <div class="product-description">
-          {{ item.pDescripcion }}
-      </div>
-
-      <div class="product-information">
-        <strong>Precio: </strong> {{ item.pPrecio }} Bs.
-        <strong>Cantidad: </strong> {{ item.pCantidadEnMano }}
-      </div>
-    </div>
-
-    <div class="product-actions">
-      <!-- <div class="options first-line">
-        <button type="button" class="btn btn-default btn-with-icon" ng-click="vm.goToProductos(item.id)">
-          <i class="fa fa-sitemap"></i>Categorias
-        </button>
-      </div> -->
-
-      <div class="options second-line">
-        <button type="button" class="btn btn-info btn-with-icon" ng-click="vm.goTo(item.id)">
-          <i class="ion-edit"></i>Mostrar
-        </button>
-        <button type="button" class="btn btn-danger btn-with-icon" ng-click="vm.remove($index, item.id)">
-          <i class="fa fa-trash-o"></i>Borrar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+            {{node[expandingProperty.field] || node[expandingProperty]}}
+          </td>
+          <td ng-repeat="col in colDefinitions track by $index" ng-class="col.cellClass" ng-style="col.cellStyle"
+              compile="col.cellTemplate">
+            {{node[col.field]}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</script>

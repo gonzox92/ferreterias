@@ -1,8 +1,8 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module('BlurAdmin.pages.productos')
-      .controller('productosItemController', productosItemController);
+    .controller('productosItemController', productosItemController);
 
   productosItemController.$inject = ['$log', '$stateParams', '$rootScope', 'serverAPI', 'Restangular'];
   function productosItemController($log, $stateParams, $rootScope, serverAPI, Restangular) {

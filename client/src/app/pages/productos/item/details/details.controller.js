@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module('BlurAdmin.pages.productos')
@@ -9,7 +9,7 @@
     var vm = this;
     vm.producto = {};
 
-    serverAPI.productos.get($stateParams.idProducto).then(function (resp) {
+    serverAPI.productos.get($stateParams.idProducto).then(function(resp) {
       vm.producto = {
         id: resp.id,
         pNombre: resp.pNombre || '',
@@ -32,7 +32,7 @@
       });
     };
 
-    vm.upload = function (files) {
+    vm.upload = function(files) {
       if (_.isObject(vm.file) && !vm.file.$error) {
         var timestamp = Number(new Date());
         var storageRef = firebase.storage().ref(timestamp.toString());
@@ -61,7 +61,7 @@
       }
     };
 
-    vm.remove = function () {
+    vm.remove = function() {
       var deleteMessage = $uibModal.open({
         animation: true,
         templateUrl: 'app/pages/productos/borrar/borrar.template.html',
@@ -72,7 +72,7 @@
 
       deleteMessage.result.then(function() {
         Restangular.one('productos', vm.producto.id).remove().then(function() {
-          $state.go('productos', {id: vm.producto.almacen.id});
+          $state.go('categories', {id: vm.producto.almacen.id});
         });
       }, function() {
         $log.log('Borrar fue cancelado')

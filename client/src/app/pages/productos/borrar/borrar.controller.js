@@ -1,18 +1,18 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module('BlurAdmin.pages.productos')
-      .controller('productosBorrarController', productosBorrarController);
+    .controller('productosBorrarController', productosBorrarController);
 
   productosBorrarController.$inject = ['$uibModalInstance'];
   function productosBorrarController($uibModalInstance) {
     var vm = this;
-    
-    vm.ok = function () {
+
+    vm.ok = function() {
       $uibModalInstance.close();
     };
 
-    vm.cancel = function () {
+    vm.cancel = function() {
       $uibModalInstance.dismiss('cancel');
     };
   }

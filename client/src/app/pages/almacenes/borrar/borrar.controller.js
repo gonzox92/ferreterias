@@ -1,18 +1,18 @@
-(function () {
+(function() {
   'use strict';
 
   angular.module('BlurAdmin.pages.almacenes')
-      .controller('almacenesBorrarController', almacenesBorrarController);
+    .controller('almacenesBorrarController', almacenesBorrarController);
 
   almacenesBorrarController.$inject = ['$uibModalInstance'];
   function almacenesBorrarController($uibModalInstance) {
     var vm = this;
-    
-    vm.ok = function () {
+
+    vm.ok = function() {
       $uibModalInstance.close();
     };
 
-    vm.cancel = function () {
+    vm.cancel = function() {
       $uibModalInstance.dismiss('cancel');
     };
   }

@@ -13,7 +13,7 @@
     vm.positions = [];
     vm.busqueda = {palabras: ''};
     vm.maxSize = 5;
-    vm.itemsPerPage = 10;
+    vm.itemsPerPage = 20;
     vm.total = 0;
     vm.page = 1;
     vm.hayListaProductos = false;

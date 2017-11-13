@@ -43,6 +43,7 @@ Route::get('almacenes', 'AlmacenController@index');
 Route::get('almacenes/{id}', 'AlmacenController@show');
 Route::get('almacenes/{id}/productos', 'AlmacenController@showProductos');
 Route::get('almacenes/{id}/vendedores', 'AlmacenController@showVendedores');
+Route::get('almacenes/{id}/categorias', 'AlmacenController@showCategorias');
 Route::post('almacenes', 'AlmacenController@store');
 Route::put('almacenes/{id}', 'AlmacenController@update');
 Route::delete('almacenes/{id}', 'AlmacenController@delete');
@@ -87,6 +88,13 @@ Route::delete('vendedores/{id}', 'VendedoresController@delete');
 
 Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);
 Route::post('authenticate', 'AuthenticateController@authenticate');
+
+// Categorias
+Route::get('categorias', 'CategoriasController@index');
+Route::get('categorias/{id}', 'CategoriasController@show');
+Route::post('categorias', 'CategoriasController@store');
+Route::put('categorias/{id}', 'CategoriasController@update');
+Route::delete('categorias/{id}', 'CategoriasController@delete');
 
 // Route::get('fileentry', 'FileEntryController@index');
 Route::get('fileentry/get/{filename}', ['as' => 'getentry', 'uses' => 'FileEntryController@get']);

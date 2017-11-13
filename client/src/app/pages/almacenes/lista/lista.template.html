@@ -1,4 +1,5 @@
 <style>
+  .footer,
   .table-responsive {
     display: flex;
     flex-wrap: wrap;
@@ -7,10 +8,10 @@
   .ferreteria-card {
     width: calc(25% - 32px);
     margin: 16px;
-    color: rgba(0,0,0,0.87);
-    background-color: rgb(255,255,255);
+    color: rgba(0, 0, 0, 0.87);
+    background-color: rgb(255, 255, 255);
     border-radius: 2px;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   }
 
   .ferreteria-card .card-title .name {
@@ -28,13 +29,18 @@
   }
 
   .ferreteria-card .card-title .description {
-    padding: 8px 16px 16px;
+    padding: 8px 16px 0;
     font-weight: 300;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .ferreteria-card .card-body > img {
     width: 100%;
     height: 120px;
+    margin: 16px 0 0;
   }
 
   .ferreteria-card .card-footer {
@@ -55,6 +61,10 @@
     width: calc(50% - 2px);
   }
 
+  .paginacion {
+    margin: auto;
+  }
+
   @media only screen and (max-width: 768px) {
     .ferreteria-card {
       width: calc(50% - 32px);
@@ -70,8 +80,10 @@
 
 
 <form class="input-group" ng-submit="vm.buscar()">
-  <input type="text" class="form-control with-warning-addon" placeholder="Ferreteria" aria-describedby="basic-addon2" ng-model="vm.busqueda.nombre">
-  <span class="input-group-addon input-group-addon-primary addon-right searchable" id="basic-addon2" ng-click="vm.buscar()">Buscar</span>
+  <input type="text" class="form-control with-warning-addon" placeholder="Ferreteria" aria-describedby="basic-addon2"
+         ng-model="vm.busqueda.nombre">
+  <span class="input-group-addon input-group-addon-primary addon-right searchable" id="basic-addon2"
+        ng-click="vm.buscar()">Buscar</span>
 </form>
 
 <spinner ng-hide="vm.isLoading"></spinner>
@@ -117,30 +129,21 @@
       </div>
     </div>
   </div>
+</div>
 
-  <!-- <table class="table">
-      <tr>
-        <th>#</th>
-        <th>Nombre</th>
-        <th>Direccion</th>
-      </tr>
-
-      <tr ng-repeat="item in vm.almacenes">
-        <td>{{ $index + 1 }}</td>
-        <td>{{ item.aNombre }}</td>
-        <td>{{ item.aDireccion }}</td>
-        <td>
-          <div class="buttons">
-            <button class="btn btn-primary editable-table-button btn-xs" ng-click="vm.goToProductos(item.id)" style="width: auto;">
-              <i class="fa fa-inbox"></i> Productos
-            </button>
-            <button class="btn btn-default editable-table-button btn-xs" ng-click="vm.goToVendedores(item.id)" style="width: auto;">
-                <i class="fa fa-users"></i> Vendedores
-              </button>
-            <button class="btn btn-info editable-table-button btn-xs" ng-click="vm.goTo(item.id)">Editar</button>
-            <button class="btn btn-danger editable-table-button btn-xs" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
-          </div>
-        </td>
-      </tr>
-  </table> -->
+<div class="footer">
+  <div class="paginacion" ng-if="vm.hayFerreterias">
+    <ul uib-pagination total-items="vm.total"
+        ng-model="vm.page"
+        max-size="vm.maxSize"
+        items-per-page="vm.itemsPerPage"
+        class="pagination-sm"
+        boundary-links="true"
+        force-ellipses="true"
+        ng-change="vm.buscar()"
+        first-text="Primero"
+        last-text="Ultimo"
+        next-text="Siguiente"
+        previous-text="Previo"></ul>
+  </div>
 </div>

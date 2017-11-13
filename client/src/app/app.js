@@ -17,6 +17,7 @@ angular.module('BlurAdmin', [
   'LocalStorageModule',
   'ngFileUpload',
   'ngDialog',
+  'ntt.TreeDnD',
 
   'BlurAdmin.api',
   'BlurAdmin.theme',

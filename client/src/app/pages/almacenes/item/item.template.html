@@ -3,37 +3,40 @@
   <div class="row">
     <div class="col-md-8">
       <div
-          ba-panel
-          ba-panel-title="# {{ vm.almacen.id }}"
-          ba-panel-class="with-scroll panel-primary bootstrap-panel">
+        ba-panel
+        ba-panel-title="# {{ vm.almacen.id }}"
+        ba-panel-class="with-scroll panel-primary bootstrap-panel">
         <form name="productForm">
           <div class="form-group">
             <label for="input01">Nombre</label>
-            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.almacen.aNombre" required>
+            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre"
+                   ng-model="vm.almacen.aNombre" required>
           </div>
           <div class="form-group">
             <label for="input02">Direccion</label>
-            <input type="text" class="form-control" id="input02" placeholder="Direccion" ng-model="vm.almacen.aDireccion" required>
+            <input type="text" class="form-control" id="input02" placeholder="Direccion"
+                   ng-model="vm.almacen.aDireccion" required>
           </div>
           <div class="form-group">
             <label for="input03">Horario</label>
-            <input type="text" class="form-control" id="input03" placeholder="Horario" ng-model="vm.almacen.aHorario" required>
+            <input type="text" class="form-control" id="input03" placeholder="Horario" ng-model="vm.almacen.aHorario"
+                   required>
           </div>
           <div class="form-group">
-              <label for="input03">Imagen</label>
-              <div class="drop-box">
-                  <img
-                    ngf-select
-                    ngf-thumbnail="vm.file || vm.almacen.aImagen || '/assets/pictures/empty.png'"
-                    ng-model="vm.file"
-                    accept="image/*"
-                    ngf-max-size="2MB"
-                    required>
-              </div>
+            <label for="input03">Imagen</label>
+            <div class="drop-box">
+              <img
+                ngf-select
+                ngf-thumbnail="vm.file || vm.almacen.aImagen || '/assets/pictures/empty.png'"
+                ng-model="vm.file"
+                accept="image/*"
+                ngf-max-size="2MB"
+                required>
             </div>
+          </div>
           <div class="form-group">
             <label for="input02">Ubicacion</label>
-             <ng-map default-style="true" center="{{vm.almacen.aUbicacion}}" zoom="15">
+            <ng-map default-style="true" center="{{vm.almacen.aUbicacion}}" zoom="15">
               <marker position="{{vm.almacen.aUbicacion}}" draggable="true" title="{{vm.almacen.aNombre}}"></marker>
             </ng-map>
           </div>
