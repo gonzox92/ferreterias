@@ -1,1 +1,66 @@
-Hasdlkn
+<div class="widgets">
+  
+    <div class="row">
+      <div class="col-md-6">
+        <div
+          ba-panel
+          ba-panel-title="Producto # {{  }}"
+          ba-panel-class="with-scroll">
+          <form name="productForm" ng-submit="vm.upload()">
+            <div class="form-group">
+              <label for="input01">Nombre</label>
+              <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre"
+                     ng-model="vm.producto.pNombre" required>
+              <p ng-show="productForm.nombre.$invalid && !productForm.nombre.$pristine" class="sr-only">Nombre del
+                producto es requerido.</p>
+            </div>
+            <div class="form-group">
+              <label for="input02">Descripcion</label>
+              <textarea class="form-control" id="input02" placeholder="Descripcion"
+                        ng-model="vm.producto.pDescripcion"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="input03">Imagen</label>
+              <div class="drop-box">
+                <img
+                  ngf-select
+                  ngf-thumbnail="vm.file || vm.producto.pImagen || '/assets/pictures/empty.png'"
+                  ng-model="vm.file"
+                  accept="image/*"
+                  ngf-max-size="2MB"
+                  required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="input03">Proveedor</label>
+              <ui-select ng-model="vm.producto.idProveedor"
+                         class="btn-group bootstrap-select form-control"
+                         ng-disabled="false"
+                         append-to-body="true"
+                         search-enabled="true">
+                <ui-select-match placeholder="Proveedor">
+                  {{$select.selected.pNombre}}
+                </ui-select-match>
+                <ui-select-choices
+                  repeat="proveedor.id as proveedor in vm.proveedores | filter: {pNombre: $select.search}">
+                  <div ng-bind-html="proveedor.pNombre | highlight: $select.search"></div>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+            <div class="form-group">
+              <label for="input04">Precio</label>
+              <input type="text" class="form-control" id="input04" placeholder="Bs" ng-model="vm.producto.pPrecio">
+            </div>
+            <div class="form-group">
+              <label for="input05">Cantidad en mano</label>
+              <input type="text" class="form-control" id="input05" placeholder="0" ng-model="vm.producto.pCantidadEnMano">
+              <!-- <span class="help-block sub-little-text">Ingrese la cantidad existente dentro del registro.</span> -->
+            </div>
+  
+            <button type="submit" class="btn btn-primary">Editar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

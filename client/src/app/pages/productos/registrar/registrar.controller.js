@@ -24,26 +24,11 @@
 
     vm.submit = function() {
       serverAPI.productos.post(vm.producto).then(function(resp) {
-        // if (vm.user.privilegio === 'vendedor') {
-        //   $state.go('productos_almacen');
-        // } else {
-        //   $state.go('productos', {id: $stateParams.id});
-        // }
-
         $state.go('categories_productos', $stateParams)
       });
     };
 
     vm.upload = function(files) {
-      // if (!vm.file.$error) {
-      //   Upload.upload({
-      //     url: $rootScope.baseURL + 'api/fileentry/add',
-      //     data: {file: vm.file}
-      //   }).then(function(resp) {
-      //     vm.producto.pImagen = ((resp || {}).data || {}).filename || '';
-      //     vm.submit();
-      //   });
-      // }
       if (!vm.file.$error) {
         if (_.isObject(vm.file) && !vm.file.$error) {
           var timestamp = Number(new Date());

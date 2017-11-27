@@ -28,6 +28,7 @@ Route::delete('articles/{article}', 'ArticleController@delete');
 Route::get('productos', 'ProductoController@index');
 Route::get('productos/{id}', 'ProductoController@show');
 Route::post('productos', 'ProductoController@store');
+Route::get('search', 'ProductoController@search');
 Route::put('productos/{id}', 'ProductoController@update');
 Route::delete('productos/{id}', 'ProductoController@delete');
 

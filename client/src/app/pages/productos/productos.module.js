@@ -34,13 +34,13 @@
         controllerAs: 'vm',
         title: 'Registrar Producto'
       })
-      // .state('productos_item', {
-      //   url: '/ferreteria/:id/productos/:idProducto',
-      //   templateUrl: 'app/pages/productos/item/item.template.html',
-      //   controller: 'productosItemController',
-      //   controllerAs: 'vm',
-      //   title: 'Producto'
-      // })
+      .state('productos_item', {
+        url: '/ferreteria/:id/categorias/:idCategoria/productos/:idProducto',
+        templateUrl: 'app/pages/productos/item/item.template.html',
+        controller: 'productosItemController',
+        controllerAs: 'vm',
+        title: 'Producto'
+      })
       // .state('productos_item.detail', {
       //   url: '/ferreteria/:id/productos/:idProducto/detalle',
       //   templateUrl: 'app/pages/productos/item/details/details.template.html',

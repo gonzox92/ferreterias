@@ -4,24 +4,29 @@
   angular.module('BlurAdmin.pages.buscador')
     .controller('buscadorController', buscadorController);
 
-  buscadorController.$inject = ['Restangular', '$rootScope', '$state', 'localStorageService', 'ngDialog'];
-  function buscadorController(Restangular, $rootScope, $state, localStorageService, ngDialog) {
+  buscadorController.$inject = ['Restangular', '$rootScope', '$state', '$uibModal', 'localStorageService', 'ngDialog'];
+  function buscadorController(Restangular, $rootScope, $state, $uibModal, localStorageService, ngDialog) {
     var vm = this;
     vm.user = localStorageService.get('user') || {};
 
     vm.productos = [];
     vm.positions = [];
-    vm.busqueda = {palabras: ''};
+    vm.busqueda = {palabras: '', desde: 0, hasta: 0};
     vm.maxSize = 5;
-    vm.itemsPerPage = 20;
+    vm.itemsPerPage = 10;
     vm.total = 0;
     vm.page = 1;
     vm.hayListaProductos = false;
     vm.isLoading = true;
+    
+    var conectores = ['a', 'ante', 'bajo', 'cabe', 'con', 'contra', 'de', 'desde', 'durante', 'en', 'entre', 'hacia', 'hasta',
+      'mediante', 'para', 'por', 'según', 'sin', 'so', 'sobre', 'tras', 'versus', 'vía'];
 
     vm.buscar = function() {
       var busqueda = _.clone(vm.busqueda);
-      busqueda.nombre = vm.busqueda.palabras.replace(/,/g, '').split(' ').join(',');
+      busqueda.nombre = vm.busqueda.palabras.replace(/,/g, '').split(' ').filter(function(word) {
+        return !_.contains(conectores, word);
+      }).join(',');
       busqueda.page = vm.page;
       busqueda.limit = vm.itemsPerPage;
       busqueda.isAutocomplete  = false;
@@ -36,10 +41,10 @@
 
       Restangular.one('productos').get(busqueda).then(function (resp) {
         vm.productos = ((resp || {}).data || []).map(function(item) {
-          item.pImagen = item.pImagen.indexOf('http://') >= 0 || item.pImagen.indexOf('https://') >= 0 ?
-            item.pImagen : $rootScope.baseURL + 'api/fileentry/get/' + item.pImagen;
+          item.pImagen = item.pImagen || '/assets/pictures/empty.png';
           return item;
         });
+
         vm.total = (resp || {}).total || 0;
         vm.page = (resp || {}).current_page || 0;
 
@@ -68,14 +73,21 @@
 
     vm.getAutocomplete = function(val) {
       var busqueda = {
-        nombre: val,
-        limit: 12
+        client: 'psy-ab',
+        hl: 'es-BO',
+        q: val
       };
 
-      return Restangular.one('productos').get(busqueda).then(function (resp) {
-        return (resp || []).map(function (producto) {
-          return producto.pNombre;
+      return Restangular.one('search').customGET('', busqueda).then(function (resp) {
+        console.log(resp[0])
+        var results = resp || [];
+        var suggestions = results[1] || [];
+
+        var autocomplete = (suggestions || []).map(function(suggestion) {
+          return (suggestion[0] || '').replace(/<\/?[^>]+(>|$)/g, '');
         });
+
+        return autocomplete;
       });
     };
 
@@ -98,6 +110,21 @@
           }
         }
       });
-    }
+    };
+
+    vm.openProduct = function(productItem) {
+      $uibModal.open({
+        animation: true,
+        templateUrl: 'app/pages/buscador/product-detail/product-detail.template.html',
+        controller: 'buscadorProductDetailController',
+        controllerAs: 'vm',
+        size: 'lg',
+        resolve: {
+          product: function () {
+            return productItem;
+          }
+        }
+      });
+    };
   }
 })();

@@ -45,6 +45,12 @@
             <button class="btn btn-danger" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
           </div>
         </form>
+
+        <div class="progress" ng-show="vm.progress > 0">
+          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" 
+                style="width: {{ vm.progress }}%">
+          </div>
+        </div>
       </div>
     </div>
   </div>

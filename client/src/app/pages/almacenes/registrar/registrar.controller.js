@@ -9,6 +9,7 @@
     $log.log('productosRegistroController');
     var vm = this;
     vm.user = localStorageService.get('user');
+    vm.progress = 10;
 
     vm.propietarios = [];
     vm.almacen = {
@@ -45,8 +46,8 @@
 
           uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
             function(snapshot) {
-              var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log('Upload is ' + progress + '% done');
+              vm.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log('Upload is ' + vm.progress + '% done');
               switch (snapshot.state) {
                 case firebase.storage.TaskState.PAUSED:
                   console.log('Upload is paused');

@@ -35,6 +35,7 @@ class AlmacenController extends Controller
         $valor2 = request()->valor2 != null ? request()->valor2 : '<,10000';
         
         $almacen = Almacen::find($id);
+        $almacen['categoria'] = DB::select("SELECT id,scNombre FROM sub_categorias WHERE id = '" . $categoria . "'")[0];
         $almacen['productos'] = $almacen == NULL ? [] : $almacen->productos($nombre, $categoria, $descripcion, explode(',', $valor1), explode(',', $valor2));
 
         return response()->json($almacen, 200);

@@ -24,7 +24,7 @@
   .config(appConfig);
 
   /** @ngInject */
-  function appConfig($urlRouterProvider, baSidebarServiceProvider) {
+  function appConfig($urlRouterProvider) {
     $urlRouterProvider.otherwise('/buscador');
 
     // uiGmapGoogleMapApiProvider.configure({

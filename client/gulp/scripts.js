@@ -23,5 +23,5 @@ function buildScripts() {
     .pipe($.eslint())
     .pipe($.eslint.format())
     .pipe($.size())
-    .pipe($.replace('http://localhost:8000', 'https://ferreterias.herokuapp.com'))
+    // .pipe($.replace('http://localhost:8000', 'https://ferreterias.herokuapp.com'))
 };

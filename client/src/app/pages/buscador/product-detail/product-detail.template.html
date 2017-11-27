@@ -1,0 +1,99 @@
+<style>
+  .product-detail {
+    display: flex;
+  }
+
+  .product-detail .image-detail {
+    width: 360px;
+    padding: 16px;
+  }
+
+  .product-detail .image-detail > img {
+    width: 100%;
+    min-height: 140px;
+  }
+
+  .product-detail .description {
+    width: 100%;
+  }
+
+  .title-product {
+    font-weight: 600;
+    font-size: 28px;
+  }
+
+  .price-product {
+    font-size: 30px;
+    font-weight: 300;
+    color: #1b867b;
+    margin: 24px 0;
+  }
+
+  .stock-product {
+    font-size: 18px;
+    margin: 0 0 16px;
+  }
+
+  .description-product {
+    margin: 0 0 16px;
+  }
+
+  .more-details-product img {
+    width: 120px;
+    height: 100px;
+  }
+</style>
+
+
+<div class="product-detail">
+  <div class="image-detail">
+    <img src="{{ vm.product.pImagen }}" alt="">
+  </div>
+
+  <div class="description">
+    <uib-tabset active="$tabSetStatus.activeTab">
+      <uib-tab heading="Producto">
+        <p>
+          <div class="title-product">{{ vm.product.pNombre }}</div>
+
+          <div class="price-product">{{ vm.product.pPrecio }} Bs</div>
+
+          <div class="stock-product">
+            <b>Cantidad: </b> {{ vm.product.pCantidadEnMano }}
+          </div>
+
+          <div class="description-product">
+            {{ vm.product.pDescripcion }}
+          </div>
+
+          <div class="more-details-product">
+            <p>
+              <b>Proveedor: </b> {{ vm.product.proveedor }}
+            </p>
+
+            <img src="{{ vm.product.pLogo }}" alt="">
+          </div>
+        </p>
+      </uib-tab>
+
+      <uib-tab heading="Mapa" ng-click="vm.loadMap()">
+        <div class="more-details-product">
+          <p>
+            <b>Almacen: </b> {{ vm.product.aNombre }}
+          </p>
+
+          <p>
+            <b>Direccion: </b> {{ vm.product.aDireccion }}
+          </p>
+        </div>
+        
+        <ng-map id="mapBusqueda"
+                zoom="15"
+                center="{{ vm.product.aUbicacion }}"
+                default-style="true"
+                lazy-init="true">  
+          <marker position="{{ vm.product.aUbicacion }}" draggable="false"></marker>
+      </uib-tab>
+    </uib-tabset>
+  </div>
+</div>

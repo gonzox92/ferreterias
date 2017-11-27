@@ -6,7 +6,7 @@
     }
   
     .product-list > .product-card {
-      width: calc(20% - 32px);
+      width: calc(25% - 32px);
       margin: 0 16px 16px 0;
       box-shadow: 0 1px 3px 0 rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 2px 1px -1px rgba(0,0,0,0.12);
     }
@@ -65,12 +65,15 @@
       }
     }
   </style>
+
+  <h3>{{ vm.categoria.scNombre }}</h3>
   
   <form class="input-group" ng-submit="vm.buscar()">
     <input type="text" class="form-control with-warning-addon" placeholder="Producto" aria-describedby="basic-addon2" ng-model="vm.busqueda.nombre">
     <span class="input-group-addon input-group-addon-primary addon-right searchable" id="basic-addon2">Buscar</span>
   </form>
   
+  <button type="button" class="btn btn-warning btn-with-icon" ng-click="vm.goBackCategories()"><i class="fa fa-angle-left"></i>Categorias</button>  
   <button type="button" class="btn btn-primary btn-with-icon" ng-click="vm.addProduct()"><i class="fa fa-plus"></i>Registrar</button>
   
   <spinner ng-hide="vm.isLoading"></spinner>
@@ -105,7 +108,7 @@
   
         <div class="options second-line">
           <button type="button" class="btn btn-info btn-with-icon" ng-click="vm.goTo(item.id)">
-            <i class="ion-edit"></i>Mostrar
+            <i class="ion-edit"></i>Editar
           </button>
           <button type="button" class="btn btn-danger btn-with-icon" ng-click="vm.remove($index, item.id)">
             <i class="fa fa-trash-o"></i>Borrar

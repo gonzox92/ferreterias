@@ -45,7 +45,7 @@ gulp.task('html', ['inject', 'partials'], function () {
     .pipe(assets = $.useref.assets())
     .pipe($.rev())
     .pipe(jsFilter)
-    .pipe($.replace('http://localhost:8000', 'https://ferreterias.herokuapp.com'))
+    // .pipe($.replace('http://localhost:8000', 'https://ferreterias.herokuapp.com'))
     .pipe($.sourcemaps.init())
     .pipe($.ngAnnotate())
     .pipe($.uglify({ preserveComments: $.uglifySaveLicense })).on('error', conf.errorHandler('Uglify'))
@@ -104,7 +104,7 @@ gulp.task('clean', function () {
 
 gulp.task('URL', function () {
   return gulp.src(path.join(conf.paths.dist, '/scripts/app-*.js'))
-    .pipe($.replace('http://localhost:8000', 'https://ferreterias.herokuapp.com'))
+    // .pipe($.replace('http://localhost:8000', 'https://ferreterias.herokuapp.com'))
     .pipe(gulp.dest(path.join(conf.paths.dist, '/')))
 });
 

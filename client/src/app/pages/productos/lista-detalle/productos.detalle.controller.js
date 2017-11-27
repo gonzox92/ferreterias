@@ -42,6 +42,7 @@
     vm.buscar = function () {
       var id = vm.user.privilegio === 'vendedor' ? vm.user.vendedor.idAlmacen : $stateParams.id;
       Restangular.one('almacenes', id).customGET('productos', vm.busqueda).then(function (resp) {
+        vm.categoria = (resp || {}).categoria;
         vm.productos = ((resp || {}).productos || []).map(function(item) {
           return item;
         });
@@ -49,6 +50,20 @@
         vm.isLoading = true;
       });
     };
+
+    vm.goTo = function(id) {
+      $state.go('productos_item', {
+        id: $stateParams.id,
+        idCategoria: $stateParams.idCategoria,
+        idProducto: id
+      });
+    }
+
+    vm.goBackCategories = function() {
+      $state.go('categories', {
+        id: $stateParams.id
+      }); 
+    }
 
     vm.buscar();
   }

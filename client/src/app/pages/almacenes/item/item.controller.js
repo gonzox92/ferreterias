@@ -10,6 +10,7 @@
                                    serverAPI, toastr) {
     $log.log('almacenesItemController');
     var vm = this;
+    vm.progress = 10;
     vm.almacen = {};
 
     $scope.$on('mapInitialized', function(evt, evtMap) {
@@ -54,8 +55,8 @@
 
         uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
           function(snapshot) {
-            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
+            vm.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + vm.progress + '% done');
             switch (snapshot.state) {
               case firebase.storage.TaskState.PAUSED:
                 console.log('Upload is paused');

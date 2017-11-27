@@ -1,177 +1,181 @@
 <style>
-  .paginacion {
-    text-align: center;
-  }
-
-  .widgets.busqueda {
-    height: 100%;
-  }
-
-  .list-group-item .imagen-producto {
-    width: 60px;
-    height: 60px;
-    float: left;
-    margin-right: 10px;
-  }
-
-  UL.dropdown-menu {
-    position: fixed;
-  }
-
-  .buscador > .panel {
-    background: url('http://www.marketingguerrilla.es/wp-content/uploads/2014/08/herramientas-marketing-online.jpg') no-repeat center center;
-    background-size: cover;
-  }
-
-  .buscador form {
-    display: -webkit-flex;
-    -webkit-align-items: center;
+  .form-group {
     display: flex;
-    align-items: center;
-    height: 100%;
   }
 
-  .buscador form .form-group {
+  .form-group .image-logo {
+    width: 40px;
+    height: 40px;
+
+    margin: 0 12px 0 0;
+  }
+
+  .form-group .image-logo > img {
+    width: 100%;
+  }
+
+  .form-group .search-text {
     flex: 1;
+    padding-top: 3px;
+    margin-right: 12px;
   }
 
-  .panel.with-scroll .panel-body {
-    height: 300px;
-    overflow: hidden;
-
-    -webkit-transition: height 0.8s;
-    -moz-transition: height 0.8s;
-    transition: height 0.8s;
-  }
-
-  .panel.with-scroll .panel-body.results {
-    height: 160px;
-  }
-
-  .show-map {
-    width: 100%;
-    height: 160px;
-    margin-bottom: 12px;
-    background: url('https://static.tacdn.com/img2/maps/img_map.png') no-repeat center center;
-    background-size: cover;
+  .lista-productos {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
   }
 
-  .show-map button.btn {
-    margin: auto;
+  .product-card {
+    width: calc(20% - 32px);
+    margin: 16px;
+    color: rgba(0, 0, 0, 0.87);
+    background-color: rgb(255, 255, 255);
+    border-radius: 2px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
   }
 
-  .item-producto {
-    margin-bottom: 20px;
-  }
-
-  .item-producto img {
+  .product-card .product-image {
     width: 100%;
-    height: 140px;
-    margin-bottom: 12px;
+    height: 180px;
+    padding: 8px;
   }
 
-  .item-producto p {
-    display: block;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+  .product-card .details {
+    padding: 16px;
+  }
+
+  .product-card .details .name {
+    font-size: 18px;
+    color: #209e91;
+    margin: 0 0 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;;
+  }
+
+  .product-card .details .description {
+    font-weight: 300;
+    margin: 0 0 16px;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  .ngdialog.ngdialog-theme-default .ngdialog-content {
-    width: calc(100% - 100px);
-    height: 100%;
+  .product-card .details .options {
+    display: flex;
+    justify-content: space-between;
   }
 
-  .ngdialog.ngdialog-theme-default .ngdialog-content ng-map {
-    height: 100%! important;
+  .product-card .details .options .price {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .paginacion {
+    text-align: center;
+  }
+
+  .input-group {
+    width: 20%;
+    margin-bottom: 15px;
+    float: left;
+    margin: 0px 16px 0 53px;
+  }
+
+  .input-group + .input-group {
+    margin-left: 16px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .product-card {
+      width: calc(50% - 32px);
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    .product-card {
+      width: calc(100% - 32px);
+    }
+
+    .form-group {
+      flex-direction: column;
+    }
+
+    .input-group {
+      width: 100%;
+      margin: 0;
+    }
+
+    .input-group + .input-group {
+      margin: 0;
+    }
   }
 </style>
 
-<div class="widgets busqueda">
+<div class="widgets bsuqueda">
   <div class="row">
-    <div class="col-md-12 buscador"
-          ba-panel
-          ba-panel-class="with-scroll"
-          ba-panel-title="">
+    <div class="col-md-12 buscador">
+      <form class="form-group" ng-submit="vm.buscar()">
+        <div class="image-logo">
+          <img src="assets/img/wrench.png" alt="">
+        </div>
+        <div class="search-text">
+          <input type="text" class="form-control" id="exampleInputName2" autocomplete="off"
+            placeholder="Buscar Herramienta"
+            ng-model="vm.busqueda.palabras"
+            uib-typeahead="producto for producto in vm.getAutocomplete($viewValue)" 
+            typeahead-loading="vm.loadingLocations"
+            typeahead-no-results="vm.noResults"
+            ng-model="vm.busqueda.palabras"
+            ng-model-options="{debounce: 200}">
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Buscar">
         
-        <h2 style="text-align: center; color: #fff;">Encuentre el producto ideal</h2>
-        <form class="row form-inline" ng-submit="vm.buscar()">
-          <div class="form-group col-sm-6 col-xs-5">
-            <input type="text" class="form-control input-lg" id="exampleInputName2" autocomplete="off"
-                  ng-model="vm.busqueda.palabras"
-                  uib-typeahead="producto for producto in vm.getAutocomplete($viewValue)" 
-                  typeahead-loading="vm.loadingLocations" typeahead-no-results="vm.noResults">
-            <i ng-show="vm.loadingLocations" class="glyphicon glyphicon-refresh"></i>
-            <div ng-show="vm.noResults">
-              <i class="glyphicon glyphicon-remove"></i> Sin resultados
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg btn-with-icon">
-            <i class="fa fa-search" aria-hidden="true"></i> Buscar
-          </button>
-        </form>
+        <div class="input-group">
+          <input type="text" class="form-control with-warning-addon" placeholder="0" aria-describedby="basic-addon2" ng-model="vm.busqueda.desde">
+          <span class="input-group-addon input-group-addon-warning addon-right" id="basic-addon2">Desde BS</span>
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control with-warning-addon" placeholder="0" aria-describedby="basic-addon2" ng-model="vm.busqueda.hasta"> 
+          <span class="input-group-addon input-group-addon-warning addon-right" id="basic-addon2">Hasta BS</span>
+        </div>
+      </form>
     </div>
   </div>
 
-  <spinner ng-hide="vm.isLoading"></spinner>
+  <div class="row lista-productos">
+    <spinner ng-if="!vm.isLoading"></spinner>
+    <div class="product-card" ng-repeat="producto in vm.productos">
+      <img class="product-image" src="{{ producto.pImagen }}" alt="Producto">
 
-  <div class="row" ng-show="vm.isLoading">
-    <div class="col-xs-12 col-sm-3">
-      <div class="show-map">
-          <button type="button" class="btn btn-primary btn-with-icon" ng-click="vm.openMap()">
-            <i class="fa fa-map-o"></i>Mostrar Mapa
+      <div class="details">
+        <div class="name">{{ producto.pNombre }}</div>
+        <div class="description">{{ producto.pDescripcion }}</div>
+        
+        <div class="options">
+          <div class="price">{{ producto.pPrecio }} Bs</div>
+          <button type="button" class="btn btn-primary btn-icon" ng-click="vm.openProduct(producto)">
+            <i class="ion-arrow-expand"></i>
           </button>
-      </div>
-      <h5>Ordenar por Precio</h5>
-      <div class="input-demo radio-demo row">
-        <div class="col-md-12">
-          <label class="radio-inline custom-radio nowrap">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" ng-value="vm.option1">
-            <span>Menor a Mayor</span>
-          </label>
-        </div>
-        <div class="col-md-12">
-          <label class="radio-inline custom-radio nowrap">
-            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" ng-value="vm.option2">
-            <span>Mayor a Menor</span>
-          </label>
         </div>
       </div>
-      <br>
-      <!-- <h5>Ordenar por Ubicacion</h5>
-      <ba-switcher switcher-style="primary" switcher-value="vm.isClose"></ba-switcher> -->
-    </div>
-
-    <div class="col-xs-12 col-sm-9">
-      <div class="col-xs-12 col-sm-6 col-md-3 item-producto" ng-repeat="producto in vm.productos">
-        <img class="imagen-producto" src="{{ producto.pImagen }}">
-        <h3>{{ producto.pNombre }}</h3>
-        <p>
-          {{ producto.pDescripcion }}<br><br>
-          
-          <b>{{ producto.pPrecio }} Bs</b>
-        </p>
-        <a href="" ng-click="vm.goToFerreteria(producto.idAlmacen)">{{ producto.aNombre }}</a>
-      </div>
-    </div>
-
-    <div class="paginacion" ng-if="vm.hayListaProductos">
-        <ul uib-pagination total-items="vm.total"
-            ng-model="vm.page"
-            max-size="vm.maxSize"
-            items-per-page="vm.itemsPerPage"
-            class="pagination-sm"
-            boundary-links="true"
-            force-ellipses="true"
-            ng-change="vm.buscar()"
-            first-text="Primero"
-            last-text="Ultimo"
-            next-text="Siguiente"
-            previous-text="Previo"></ul>
     </div>
   </div>
+
+  <div class="paginacion" ng-if="vm.hayListaProductos">
+    <ul uib-pagination total-items="vm.total"
+        ng-model="vm.page"
+        max-size="vm.maxSize"
+        items-per-page="vm.itemsPerPage"
+        class="pagination-sm"
+        boundary-links="true"
+        force-ellipses="true"
+        ng-change="vm.buscar()"
+        first-text="Primero"
+        last-text="Ultimo"
+        next-text="Siguiente"
+        previous-text="Previo"></ul>
+    </div>
 </div>

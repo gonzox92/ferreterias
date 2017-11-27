@@ -93,6 +93,7 @@
 
     vm.getProfileImage = function() {
       var defaultImage =  '/assets/img/app/profile/empty-profile.png';
+      // return defaultImage;
       return vm.user.imagen ? _.isObject(vm.user.imagen) ? vm.user.imagen : 
         vm.user.imagen.startsWith('http') ? vm.user.imagen : defaultImage : defaultImage;
     }
