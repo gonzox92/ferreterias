@@ -5,7 +5,7 @@
           ba-panel
           ba-panel-title="Registro de Proveedores"
           ba-panel-class="with-scroll">
-        <form name="productForm" ng-submit="vm.submit()">
+        <form name="productForm" ng-submit="vm.upload()">
           <div class="form-group">
             <label for="input01">Nombre</label>
             <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.proveedor.pNombre" required>
@@ -16,11 +16,20 @@
           </div>
           <div class="form-group">
             <label for="input02">Imagen</label>
-            <img style="max-height: 300px; width: 100%;" src="{{vm.proveedor.pLogo}}">
+            <!-- <img style="max-height: 300px; width: 100%;" src="{{vm.proveedor.pLogo}}"> -->
+            <div class="drop-box">
+                <img
+                  ngf-select
+                  ngf-thumbnail="vm.file || vm.proveedor.pLogo || '/assets/pictures/empty.png'"
+                  ng-model="vm.file"
+                  accept="image/*"
+                  ngf-max-size="1MB"
+                  required>
+              </div>
           </div>
 
           <div class="buttons" style="text-align: right;">
-            <button class="btn btn-info" ng-click="vm.goTo(item.id)">Editar</button>
+            <button class="btn btn-info">Guardar</button>
             <button class="btn btn-danger" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
           </div>
         </form>

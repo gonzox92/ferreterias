@@ -34,6 +34,25 @@
                 required>
             </div>
           </div>
+          <div class="form-group" ng-if="vm.user.privilegio === 'administrador'">
+            <label for="input03">Propietario</label>
+            <ui-select ng-model="vm.almacen.idPropietario"
+                       class="btn-group bootstrap-select form-control"
+                       ng-disabled="false"
+                       append-to-body="true"
+                       search-enabled="true">
+              <ui-select-match placeholder="Propietario">
+                {{$select.selected.pNombre}}
+              </ui-select-match>
+              <ui-select-choices
+                repeat="propietario.id as propietario in vm.propietarios | filter: {pNombre: $select.search}">
+                <div ng-bind-html="propietario.pNombre | highlight: $select.search"></div>
+                <small>
+                  C.I: {{ propietario.pCI }}
+                </small>
+              </ui-select-choices>
+            </ui-select>
+          </div>
           <div class="form-group">
             <label for="input02">Ubicacion</label>
             <ng-map default-style="true" center="{{vm.almacen.aUbicacion}}" zoom="15">
@@ -45,12 +64,6 @@
             <button class="btn btn-danger" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
           </div>
         </form>
-
-        <div class="progress" ng-show="vm.progress > 0">
-          <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" 
-                style="width: {{ vm.progress }}%">
-          </div>
-        </div>
       </div>
     </div>
   </div>

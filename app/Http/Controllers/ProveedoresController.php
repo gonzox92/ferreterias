@@ -29,11 +29,11 @@ class ProveedoresController extends Controller
         return response()->json($product, 201);
     }
 
-    public function update(Request $request, Proveedor $product)
+    public function update(Request $request, Proveedor $id)
     {
-        $product->update($request->all());
+        $id->update($request->all());
 
-        return response()->json($product, 200);
+        return response()->json($id, 200);
     }
 
     public function delete(Proveedor $id)

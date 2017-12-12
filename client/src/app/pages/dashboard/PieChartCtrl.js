@@ -13,7 +13,6 @@
   function PieChartCtrl($element, layoutPaths, baConfig, Restangular) {
     var layoutColors = baConfig.colors;
     var id = $element[0].getAttribute('id');
-    // debugger
 
     Restangular.all('busquedas').getList().then(function(results) {
       var pieChart = AmCharts.makeChart(id, {

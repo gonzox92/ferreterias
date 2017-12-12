@@ -4,8 +4,8 @@
   angular.module('BlurAdmin.pages.propietarios')
       .controller('propietariosRegistroController', propietariosRegistroController);
 
-  propietariosRegistroController.$inject = ['$q', '$log', '$state', '$scope', 'serverAPI', 'Restangular', 'toastr'];
-  function propietariosRegistroController($q, $log, $state, $scope, serverAPI, Restangular, toastr) {
+  propietariosRegistroController.$inject = ['$q', '$log', '$state', '$scope', '$rootScope', 'serverAPI', 'Restangular', 'toastr'];
+  function propietariosRegistroController($q, $log, $state, $scope, $rootScope, serverAPI, Restangular, toastr) {
     $log.log('propietariosRegistroController');
     var vm = this;
     
@@ -37,7 +37,7 @@
       var newUser = {
         name: username,
         email: vm.propietario.email,
-        password: vm.propietario.email || vm.propietario.pCI,
+        password: vm.propietario.pCI || vm.propietario.email,
         privilegio: 'propietario',
       };
 
@@ -47,16 +47,22 @@
           return;
         }
 
+        $rootScope.$pageIsUpdating = true;
+
         Restangular.all('usuarios').post(newUser).then(function (user) {
           $log.log('Nuevo Usuario > Propietario ha sido creado');
 
           vm.propietario.idUser = user.id;
             serverAPI.propietarios.post(vm.propietario).then(function(resp) {
+              $rootScope.$pageIsUpdating = false;
               $state.go('propietarios.listar');
             });
+          }, function() {
+            $rootScope.$pageIsUpdating = false;
           });
       }, function() {
         toastr.error('Error verificando perfil', 'Error');
+        $rootScope.$pageIsUpdating = false;
       });
     };
   }

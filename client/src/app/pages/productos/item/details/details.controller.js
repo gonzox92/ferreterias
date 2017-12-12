@@ -4,8 +4,8 @@
   angular.module('BlurAdmin.pages.productos')
     .controller('productosItemDetailController', productosItemDetailController);
 
-  productosItemDetailController.$inject = ['$stateParams', 'serverAPI', 'Restangular', 'toastr'];
-  function productosItemDetailController($stateParams, serverAPI, Restangular, toastr) {
+  productosItemDetailController.$inject = ['$rootScope', '$stateParams', 'serverAPI', 'Restangular', 'toastr'];
+  function productosItemDetailController($rootScope, $stateParams, serverAPI, Restangular, toastr) {
     var vm = this;
     vm.producto = {};
 
@@ -27,12 +27,15 @@
       Restangular.one('productos', vm.producto.id).customPUT(vm.producto).then(function(resp) {
         toastr.success('Datos actualizados correctamente', 'Actualizado');
         // $state.go('almacenes.listar');
+        $rootScope.$pageIsUpdating = false;
       }, function() {
         toastr.error('Error actualizando Producto');
+        $rootScope.$pageIsUpdating = false;
       });
     };
 
     vm.upload = function(files) {
+      $rootScope.$pageIsUpdating = true;
       if (_.isObject(vm.file) && !vm.file.$error) {
         var timestamp = Number(new Date());
         var storageRef = firebase.storage().ref(timestamp.toString());

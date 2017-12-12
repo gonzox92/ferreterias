@@ -5,13 +5,15 @@
     .controller('almacenesItemController', almacenesItemController);
 
   almacenesItemController.$inject = ['$log', '$scope', '$state', '$stateParams', '$uibModal', '$rootScope',
-    'Restangular', 'serverAPI', 'toastr'];
+    'Restangular', 'serverAPI', 'toastr', 'localStorageService'];
   function almacenesItemController($log, $scope, $state, $stateParams, $uibModal, $rootScope, Restangular,
-                                   serverAPI, toastr) {
+                                   serverAPI, toastr, localStorageService) {
     $log.log('almacenesItemController');
     var vm = this;
     vm.progress = 10;
     vm.almacen = {};
+    vm.propietarios = [];
+    vm.user = localStorageService.get('user');
 
     $scope.$on('mapInitialized', function(evt, evtMap) {
       vm.map = evtMap;
@@ -40,14 +42,18 @@
       vm.almacen.aUbicacion = '[' + currentPosition.lat() + ',' + currentPosition.lng() + ']';
 
       Restangular.one('almacenes', vm.almacen.id).customPUT(vm.almacen).then(function(resp) {
+        $rootScope.$pageIsUpdating = false;
         toastr.success('Datos actualizados correctamente', 'Actualizado');
         $state.go('almacenes.listar');
       }, function() {
         toastr.error('Error actualizando Ferreteria');
+        $rootScope.$pageIsUpdating = false;
       });
     };
 
     vm.upload = function(files) {
+      $rootScope.$pageIsUpdating = true;
+
       if (_.isObject(vm.file) && !vm.file.$error) {
         var timestamp = Number(new Date());
         var storageRef = firebase.storage().ref(timestamp.toString());
@@ -83,8 +89,13 @@
         aImagen: resp.aImagen || '/assets/pictures/empty.png',
         aDireccion: resp.aDireccion || '',
         aUbicacion: resp.aUbicacion || 'current-location',
-        aHorario: resp.aHorario
+        aHorario: resp.aHorario,
+        idPropietario: resp.idPropietario
       };
-    })
+    });
+
+    Restangular.all('propietarios').getList().then(function(resp) {
+      vm.propietarios = (resp || []);
+    });
   }
 })();

@@ -4,8 +4,8 @@
   angular.module('BlurAdmin.pages.users')
     .controller('UserController', UserController);
 
-  UserController.$inject = ['$state', '$stateParams', '$log', 'Restangular', 'localStorageService', 'toastr'];
-  function UserController($state, $stateParams, $log, Restangular, localStorageService, toastr) {
+  UserController.$inject = ['$state', '$stateParams', '$log', '$rootScope', 'Restangular', 'localStorageService', 'toastr'];
+  function UserController($state, $stateParams, $log, $rootScope, Restangular, localStorageService, toastr) {
     $log.log('UserController');
     var vm = this;
     vm.user = {};
@@ -24,10 +24,15 @@
 
       Restangular.one('usuarios', $stateParams.id).customPUT(user).then(function (resp) {
         toastr.success(message || 'Informacion ha sido actualizada correctamente');
+        $rootScope.$pageIsUpdating = false;
+      }, function() {
+        $rootScope.$pageIsUpdating = false;
       });
     };
 
     vm.upload = function (files) {
+      $rootScope.$pageIsUpdating = true;
+
       if (_.isObject(vm.file) && !vm.file.$error) {
         var timestamp = Number(new Date());
         var storageRef = firebase.storage().ref(timestamp.toString());
@@ -49,7 +54,6 @@
             $log.error(error.code);
           }, function() {
             vm.user.imagen = uploadTask.snapshot.downloadURL;
-            debugger
             vm.updateProfile();
           });
       } else {

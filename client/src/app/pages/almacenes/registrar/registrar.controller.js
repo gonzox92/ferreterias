@@ -34,11 +34,15 @@
 
       serverAPI.almacenes.post(vm.almacen).then(function(resp) {
         $state.go('almacenes.listar');
+        $rootScope.$pageIsUpdating = false;
+      }, function() {
+        $rootScope.$pageIsUpdating = false;
       });
     };
 
     vm.upload = function(files) {
-      if (!vm.file.$error) {
+      $rootScope.$pageIsUpdating = true;
+      if (vm.file && !vm.file.$error) {
         if (_.isObject(vm.file) && !vm.file.$error) {
           var timestamp = Number(new Date());
           var storageRef = firebase.storage().ref(timestamp.toString());
@@ -65,6 +69,8 @@
         } else {
           vm.submit();
         }
+      } else {
+        vm.submit();
       }
     };
 

@@ -24,11 +24,15 @@
 
     vm.submit = function() {
       serverAPI.productos.post(vm.producto).then(function(resp) {
-        $state.go('categories_productos', $stateParams)
+        $state.go('categories_productos', $stateParams);
+        $rootScope.$pageIsUpdating = false;
+      }, function() {
+        $rootScope.$pageIsUpdating = false;
       });
     };
 
     vm.upload = function(files) {
+      $rootScope.$pageIsUpdating = true;
       if (!vm.file.$error) {
         if (_.isObject(vm.file) && !vm.file.$error) {
           var timestamp = Number(new Date());

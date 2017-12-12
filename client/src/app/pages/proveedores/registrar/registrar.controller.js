@@ -20,10 +20,15 @@
     vm.submit = function() {
       Restangular.all('proveedores').post(vm.proveedor).then(function(resp) {
         $state.go('proveedores.listar');
+        $rootScope.$pageIsUpdating = false;
+      }, function() {
+        $rootScope.$pageIsUpdating = false;
       });
     };
 
     vm.upload = function (files) {
+      $rootScope.$pageIsUpdating = true;
+
       if (!vm.file.$error) {
         var timestamp = Number(new Date());
         var storageRef = firebase.storage().ref(timestamp.toString());
@@ -47,6 +52,8 @@
             vm.proveedor.pLogo = uploadTask.snapshot.downloadURL;
             vm.submit();
           });
+      } else {
+        vm.submit();
       }
     };
   }

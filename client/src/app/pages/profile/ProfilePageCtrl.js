@@ -38,12 +38,16 @@
         toastr.success('El perfil fue actualizado correctamente', 'Perfil');
         $rootScope.updateProfileImage(vm.user.imagen);
         localStorageService.set('user', vm.user);
+        $rootScope.$pageIsUpdating = false;
       }, function () {
         toastr.error('Error al actualizando el perfil', 'Error');
+        $rootScope.$pageIsUpdating = false;
       })
     };
 
     vm.updateProfile = function (files) {
+      $rootScope.$pageIsUpdating = true;
+
       if (_.isObject(vm.user.imagen) && !vm.user.imagen.$error) {
         var timestamp = Number(new Date());
         var storageRef = firebase.storage().ref(timestamp.toString());
