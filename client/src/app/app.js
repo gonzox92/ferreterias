@@ -10,15 +10,12 @@ angular.module('BlurAdmin', [
   'smart-table',
   "xeditable",
   'ui.slimscroll',
-  'ngJsTree',
   'angular-progress-button-styles',
   'restangular',
   'ngMap',
   'LocalStorageModule',
   'ngFileUpload',
   'ngDialog',
-  'ntt.TreeDnD',
-
   'BlurAdmin.api',
   'BlurAdmin.theme',
   'BlurAdmin.pages'

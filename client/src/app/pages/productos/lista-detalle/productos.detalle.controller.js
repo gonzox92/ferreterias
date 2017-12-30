@@ -4,20 +4,14 @@
   angular.module('BlurAdmin.pages.productos')
     .controller('listaProductosByCategoriesController', listaProductosByCategoriesController);
 
-  listaProductosByCategoriesController.$inject = ['$state', '$stateParams', 'Restangular', 'localStorageService'];
-  function listaProductosByCategoriesController($state, $stateParams, Restangular, localStorageService) {
+  listaProductosByCategoriesController.$inject = ['$state', '$stateParams', '$uibModal', 'Restangular', 'localStorageService'];
+  function listaProductosByCategoriesController($state, $stateParams, $uibModal, Restangular, localStorageService) {
     var vm = this;
     vm.user = localStorageService.get('user') || {};
     vm.busqueda = {nombre: '', categoria: $stateParams.idCategoria};
     vm.isLoading = true;
 
     vm.addProduct = function () {
-      // if (vm.user.privilegio === 'vendedor') {
-      //   $state.go('productos_registrar', {id: vm.user.vendedor.idAlmacen});
-      // } else {
-      //   $state.go('productos_registrar', {id: $stateParams.id});
-      // }
-
       $state.go('productos_registrar', {id: $stateParams.id, idCategoria: $stateParams.idCategoria});
     };
 
@@ -27,7 +21,14 @@
         templateUrl: 'app/pages/productos/borrar/borrar.template.html',
         controller: 'productosBorrarController',
         controllerAs: 'vm',
-        resolve: {}
+        resolve: {
+          entity: function() {
+            return {
+              title: 'Producto',
+              name: vm.productos[$index].pNombre
+            }
+          }
+        }
       });
 
       deleteMessage.result.then(function() {
@@ -40,6 +41,7 @@
     };
 
     vm.buscar = function () {
+      vm.isLoading = true;
       var id = vm.user.privilegio === 'vendedor' ? vm.user.vendedor.idAlmacen : $stateParams.id;
       Restangular.one('almacenes', id).customGET('productos', vm.busqueda).then(function (resp) {
         vm.categoria = (resp || {}).categoria;
@@ -47,7 +49,9 @@
           return item;
         });
 
-        vm.isLoading = true;
+        vm.isLoading = false;
+      }, function() {
+        vm.isLoading = false;
       });
     };
 

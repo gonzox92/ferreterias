@@ -48,7 +48,11 @@
       });
     };
 
-    vm.upload = function(files) {
+    vm.upload = function(isValid) {
+      if (!vm.proveedor.pNombre || !vm.proveedor.pDescripcion) {
+        return;
+      }
+      
       $rootScope.$pageIsUpdating = true;
 
       if (_.isObject(vm.file) && !vm.file.$error) {

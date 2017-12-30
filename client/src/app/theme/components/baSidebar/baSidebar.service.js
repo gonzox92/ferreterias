@@ -72,11 +72,20 @@
               .filter(function(s) {
                 var sidebar = s.sidebarMeta || {};
                 if (sidebar.visible && (sidebar.privileges === '*' || (_.contains(sidebar.privileges || [], user.privilegio)) || sidebar.isChild)) {
+                  if (sidebar.isChild) {
+                    if (_.isEmpty(sidebar.privileges) || _.contains(sidebar.privileges || [], user.privilegio)) {
+                      return s.sidebarMeta;
+                    }
+
+                    return false;
+                  }
+
                   return s.sidebarMeta;
                 }
               })
               .map(function(s) {
                 var meta = s.sidebarMeta;
+                
                 return {
                   name: s.name,
                   title: s.title,

@@ -13,7 +13,7 @@
           abstract: true,
           title: 'Propietarios',
           sidebarMeta: {
-            icon: 'ion-android-laptop',
+            icon: 'fa fa-user',
             order: 600,
             visible: true,
             privileges: ['administrador'],

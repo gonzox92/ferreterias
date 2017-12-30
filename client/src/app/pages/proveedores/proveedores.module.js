@@ -16,7 +16,7 @@
           icon: 'fa fa-building',
           order: 250,
           visible: true,
-          privileges: ['administrador']
+          privileges: ['administrador', 'propietario', 'vendedor']
         }
       })
       .state('proveedores.listar', {
@@ -41,6 +41,7 @@
           order: 100,
           visible: true,
           isChild: true,
+          privileges: ['administrador']
         },
       })
       .state('proveedores.item', {

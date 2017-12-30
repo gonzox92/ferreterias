@@ -21,6 +21,11 @@
           $rootScope.updateProfileImage(resp.user.imagen);
           $rootScope.updateProfileName(resp.user.name);
 
+          if (resp.user.nuevo) {
+            $state.go('login_wizard');
+            return;
+          }
+
           if (resp.user.privilegio === 'administrador') {
             $state.go('dashboard.global');
           }

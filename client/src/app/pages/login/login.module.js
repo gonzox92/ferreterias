@@ -12,6 +12,13 @@
         controller: 'LoginController',
         controllerAs: 'vm',
         title: 'Login'
+      })
+      .state('login_wizard', {
+        url: '/wizard',
+        templateUrl: 'app/pages/login/wizard/login.wizard.template.html',
+        controller: 'LoginWizardController',
+        controllerAs: 'vm',
+        title: 'Cuenta'
       });
   }
 })();

@@ -18,9 +18,11 @@
       pTelefono: ''
     };
 
-    vm.checkUser = function(email) {
+    vm.isValidCI = true
+
+    vm.checkUser = function(ci) {
       var deferred = $q.defer();
-      Restangular.all('usuarios').customGET('', { sql: 'email = \'' + email + '\'' })
+      Restangular.all('usuarios').customGET('', { sql: 'ci = \'' + ci + '\'' })
         .then(function(resp) {
           deferred.resolve(resp.length === 0);
         }, function() {
@@ -30,20 +32,33 @@
       return deferred.promise;
     };
 
-    vm.submit = function() {
+    vm.checkCI = function() {
+      if (vm.propietario.pCI) {
+        vm.checkUser(vm.propietario.pCI).then(function(isValid) {
+          vm.isValidCI = isValid
+        });
+      }
+    };
+
+    vm.submit = function(isValid) {
+      if (!isValid || !vm.isValidCI) {
+        return;
+      }
+
       var apellidos = vm.propietario.pApellidos.split(' ');
       var username = vm.propietario.pCI;
 
       var newUser = {
         name: username,
         email: vm.propietario.email,
-        password: vm.propietario.pCI || vm.propietario.email,
+        password: vm.propietario.pCI,
         privilegio: 'propietario',
+        ci: vm.propietario.pCI
       };
 
-      vm.checkUser(newUser.email).then(function(isValid) {
+      vm.checkUser(newUser.ci).then(function(isValid) {
         if (!isValid) {
-          toastr.warning('El EMAIL ya se encuentra registrado');
+          toastr.warning('El CI ya se encuentra registrado');
           return;
         }
 

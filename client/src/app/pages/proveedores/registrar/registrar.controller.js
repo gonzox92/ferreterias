@@ -13,7 +13,7 @@
     vm.proveedor = {
       idUser: 0,
       pNombre: '',
-      pLogo: '',
+      pLogo: '/assets/pictures/empty.png',
       pDescripcion: ''
     };
 
@@ -26,10 +26,14 @@
       });
     };
 
-    vm.upload = function (files) {
+    vm.upload = function (isValid) {
+      if (!vm.proveedor.pNombre || !vm.proveedor.pDescripcion) {
+        return;
+      }
+
       $rootScope.$pageIsUpdating = true;
 
-      if (!vm.file.$error) {
+      if (vm.file && !vm.file.$error) {
         var timestamp = Number(new Date());
         var storageRef = firebase.storage().ref(timestamp.toString());
         var uploadTask = storageRef.put(vm.file);

@@ -46,6 +46,11 @@
       vm.selectTab(vm.tabNum - 1)
     };
 
+    vm.saveTab = function () {
+      var onSave = vm.onSave();
+      onSave();
+    };
+
     function calcProgress() {
       vm.progress = ((vm.tabNum + 1) / vm.tabs.length) * 100;
     }

@@ -6,28 +6,46 @@
           ba-panel
           ba-panel-title="Registro de Vendedor"
           ba-panel-class="with-scroll">
-        <form name="productForm" ng-submit="vm.submit()">
-          <div class="form-group">
+        <form name="vm.form" ng-submit="vm.submit(vm.form.$valid)" novalidate>
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.vCI.$invalid && (vm.form.vCI.$dirty || vm.form.$submitted)}">
             <label for="input01">CI</label>
-            <input type="text" class="form-control" id="input01" name="nombre" placeholder="CI" ng-model="vm.vendedor.vCI" required>
+            <input type="text" class="form-control" id="input01" name="vCI" placeholder="CI" ng-model="vm.vendedor.vCI" required ng-blur="vm.checkCI()">
+            <span class="help-block error-block basic-block">Requerido</span>
+            <span ng-show="!vm.isValidCI" 
+                  class="help-validator error-block basic-block">El CI ya se encuentra registrado</span>
           </div>
-          <div class="form-group">
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.vNombre.$invalid && (vm.form.vNombre.$dirty || vm.form.$submitted)}">
             <label for="input02">Nombre</label>
-            <input type="text" class="form-control" id="input02" name="nombre" placeholder="Nombre" ng-model="vm.vendedor.vNombre" required>
+            <input type="text" class="form-control" id="input02" name="vNombre" placeholder="Nombre" ng-model="vm.vendedor.vNombre" required>
+            <span class="help-block error-block basic-block">Requerido</span>
           </div>
-          <div class="form-group">
-              <label for="input05">Apellidos</label>
-              <input type="text" class="form-control" id="input05" name="nombre" placeholder="Apellidos" ng-model="vm.vendedor.vApellidos" required>
-            </div>
-          <div class="form-group">
-            <label for="input03">Direccion</label>
-            <input type="text" class="form-control" id="input03" placeholder="Descripcion" ng-model="vm.vendedor.vDireccion" required>
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.vApellidos.$invalid && (vm.form.vApellidos.$dirty || vm.form.$submitted)}">
+              <label for="input03">Apellidos</label>
+              <input type="text" class="form-control" id="input03" name="vApellidos" placeholder="Apellidos" ng-model="vm.vendedor.vApellidos" required>
+              <span class="help-block error-block basic-block">Requerido</span>
           </div>
-          <div class="form-group">
-            <label for="input04">Telefono</label>
-            <input type="text" class="form-control" id="input04" placeholder="Telefono" ng-model="vm.vendedor.vTelefono" required>
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.vDireccion.$invalid && (vm.form.vDireccion.$dirty || vm.form.$submitted)}">
+            <label for="input04">Direccion</label>
+            <input type="text" class="form-control" id="input04" name="vDireccion" placeholder="Direccion" ng-model="vm.vendedor.vDireccion" required>
+            <span class="help-block error-block basic-block">Requerido</span>
           </div>
-          <div class="form-group">
+          <div class="form-group"
+            ng-class="{'has-error': vm.form.vTelefono.$invalid && (vm.form.vTelefono.$dirty || vm.form.$submitted)}">
+            <label for="input05">Telefono</label>
+            <input type="text" class="form-control" id="input05" name="vTelefono" placeholder="Telefono" ng-model="vm.vendedor.vTelefono" required>
+            <span class="help-block error-block basic-block">Requerido</span>
+          </div>
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.email.$invalid && (vm.form.email.$dirty || vm.form.$submitted)}">
+            <label for="input04">Email</label>
+            <input type="email" class="form-control" id="input04" name="email" placeholder="Email" ng-model="vm.vendedor.email" required>
+            <span class="help-block error-block basic-block">E-mail no valido</span>
+          </div>
+          <!-- <div class="form-group">
             <label for="input03">Almacen</label>
             <ui-select ng-model="vm.vendedor.idAlmacen"
                         class="btn-group bootstrap-select form-control"
@@ -45,7 +63,7 @@
                 </small>
               </ui-select-choices>
             </ui-select>
-          </div>
+          </div> -->
 
           <button type="submit" class="btn btn-primary">Registrar</button>
         </form>

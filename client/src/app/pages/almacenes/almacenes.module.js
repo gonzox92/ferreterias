@@ -41,6 +41,7 @@
           order: 100,
           visible: true,
           isChild: true,
+          privileges: ['administrador']
         },
       })
       .state('almacenes.item', {

@@ -5,14 +5,18 @@
           ba-panel
           ba-panel-title="Registro de Proveedores"
           ba-panel-class="with-scroll">
-        <form name="productForm" ng-submit="vm.upload()">
-          <div class="form-group">
+        <form name="vm.form" ng-submit="vm.upload(vm.form.$valid)" novalidate>
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.pNombre.$invalid && (vm.form.pNombre.$dirty || vm.form.$submitted)}">
             <label for="input01">Nombre</label>
-            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre" ng-model="vm.proveedor.pNombre" required>
+            <input type="text" class="form-control" id="input01" name="pNombre" placeholder="Nombre" ng-model="vm.proveedor.pNombre" required>
+            <span class="help-block error-block basic-block">Requerido</span>
           </div>
-          <div class="form-group">
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.pDescripcion.$invalid && (vm.form.pDescripcion.$dirty || vm.form.$submitted)}">
             <label for="input02">Descripcion</label>
-            <input type="text" class="form-control" id="input02" name="nombre" placeholder="Descripcion" ng-model="vm.proveedor.pDescripcion" required>
+            <textarea class="form-control" id="input02" name="pDescripcion" placeholder="Descripcion" ng-model="vm.proveedor.pDescripcion" required></textarea>
+            <span class="help-block error-block basic-block">Requerido</span>
           </div>
           <div class="form-group">
             <label for="input02">Imagen</label>
@@ -27,7 +31,7 @@
             </div>
           </div>
 
-          <button type="submit" class="btn btn-info">Registrar</button>
+          <button type="submit" class="btn btn-primary">Registrar</button>
         </form>
       </div>
     </div>

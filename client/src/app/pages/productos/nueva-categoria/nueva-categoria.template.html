@@ -1,0 +1,50 @@
+<style>
+  .modal-content {
+    max-width: 420px;
+  }
+
+  .new-entry-modal {
+    margin-bottom: 0 !important;
+  }
+</style>
+
+<div class="widgets">  
+  <div class="row">
+    <div class="col-md-12">
+      <div
+          ba-panel
+          ba-panel-title="{{ vm.isOld ? 'Editar' : 'Registro de' }} {{ vm.label }}"
+          ba-panel-class="with-scroll new-entry-modal">
+        <form name="vm.form" ng-submit="vm.upload(vm.form.$valid)" novalidate>
+          <div class="form-group"
+              ng-if="!vm.isCategory">
+            <label for="input00">Categoria</label>
+            <input type="text" class="form-control" id="input00" name="cNombre" placeholder="Categoria" ng-model="vm.parent.cNombre" readonly>
+          </div>
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.pNombre.$invalid && (vm.form.pNombre.$dirty || vm.form.$submitted)}">
+            <label for="input01">Nombre</label>
+            <input type="text" class="form-control" id="input01" name="pNombre" placeholder="Nombre" ng-model="vm.entity.name" required>
+            <span class="help-block error-block basic-block">Requerido</span>
+          </div>
+          <div class="form-group"
+              ng-if="vm.isCategory">
+            <label for="input02">Imagen</label>
+            <div class="drop-box">
+              <img
+                ngf-select
+                ngf-thumbnail="vm.file || vm.entity.image || '/assets/pictures/empty.png'"
+                ng-model="vm.file"
+                accept="image/*"
+                ngf-max-size="1MB">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            {{ vm.isOld ? 'Guardar' : 'Registrar' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>  

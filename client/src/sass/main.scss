@@ -137,3 +137,85 @@
             transform: scale(1);
   }
 }
+
+.help-validator.error-block  {
+  color: #AD4442;
+}
+
+.footer,
+.table-responsive {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.paginacion {
+  margin: auto;
+}
+
+.table-description {
+  line-height: 22px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+span.input-group-addon {
+  border-radius: 4px 0 0 4px !important;
+}
+
+input.mini-time {
+  min-width: 68px !important;
+}
+
+.row.category-list {
+  margin-top: 24px !important;
+}
+
+.btn.category {
+  width: 24px !important;
+  margin: 0 4px 0 0;
+}
+
+.panel-default > .panel-heading.category {
+  height: auto !important;
+  display: inline-table;
+  width: 100%;
+
+  img {
+    height: 42px;
+    margin-right: 8px;
+  }
+}
+
+.buttons.category {
+  text-align: right;
+}
+
+#detall_ressenya h2, #detall_ressenya h3 {
+  font-size: 18px;
+  margin: 6px 0;
+}
+
+#embolcall_fotos {
+  max-width: 460px;
+  float: right;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+#embolcall_fotos img {
+  max-width: 450px;
+  max-height: 350px;
+  margin: 5px 5px 3px 4px;
+  border: 1px solid #ccc;
+}
+
+.detallDialeg #empresa_ressenya {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#empresa_ressenya .subtitolet {
+  font-weight: bold;
+  color: #D60300;
+}

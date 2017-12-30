@@ -6,32 +6,40 @@
         ba-panel
         ba-panel-title="Registro de productos"
         ba-panel-class="with-scroll">
-        <form name="productForm" ng-submit="vm.upload()">
-          <div class="form-group">
+        <form name="vm.form" ng-submit="vm.upload(vm.form.$valid)" novalidate>
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.UPC.$invalid && (vm.form.UPC.$dirty || vm.form.$submitted)}">
+            <label for="input00">UPC</label>
+            <input type="text" class="form-control" id="input00" name="UPC" placeholder="Nombre"
+                    ng-model="vm.producto.UPC" required>
+            <span class="help-block error-block basic-block">Requerido</span>
+          </div>
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.pNombre.$invalid && (vm.form.pNombre.$dirty || vm.form.$submitted)}">
             <label for="input01">Nombre</label>
-            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre"
+            <input type="text" class="form-control" id="input01" name="pNombre" placeholder="Nombre"
                    ng-model="vm.producto.pNombre" required>
-            <p ng-show="productForm.nombre.$invalid && !productForm.nombre.$pristine" class="sr-only">Nombre del
-              producto es requerido.</p>
+            <span class="help-block error-block basic-block">Requerido</span>
           </div>
-          <div class="form-group">
-            <label for="input02">Descripcion</label>
-            <textarea class="form-control" id="input02" placeholder="Descripcion"
-                      ng-model="vm.producto.pDescripcion"></textarea>
-          </div>
+          <div class="form-group"
+              ng-class="{'has-error': vm.form.pDescripcion.$invalid && (vm.form.pDescripcion.$dirty || vm.form.$submitted)}">
+              <label for="input02">Descripcion</label>
+              <div text-angular id="input02" ng-model="vm.producto.pDescripcion"></div>
+              <span class="help-block error-block basic-block">Requerido</span>
+            </div>
           <div class="form-group">
             <label for="input03">Imagen</label>
-            <div class="drop-box">
+            <div class="drop-box product">
               <img
                 ngf-select
                 ngf-thumbnail="vm.file || '/assets/pictures/empty.png'"
                 ng-model="vm.file"
                 accept="image/*"
-                ngf-max-size="2MB"
-                required>
+                ngf-max-size="2MB">
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group"
+              ng-class="{'has-error': vm.producto.idProveedor === 0}">
             <label for="input03">Proveedor</label>
             <ui-select ng-model="vm.producto.idProveedor"
                        class="btn-group bootstrap-select form-control"
@@ -46,6 +54,8 @@
                 <div ng-bind-html="proveedor.pNombre | highlight: $select.search"></div>
               </ui-select-choices>
             </ui-select>
+
+            <span class="help-block error-block basic-block">Requerido</span>
           </div>
           <div class="form-group">
             <label for="input04">Precio</label>

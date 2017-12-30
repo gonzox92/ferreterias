@@ -29,6 +29,8 @@
         Restangular.one('propietarios', propietario.id).remove().then(function() {
           Restangular.one('usuarios', propietario.idUser).remove().then(function() {
             vm.propietarios.splice($index, 1);
+          }, function() {
+            vm.propietarios.splice($index, 1);
           });
         });
       }, function() {

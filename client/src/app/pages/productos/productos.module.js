@@ -40,20 +40,6 @@
         controller: 'productosItemController',
         controllerAs: 'vm',
         title: 'Producto'
-      })
-      // .state('productos_item.detail', {
-      //   url: '/ferreteria/:id/productos/:idProducto/detalle',
-      //   templateUrl: 'app/pages/productos/item/details/details.template.html',
-      //   controller: 'productosItemDetailController',
-      //   controllerAs: 'vm'
-      // })
-      // .state('productos_item.categories', {
-      //   url: '/ferreteria/:id/productos/:idProducto/categories',
-      //   templateUrl: 'app/pages/productos/item/categories/categories.template.html',
-      //   controller: 'productosItemCategoriesController',
-      //   controllerAs: 'vm'
-      // });
-
-    // $urlRouterProvider.when('/almacen/:id/productos/:idProducto', '/almacen/:id/productos/:idProducto/detalle');
+      });
   }
 })();

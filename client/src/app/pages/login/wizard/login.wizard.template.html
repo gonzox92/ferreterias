@@ -1,0 +1,86 @@
+<style>
+    .help-validator.error-block  {
+        color: #AD4442;
+    }
+</style>
+
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="Confirmar Cuenta" ba-panel-class="with-scroll">
+                <ba-wizard on-save="vm.updateInfo()">
+                    <ba-wizard-step title="Informacion Personal" form="vm.personalInfoForm">
+                        <form name="vm.personalInfoForm" novalidate>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group has-feedback"
+                                         ng-class="{'has-error': vm.personalInfoForm.ci.$invalid && (vm.personalInfoForm.ci.$dirty || vm.personalInfoForm.$submitted)}">
+                                        <label for="ci">CI</label>
+                                        <input type="text" class="form-control" id="person_field_1" name="ci" placeholder="CI" ng-model="vm.personalInfo.ci" required>
+                                        <span class="help-block error-block basic-block">Requerido</span>
+                                    </div>
+                                    <div class="form-group" ng-class="{'has-error': vm.personalInfoForm.nombre.$invalid && (vm.personalInfoForm.nombre.$dirty || vm.personalInfoForm.$submitted)}">
+                                        <label for="person_field_2">Nombre</label>
+                                        <input type="text" class="form-control" id="person_field_2" name="nombre" placeholder="Nombre" ng-model="vm.personalInfo.nombre" required>
+                                        <span class="help-block error-block basic-block">Requerido</span>
+                                    </div>
+                                    <div class="form-group" ng-class="{'has-error': vm.personalInfoForm.apellidos.$invalid && (vm.personalInfoForm.apellidos.$dirty || vm.personalInfoForm.$submitted)}">
+                                        <label for="person_field_3">Apellidos</label>
+                                        <input type="text" class="form-control" id="person_field_3" name="apellidos" placeholder="Apellidos" ng-model="vm.personalInfo.apellidos" required>
+                                        <span class="help-block error-block basic-block">Requerido</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{'has-error': vm.personalInfoForm.direccion.$invalid && (vm.personalInfoForm.direccion.$dirty || vm.personalInfoForm.$submitted)}">
+                                        <label for="person_field_4">Direccion</label>
+                                        <input type="text" class="form-control" id="person_field_4" name="direccion" placeholder="Direccion" ng-model="vm.personalInfo.direccion" required>
+                                        <span class="help-block error-block basic-block">Requerido</span>
+                                    </div>
+                                    <div class="form-group" ng-class="{'has-error': vm.personalInfoForm.telefono.$invalid && (vm.personalInfoForm.telefono.$dirty || vm.personalInfoForm.$submitted)}">
+                                        <label for="person_field_5">Telefono</label>
+                                        <input type="text" class="form-control" id="person_field_5" name="telefono" placeholder="Telefono" ng-model="vm.personalInfo.telefono" required>
+                                        <span class="help-block error-block basic-block">Requerido</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </ba-wizard-step>
+                    <ba-wizard-step title="Cuenta" form="vm.accountInfoForm">
+                        <form name="vm.accountInfoForm" novalidate>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group has-feedback"
+                                            ng-class="{'has-error': vm.accountInfoForm.username.$invalid && (vm.accountInfoForm.username.$dirty || vm.accountInfoForm.$submitted)}">
+                                        <label for="account_field_1">Usuario</label>
+                                        <input type="text" class="form-control" id="account_field_1" name="username" placeholder="Usuario" ng-model="vm.accountInfo.username" required readonly>
+                                        <span class="help-block error-block basic-block">Required</span>
+                                    </div>
+                                    <div class="form-group" ng-class="{'has-error': vm.accountInfoForm.email.$invalid && (vm.accountInfoForm.email.$dirty || vm.accountInfoForm.$submitted)}">
+                                        <label for="account_field_2">Email</label>
+                                        <input type="email" class="form-control" id="account_field_2" name="email" placeholder="Email" ng-model="vm.accountInfo.email" required>
+                                        <span class="help-block error-block basic-block">E-mail no valido</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" ng-class="{'has-error': vm.accountInfoForm.password.$invalid && (vm.accountInfoForm.password.$dirty || vm.accountInfoForm.$submitted)}">
+                                        <label for="account_field_3">Password</label>
+                                        <input type="password" class="form-control" id="account_field_3" name="password" placeholder="Password" ng-model="vm.accountInfo.password" required>
+                                        <span class="help-block error-block basic-block">Requirido</span>
+                                    </div>
+                                    <div class="form-group"  ng-class="{'has-error': !vm.areAccountInfoPasswordsEqual() && (vm.accountInfoForm.confirmPassword.$dirty || vm.accountInfoForm.$submitted)}">
+                                        <label for="account_field_4">Confirmar Password</label>
+                                        <input type="password" class="form-control" id="account_field_4" name="confirmPassword" placeholder="Confirmar Password" ng-model="vm.accountInfo.confirmPassword" ng-blur="vm.validatePassword()" required>
+                                        <span class="help-block error-block basic-block">Passwords deben coincidir</span>
+                                        <span ng-show="!vm.isPasswordValid" 
+                                              class="help-validator error-block basic-block">Password debe ser de al menos 6 caracteres con 1 numerico</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </ba-wizard-step>
+                </ba-wizard>
+            </div>
+        </div>
+    </div>
+
+</div>

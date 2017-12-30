@@ -14,7 +14,7 @@
 
     vm.goTo = function(id) {
       $state.go('vendedores.item', {id: id});
-    }
+    };
 
     vm.remove = function($index, id) {
       var deleteMessage = $uibModal.open({

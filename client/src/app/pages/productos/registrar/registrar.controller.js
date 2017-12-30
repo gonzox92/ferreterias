@@ -31,39 +31,42 @@
       });
     };
 
-    vm.upload = function(files) {
-      $rootScope.$pageIsUpdating = true;
-      if (!vm.file.$error) {
-        if (_.isObject(vm.file) && !vm.file.$error) {
-          var timestamp = Number(new Date());
-          var storageRef = firebase.storage().ref(timestamp.toString());
-          var uploadTask = storageRef.put(vm.file);
+    vm.upload = function(isValid) {
+      console.log(vm.form)
+      if (!isValid) {
+        return;
+      }
 
-          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-            function(snapshot) {
-              var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log('Upload is ' + progress + '% done');
-              switch (snapshot.state) {
-                case firebase.storage.TaskState.PAUSED:
-                  console.log('Upload is paused');
-                  break;
-                case firebase.storage.TaskState.RUNNING:
-                  console.log('Upload is running');
-                  break;
-              }
-            }, function(error) {
-              $log.error(error.code);
-            }, function() {
-              vm.producto.pImagen = uploadTask.snapshot.downloadURL;
-              vm.submit();
-            });
-        } else {
-          vm.submit();
-        }
+      $rootScope.$pageIsUpdating = true;
+      if (_.isObject(vm.file) && !vm.file.$error) {
+        var timestamp = Number(new Date());
+        var storageRef = firebase.storage().ref(timestamp.toString());
+        var uploadTask = storageRef.put(vm.file);
+
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          function(snapshot) {
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case firebase.storage.TaskState.PAUSED:
+                console.log('Upload is paused');
+                break;
+              case firebase.storage.TaskState.RUNNING:
+                console.log('Upload is running');
+                break;
+            }
+          }, function(error) {
+            $log.error(error.code);
+          }, function() {
+            vm.producto.pImagen = uploadTask.snapshot.downloadURL;
+            vm.submit();
+          });
+      } else {
+        vm.submit();
       }
     };
 
-    Restangular.all('proveedores').getList().then(function(resp) {
+    Restangular.all('all-proveedores').getList().then(function(resp) {
       vm.proveedores = resp || [];
     });
   }

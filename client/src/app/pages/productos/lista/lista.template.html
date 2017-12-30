@@ -1,66 +1,45 @@
-<style>
-  .table > tbody > tr > td:first-child {
-    text-align: inherit;
-  }
-
-  td.child {
-    font-weight: 300;
-  }
-</style>
-
 <form class="input-group" ng-submit="vm.buscar()">
-  <input type="text" class="form-control with-warning-addon" placeholder="Categoria" aria-describedby="basic-addon2"
-         ng-model="vm._filter.cNombre">
+  <input type="text" class="form-control with-warning-addon" placeholder="Producto" aria-describedby="basic-addon2" ng-model="vm.busqueda.nombre">
   <span class="input-group-addon input-group-addon-primary addon-right searchable" id="basic-addon2">Buscar</span>
 </form>
 
+<button type="button" class="btn btn-primary btn-with-icon" ng-click="vm.addNewCategory(true)"><i class="fa fa-plus"></i>Registrar Categoria</button>
+
 <spinner ng-show="vm.isLoading"></spinner>
 
-<tree-dnd
-  ng-hide="vm.isLoading"
-  tree-data="vm.tree_data"
-  tree-control="vm.my_tree"
-  primary-key="id"
-  filter="vm._filter"
-  column-defs="vm.col_defs"
-  expand-on="vm.expanding_property"
-  template-url="tree-dnd-template-render.html">
-</tree-dnd>
-
-<script type="text/ng-template" id="tree-dnd-template-render.html">
-  <table ng-class="$tree_class">
-    <thead>
-      <tr>
-        <th ng-class="expandingProperty.titleClass" ng-style="expandingProperty.titleStyle">
-          {{expandingProperty.displayName || expandingProperty.field || expandingProperty}}
-        </th>
-        <th ng-repeat="col in colDefinitions track by $index" ng-class="col.titleClass" ng-style="col.titleStyle">
-          {{col.displayName || col.field}}
-        </th>
-        </tr>
-      </thead>
-      <tbody tree-dnd-nodes>
-        <tr tree-dnd-node="node" ng-repeat="node in tree_nodes track by $index"
-            ng-show="enabledFilter ? node.__filtered_visible__ === true && node.__visible__ : node.__visible__"
-            ng-if="(node.__inited__ || node.__visible__)"
-            ng-click="onSelect(node)"
-            ng-class="(node.__selected__ ? 'active' : '')">
-          <td tree-dnd-node-handle
-              ng-style="expandingProperty.cellStyle ? expandingProperty.cellStyle : {'padding-left': $callbacks.calsIndent(node.__level__)}"
-              ng-class="[expandingProperty.cellClass, node.ParentId ? 'child' : 'parent']"
-              compile="expandingProperty.cellTemplate">
-            <a data-nodrag>
-              <i ng-class="node.__icon_class__" ng-click="toggleExpand(node)" class="tree-icon"></i>
-              <img ng-if="!node.ParentId" src="{{ node.cImagen }}">
-            </a>
-
-            {{node[expandingProperty.field] || node[expandingProperty]}}
-          </td>
-          <td ng-repeat="col in colDefinitions track by $index" ng-class="col.cellClass" ng-style="col.cellStyle"
-              compile="col.cellTemplate">
-            {{node[col.field]}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-</script>
+<div class="row category-list">
+  <div class="col-xs-12 col-sm-6 col-md-4 category-item" ng-repeat="category in vm.categoryList">
+    <div class="panel panel-default bootstrap-panel">
+      <div class="panel-heading category">
+        <img src="{{ category.cImagen }}" alt="Categoria" style="float: left;">
+        <div style="float: left; width: calc(100% - 120px); line-height: 18px;">{{ category.cNombre }}</div>
+        <div class="buttons category" style="display: flex;">
+          <button class="status-button btn btn-xs btn-primary category" ng-click="vm.addNewCategory(false, category)"><i class="fa fa-plus"></i></button>        
+          <button class="status-button btn btn-xs btn-info category" ng-click="vm.editCategory(true, null, category)"><i class="ion-edit"></i></button>
+          <button class="status-button btn btn-xs btn-danger category" ng-click="vm.deleteCategory(true, category)"><i class="fa fa-trash-o"></i></button>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="horizontal-scroll">
+          <table class="table table-condensed">
+            <tbody>
+              <tr ng-repeat="item in category.subcategories">
+                <td style="text-align: left; line-height: 20px;">{{ item.cNombre }}</td>
+                <td>{{ item.qtyProductos }}</td>
+                <td>
+                  <button style="width: 70px;" class="status-button btn btn-xs btn-default" ng-click="vm.goToProducts(item)">Productos</button>
+                </td>
+                <td>
+                  <button class="status-button btn btn-xs btn-info category" ng-click="vm.editCategory(false, category, item)"><i class="ion-edit"></i></button>
+                </td>
+                <td>
+                  <button class="status-button btn btn-xs btn-danger category" ng-click="vm.deleteCategory(false, item)"><i class="fa fa-trash-o"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

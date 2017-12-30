@@ -76,9 +76,9 @@
   <button type="button" class="btn btn-warning btn-with-icon" ng-click="vm.goBackCategories()"><i class="fa fa-angle-left"></i>Categorias</button>  
   <button type="button" class="btn btn-primary btn-with-icon" ng-click="vm.addProduct()"><i class="fa fa-plus"></i>Registrar</button>
   
-  <spinner ng-hide="vm.isLoading"></spinner>
+  <spinner ng-show="vm.isLoading"></spinner>
   
-  <div class="product-list" ng-show="vm.isLoading">
+  <div class="product-list" ng-hide="vm.isLoading">
     <div class="product-card" ng-repeat="item in vm.productos">
       <div class="product-image">
         <img src="{{ item.pImagen }}" alt="">
@@ -89,23 +89,13 @@
             {{ item.pNombre }}
         </div>
   
-        <div class="product-description">
-            {{ item.pDescripcion }}
-        </div>
-  
         <div class="product-information">
-          <strong>Precio: </strong> {{ item.pPrecio }} Bs.
+          <strong>Precio: </strong> {{ item.pPrecio }} Bs. <br>
           <strong>Cantidad: </strong> {{ item.pCantidadEnMano }}
         </div>
       </div>
   
-      <div class="product-actions">
-        <!-- <div class="options first-line">
-          <button type="button" class="btn btn-default btn-with-icon" ng-click="vm.goToProductos(item.id)">
-            <i class="fa fa-sitemap"></i>Categorias
-          </button>
-        </div> -->
-  
+      <div class="product-actions">  
         <div class="options second-line">
           <button type="button" class="btn btn-info btn-with-icon" ng-click="vm.goTo(item.id)">
             <i class="ion-edit"></i>Editar

@@ -15,8 +15,9 @@
 
     <nav>
         <ul class="pager ba-wizard-pager">
-            <li class="previous"><button  ng-disabled="$baWizardController.isFirstTab()" ng-click="$baWizardController.previousTab()" type="button" class=" btn btn-primary"><span aria-hidden="true">&larr;</span> previous</button></li>
-            <li class="next"> <button ng-disabled="$baWizardController.isLastTab()" ng-click="$baWizardController.nextTab()" type="button" class="btn btn-primary">next <span aria-hidden="true">&rarr;</span></button></li>
+            <li class="previous"><button  ng-disabled="$baWizardController.isFirstTab()" ng-click="$baWizardController.previousTab()" type="button" class=" btn btn-primary"><span aria-hidden="true">&larr;</span> anterior</button></li>
+            <li class="next" ng-if="!$baWizardController.isLastTab()" > <button ng-disabled="$baWizardController.isLastTab()" ng-click="$baWizardController.nextTab()" type="button" class="btn btn-primary">siguiente <span aria-hidden="true">&rarr;</span></button></li>
+            <li class="next" ng-if="$baWizardController.isLastTab()"> <button ng-click="$baWizardController.saveTab()" type="button" class="btn btn-primary">actualizar <i class="fa fa-floppy-o"></i></button></li>
         </ul>
     </nav>
 </div>

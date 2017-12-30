@@ -11,7 +11,13 @@
       transclude: true,
       templateUrl: 'app/theme/components/baWizard/baWizard.html',
       controllerAs: '$baWizardController',
-      controller: 'baWizardCtrl'
+      controller: 'baWizardCtrl',
+      scope: {
+        onSave: '&'
+      },
+      link: function($scope, $element, $attrs, wizard) {
+        wizard.onSave = $scope.onSave;
+      }
     }
   }
 })();

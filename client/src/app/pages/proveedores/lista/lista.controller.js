@@ -13,6 +13,11 @@
     vm.proveedores = [];
     vm.busqueda = {nombre: ''};
     vm.isLoading = false;
+    vm.maxSize = 5;
+    vm.itemsPerPage = 10;
+    vm.total = 0;
+    vm.page = 1;
+    vm.hayProveedores = false;
 
     vm.goTo = function(id) {
       $state.go('proveedores.item', {id: id});
@@ -38,23 +43,19 @@
 
     vm.buscar = function () {
       vm.isLoading = false;
+      vm.busqueda.page = vm.page;
+      vm.busqueda.limit = vm.itemsPerPage;
+
       Restangular.all('proveedores').customGET('', vm.busqueda).then(function (resp) {
-        vm.proveedores = (resp || []).map(function(item) {
-          item.pLogo = item.pLogo.indexOf('http://') >= 0 || item.pLogo.indexOf('https://') >= 0 ?
-            item.pLogo : $rootScope.baseURL + 'api/fileentry/get/' + item.pLogo;
-          return item;
-        });
+        vm.proveedores = (resp.data || []);
+
+        vm.total = (resp || {}).total || 0;
+        vm.page = (resp || {}).current_page || 0;
+        vm.hayProveedores = true;
         vm.isLoading = true;
       });
     };
     
-    Restangular.all('proveedores').getList().then(function (resp) {
-      vm.proveedores = (resp || []).map(function(item) {
-        item.pLogo = item.pLogo.indexOf('http://') >= 0 || item.pLogo.indexOf('https://') >= 0 ?
-          item.pLogo : $rootScope.baseURL + 'api/fileentry/get/' + item.pLogo;
-        return item;
-      });
-      vm.isLoading = true;
-    });
+    vm.buscar();
   }
 })();

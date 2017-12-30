@@ -4,8 +4,8 @@
   angular.module('BlurAdmin.pages.productos')
     .controller('productosItemController', productosItemController);
 
-  productosItemController.$inject = ['$log', '$state', '$stateParams', '$rootScope', 'serverAPI', 'Restangular'];
-  function productosItemController($log, $state, $stateParams, $rootScope, serverAPI, Restangular) {
+  productosItemController.$inject = ['$log', '$state', '$stateParams', '$rootScope', '$uibModal', 'serverAPI', 'Restangular', 'toastr'];
+  function productosItemController($log, $state, $stateParams, $rootScope, $uibModal, serverAPI, Restangular, toastr) {
     $log.log('productosItemController');
     var vm = this;
     vm.producto = {};
@@ -24,8 +24,11 @@
       Restangular.one('productos', $stateParams.idProducto).customPUT(vm.producto).then(function(resp) {
         $state.go('categories_productos', $stateParams);
         $rootScope.$pageIsUpdating = false;
+
+        toastr.success('Informacion actualizada', 'Producto');        
       }, function() {
         $rootScope.$pageIsUpdating = false;
+        toastr.error('Error al actualizar el producto', 'Error');
       });
     };
 
@@ -63,12 +66,40 @@
       }
     };
 
+    vm.remove = function () {
+      var deleteMessage = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/pages/productos/borrar/borrar.template.html',
+        controller: 'productosBorrarController',
+        controllerAs: 'vm',
+        resolve: {
+          entity: function() {
+            return {
+              title: 'Producto',
+              name: vm.producto.pNombre
+            }
+          }
+        }
+      });
+
+      deleteMessage.result.then(function() {
+        Restangular.one('productos', vm.producto.id).remove().then(function() {
+          $state.go('categories_productos', $stateParams);
+          toastr.success('Producto ha sido eliminado', 'Producto');
+        }, function() {
+          toastr.error('Error al eliminar el producto', 'Error');
+        });
+      }, function() {
+        $log.log('Borrar fue cancelado')
+      });
+    };
+
     vm.load = function() {
       Restangular.one('productos', $stateParams.idProducto).get().then(function(resp) {
         vm.producto = resp;
       });
 
-      Restangular.all('proveedores').getList().then(function(resp) {
+      Restangular.all('all-proveedores').getList().then(function(resp) {
         vm.proveedores = resp || [];
       });
     };

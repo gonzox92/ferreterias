@@ -1,70 +1,106 @@
 <div class="widgets">
-
-  <div class="row">
-    <div class="col-md-8">
-      <div
-        ba-panel
-        ba-panel-title="# {{ vm.almacen.id }}"
-        ba-panel-class="with-scroll panel-primary bootstrap-panel">
-        <form name="productForm">
-          <div class="form-group">
-            <label for="input01">Nombre</label>
-            <input type="text" class="form-control" id="input01" name="nombre" placeholder="Nombre"
-                   ng-model="vm.almacen.aNombre" required>
-          </div>
-          <div class="form-group">
-            <label for="input02">Direccion</label>
-            <input type="text" class="form-control" id="input02" placeholder="Direccion"
-                   ng-model="vm.almacen.aDireccion" required>
-          </div>
-          <div class="form-group">
-            <label for="input03">Horario</label>
-            <input type="text" class="form-control" id="input03" placeholder="Horario" ng-model="vm.almacen.aHorario"
-                   required>
-          </div>
-          <div class="form-group">
-            <label for="input03">Imagen</label>
-            <div class="drop-box">
-              <img
-                ngf-select
-                ngf-thumbnail="vm.file || vm.almacen.aImagen || '/assets/pictures/empty.png'"
-                ng-model="vm.file"
-                accept="image/*"
-                ngf-max-size="2MB"
-                required>
+    <div class="row">
+      <div class="col-md-6">
+        <div
+            ba-panel
+            ba-panel-title="Ferreteria # {{ vm.almacen.id }}"
+            ba-panel-class="with-scroll">
+          <form name="vm.form" ng-submit="vm.upload(vm.form.$valid)" novalidate>
+            <div class="form-group"
+                ng-class="{'has-error': vm.form.aNombre.$invalid && (vm.form.aNombre.$dirty || vm.form.$submitted)}">
+              <label for="input01">Nombre</label>
+              <input type="text" class="form-control" id="input01" name="aNombre" placeholder="Nombre"
+                     ng-model="vm.almacen.aNombre" required>
+              <span class="help-block error-block basic-block">Requerido</span>
             </div>
-          </div>
-          <div class="form-group" ng-if="vm.user.privilegio === 'administrador'">
-            <label for="input03">Propietario</label>
-            <ui-select ng-model="vm.almacen.idPropietario"
-                       class="btn-group bootstrap-select form-control"
-                       ng-disabled="false"
-                       append-to-body="true"
-                       search-enabled="true">
-              <ui-select-match placeholder="Propietario">
-                {{$select.selected.pNombre}}
-              </ui-select-match>
-              <ui-select-choices
-                repeat="propietario.id as propietario in vm.propietarios | filter: {pNombre: $select.search}">
-                <div ng-bind-html="propietario.pNombre | highlight: $select.search"></div>
-                <small>
-                  C.I: {{ propietario.pCI }}
-                </small>
-              </ui-select-choices>
-            </ui-select>
-          </div>
-          <div class="form-group">
-            <label for="input02">Ubicacion</label>
-            <ng-map default-style="true" center="{{vm.almacen.aUbicacion}}" zoom="15">
-              <marker position="{{vm.almacen.aUbicacion}}" draggable="true" title="{{vm.almacen.aNombre}}"></marker>
-            </ng-map>
-          </div>
-          <div class="buttons" style="text-align: right;">
-            <button class="btn btn-info" ng-click="vm.upload()">Guardar</button>
-            <button class="btn btn-danger" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
-          </div>
-        </form>
+            <div class="form-group">
+              <label for="input02">Imagen</label>
+              <div class="drop-box">
+                <img
+                  ngf-select
+                  ngf-thumbnail="vm.file || vm.almacen.aImagen || '/assets/pictures/empty.png'"
+                  ng-model="vm.file"
+                  accept="image/*"
+                  ngf-max-size="2MB">
+              </div>
+            </div>
+            <div class="form-group"
+                ng-class="{'has-error': vm.form.aDireccion.$invalid && (vm.form.aDireccion.$dirty || vm.form.$submitted)}">
+              <label for="input03">Direccion</label>
+              <input type="text" class="form-control" id="input03" name="aDireccion" placeholder="Descripcion"
+                     ng-model="vm.almacen.aDireccion" required>
+              <span class="help-block error-block basic-block">Requerido</span>
+            </div>
+            <div class="form-group">
+              <label for="input03">Horario</label>
+  
+              <div class="row form-inline" ng-repeat="day in vm.days">
+                <div class="form-group col-sm-3 col-xs-12">
+                  <div class="checkbox">
+                    <label class="custom-checkbox">
+                      <input type="checkbox" ng-model="day.enabled">
+                      <span>{{ day.title }}</span>
+                    </label>
+                  </div>
+                </div>
+  
+                <div class="form-group col-sm-3 col-xs-6">
+                  <div class="operationTime input-group">
+                    <span class="input-group-addon">
+                      <i class="fa fa-sun-o"></i>
+                    </span>
+                    <input type="text" class="mini-time form-control operationTimeFrom ui-timepicker-input" ng-model="day.from">
+                  </div>
+                </div>
+  
+                <div class="form-group col-sm-3 col-xs-6">
+                  <div class="operationTime input-group">
+                    <span class="input-group-addon">
+                      <i class="fa fa-moon-o"></i>
+                    </span>
+                    <input type="text" class="mini-time form-control operationTimeTo ui-timepicker-input" ng-model="day.to">
+                  </div>
+                </div>
+              </div>
+  
+              <span ng-show="!vm.isValidSchedule" 
+                    class="help-validator error-block basic-block">Formato no valido Hora:Minutos</span>
+            </div>
+            <div class="form-group" ng-if="vm.user.privilegio === 'administrador'"
+                ng-class="{'has-error': !vm.almacen.idPropietario}">
+              <label for="input03">Propietario</label>
+              <ui-select ng-model="vm.almacen.idPropietario"
+                         class="btn-group bootstrap-select form-control"
+                         ng-disabled="false"
+                         append-to-body="true"
+                         search-enabled="true">
+                <ui-select-match placeholder="Propietario">
+                  {{$select.selected.pNombre}}
+                </ui-select-match>
+                <ui-select-choices
+                  repeat="propietario.id as propietario in vm.propietarios | filter: {pNombre: $select.search}">
+                  <div ng-bind-html="propietario.pNombre | highlight: $select.search"></div>
+                  <small>
+                    C.I: {{ propietario.pCI }}
+                  </small>
+                </ui-select-choices>
+              </ui-select>
+              <span class="help-block error-block basic-block">Requerido</span>
+            </div>
+            <div class="form-group">
+              <label for="input04">Ubicacion</label>
+              <ng-map default-style="true" center="[-17.387015, -66.162159]" zoom="14">
+                <marker position="[-17.387015, -66.162159]" draggable="true" title="{{vm.almacen.aNombre}}"></marker>
+              </ng-map>
+            </div>
+  
+            <div class="buttons" style="text-align: right;">
+              <button class="btn btn-info">Guardar</button>
+              <a class="btn btn-danger" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</a>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
+  

@@ -15,7 +15,7 @@
       $state.go('vendedores.item', {id: id});
     }
 
-    vm.remove = function ($index, id) {
+    vm.remove = function ($index, vendedor) {
       var deleteMessage = $uibModal.open({
         animation: true,
         templateUrl: 'app/pages/vendedores/borrar/borrar.template.html',
@@ -25,8 +25,12 @@
       });
 
       deleteMessage.result.then(function() {
-        Restangular.one('vendedores', id).remove().then(function() {
-          vm.vendedores.splice($index, 1);
+        Restangular.one('vendedores', vendedor.id).remove().then(function() {
+          Restangular.one('usuarios', vendedor.idUser).remove().then(function() {
+            vm.vendedores.splice($index, 1);
+          }, function() {
+            vm.vendedores.splice($index, 1);
+          });
         });
       }, function() {
         $log.log('Borrar fue cancelado')
