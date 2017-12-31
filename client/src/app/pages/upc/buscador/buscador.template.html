@@ -1,0 +1,61 @@
+<div class="widgets">  
+  <div class="row">
+    <div class="col-md-12">
+      <div
+          ba-panel
+          ba-panel-title="Buscar UPC"
+          ba-panel-class="with-scroll new-entry-modal">
+
+        <form class="input-group" ng-submit="vm.buscar()">
+          <input type="text" class="form-control with-warning-addon" placeholder="Proveedor" aria-describedby="basic-addon2" ng-model="vm.busqueda.nombre">
+          <span class="input-group-addon input-group-addon-primary addon-right searchable" id="basic-addon2" ng-click="vm.buscar()">Buscar</span>
+        </form>
+
+        <spinner ng-hide="vm.isLoading"></spinner>
+
+        <div class="horizontal-scroll" ng-show="vm.isLoading">
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th>Codigo</th>
+              <th>Nombre</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in vm.codigos" ng-class="{'selected': item.isSelected}" ng-click="vm.selectRow($index)">
+              <td class="align-right">{{ item.id }}</td>
+              <td>{{ item.nombre }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <span class="reminder">
+          * Seleccionar una categoria
+        </span>
+
+        <div class="footer">
+          <div class="paginacion" ng-if="vm.hayLista && vm.lastPage > 1">
+            <ul uib-pagination total-items="vm.total"
+                ng-model="vm.page"
+                max-size="vm.maxSize"
+                items-per-page="vm.itemsPerPage"
+                class="pagination-sm"
+                boundary-links="true"
+                force-ellipses="true"
+                ng-change="vm.buscar()"
+                first-text="Primero"
+                last-text="Ultimo"
+                next-text="Siguiente"
+                previous-text="Previo"></ul>
+          </div>
+        </div>
+
+        <div class="buttons explorer">
+          <button type="submit" class="btn btn-primary" ng-click="vm.choose()">Seleccionar</button>
+          <button type="submit" class="btn btn-danger" ng-click="vm.close()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

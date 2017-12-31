@@ -11,6 +11,7 @@
     vm.producto = {};
     vm.ferreterias = [];
     vm.cantidades = [];
+    vm.isValidUPC = true;
 
     vm.tabs = [{
       name: 'Detalles',
@@ -32,7 +33,11 @@
       });
     };
 
-    vm.upload = function(files) {
+    vm.upload = function(isValid) {
+      if (!isValid || !vm.isValidUPC) {
+        return;
+      }
+
       $rootScope.$pageIsUpdating = true;
       if (vm.file && !vm.file.$error) {
         if (_.isObject(vm.file) && !vm.file.$error) {
@@ -102,6 +107,30 @@
       Restangular.all('all-proveedores').getList().then(function(resp) {
         vm.proveedores = resp || [];
       });
+    };
+
+    vm.openUPC = function() {
+      var upcModal = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/pages/upc/buscador/buscador.template.html',
+        controller: 'UPCBuscadorController',
+        controllerAs: 'vm',
+        resolve: {}
+      });
+
+      upcModal.result.then(function(upc) {
+       vm.producto.UPC = upc.id;
+       vm.isValidUPC = true;
+      }, function() {
+        $log.log('Borrar fue cancelado')
+      });
+    };
+
+    vm.checkUPC = function() {
+      Restangular.all('upc').customGET('', { id: vm.producto.UPC })
+        .then(function(resp) {
+          vm.isValidUPC = !_.isEmpty((resp || {}).data || []);
+        });
     };
 
     vm.load();

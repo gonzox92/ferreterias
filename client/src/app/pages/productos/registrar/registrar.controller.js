@@ -4,14 +4,16 @@
   angular.module('BlurAdmin.pages.productos')
     .controller('productosRegistroController', productosRegistroController);
 
-  productosRegistroController.$inject = ['$log', '$state', '$stateParams', '$rootScope', 'serverAPI', 'Restangular', 'localStorageService', 'Upload'];
-  function productosRegistroController($log, $state, $stateParams, $rootScope, serverAPI, Restangular, localStorageService, Upload) {
+  productosRegistroController.$inject = ['$log', '$state', '$stateParams', '$rootScope', '$uibModal', 'serverAPI', 'Restangular', 'localStorageService', 'Upload'];
+  function productosRegistroController($log, $state, $stateParams, $rootScope, $uibModal, serverAPI, Restangular, localStorageService, Upload) {
     $log.log('productosRegistroController');
     var vm = this;
     vm.user = localStorageService.get('user') || {};
 
+    vm.isValidUPC = true;
     vm.proveedores = [];
     vm.producto = {
+      UPC: '',
       idProveedor: 0,
       idAlmacen: $stateParams.id,
       idCategoria: $stateParams.idCategoria,
@@ -32,8 +34,7 @@
     };
 
     vm.upload = function(isValid) {
-      console.log(vm.form)
-      if (!isValid) {
+      if (!isValid || !vm.isValidUPC) {
         return;
       }
 
@@ -64,6 +65,30 @@
       } else {
         vm.submit();
       }
+    };
+
+    vm.openUPC = function() {
+      var upcModal = $uibModal.open({
+        animation: true,
+        templateUrl: 'app/pages/upc/buscador/buscador.template.html',
+        controller: 'UPCBuscadorController',
+        controllerAs: 'vm',
+        resolve: {}
+      });
+
+      upcModal.result.then(function(upc) {
+       vm.producto.UPC = upc.id;
+       vm.isValidUPC = true;
+      }, function() {
+        $log.log('Borrar fue cancelado')
+      });
+    };
+
+    vm.checkUPC = function() {
+      Restangular.all('upc').customGET('', { id: vm.producto.UPC })
+        .then(function(resp) {
+          vm.isValidUPC = !_.isEmpty((resp || {}).data || []);
+        });
     };
 
     Restangular.all('all-proveedores').getList().then(function(resp) {

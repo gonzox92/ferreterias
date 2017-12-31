@@ -19,7 +19,8 @@
     'BlurAdmin.pages.users',
     'BlurAdmin.pages.vendedores',
     'BlurAdmin.pages.buscador',
-    'BlurAdmin.pages.ventas'
+    'BlurAdmin.pages.ventas',
+    'BlurAdmin.pages.upc'
   ])
   .config(appConfig);
 

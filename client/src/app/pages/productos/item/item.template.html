@@ -7,12 +7,20 @@
           ba-panel-title="Producto # {{ vm.producto.id }}"
           ba-panel-class="with-scroll">
           <form name="vm.form" ng-submit="vm.upload(vm.form.$valid)" novalidate>
+            <div class="input-group">
+              <input type="text" class="form-control with-danger-addon" id="input00" name="UPC" placeholder="UPC"
+                    ng-model="vm.producto.UPC" ng-blur="vm.checkUPC()" required>
+              <div class="input-group-btn">
+                <button class="btn btn-info" type="button" style="border-radius: 0 4px 4px 0;" ng-click="vm.openUPC()">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
             <div class="form-group"
                 ng-class="{'has-error': vm.form.UPC.$invalid && (vm.form.UPC.$dirty || vm.form.$submitted)}">
-              <label for="input00">UPC</label>
-              <input type="text" class="form-control" id="input00" name="UPC" placeholder="Nombre"
-                     ng-model="vm.producto.UPC" required>
               <span class="help-block error-block basic-block">Requerido</span>
+              <span ng-show="!vm.isValidUPC" 
+                  class="help-validator error-block basic-block">El codigo UPC no es valido</span>
             </div>
             <div class="form-group"
                 ng-class="{'has-error': vm.form.pNombre.$invalid && (vm.form.pNombre.$dirty || vm.form.$submitted)}">

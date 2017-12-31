@@ -1,0 +1,51 @@
+<style>
+    .table > tbody > tr > td {
+      font-weight: 300;
+      display: table-cell;
+      vertical-align: inherit;
+    }
+  </style>
+  
+  <form class="input-group" ng-submit="vm.buscar()">
+    <input type="text" class="form-control with-warning-addon" placeholder="Proveedor" aria-describedby="basic-addon2" ng-model="vm.busqueda.nombre">
+    <span class="input-group-addon input-group-addon-primary addon-right searchable" id="basic-addon2" ng-click="vm.buscar()">Buscar</span>
+  </form>
+  
+  <spinner ng-hide="vm.isLoading"></spinner>
+  
+  <div class="table-responsive" ng-show="vm.isLoading">
+    <table class="table">
+        <tr>
+          <th>Codigo</th>
+          <th>Nombre</th>
+        </tr>
+  
+        <tr ng-repeat="item in vm.codigos">
+          <td>{{ item.id }}</td>
+          <td>{{ item.nombre }}</td>
+          <td>
+            <div class="buttons">
+              <button class="btn btn-info editable-table-button btn-xs" ng-click="vm.goTo(item.id)">Editar</button>
+              <button class="btn btn-danger editable-table-button btn-xs" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</button>
+            </div>
+          </td>
+        </tr>
+    </table>
+  </div>
+    
+  <div class="footer">
+    <div class="paginacion" ng-if="vm.hayLista">
+      <ul uib-pagination total-items="vm.total"
+          ng-model="vm.page"
+          max-size="vm.maxSize"
+          items-per-page="vm.itemsPerPage"
+          class="pagination-sm"
+          boundary-links="true"
+          force-ellipses="true"
+          ng-change="vm.buscar()"
+          first-text="Primero"
+          last-text="Ultimo"
+          next-text="Siguiente"
+          previous-text="Previo"></ul>
+    </div>
+  </div>

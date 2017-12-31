@@ -1,0 +1,33 @@
+<div class="widgets">  
+    <div class="row">
+      <div class="col-md-6">
+        <div
+            ba-panel
+            ba-panel-title="Registro de UPC"
+            ba-panel-class="with-scroll">
+          <form name="vm.form" ng-submit="vm.update(vm.form.$valid)" novalidate>
+            <div class="form-group"
+                ng-class="{'has-error': vm.form.id.$invalid && (vm.form.id.$dirty || vm.form.$submitted)}">
+              <label for="input01">Codigo</label>
+              <input type="text" class="form-control" id="input01" name="id" placeholder="Nombre" ng-model="vm.upc.id" ng-blur="vm.checkCode()" required>
+              <span class="help-block error-block basic-block">Requerido</span>
+              <span ng-show="!vm.isValid" 
+                  class="help-validator error-block basic-block">El codigo UPC ya se encuentra registrado</span>
+            </div>
+            <div class="form-group"
+                ng-class="{'has-error': vm.form.nombre.$invalid && (vm.form.nombre.$dirty || vm.form.$submitted)}">
+              <label for="input02">Nombre</label>
+              <textarea class="form-control" id="input02" name="nombre" placeholder="Descripcion" ng-model="vm.upc.nombre" required></textarea>
+              <span class="help-block error-block basic-block">Requerido</span>
+            </div>
+  
+            <div class="buttons" style="text-align: right;">
+                <button class="btn btn-info">Guardar</button>
+                <a class="btn btn-danger" data-toggle="modal" ng-click="vm.remove($index, item.id)">Borrar</a>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+      
