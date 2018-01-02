@@ -9,6 +9,7 @@
       'toastr',
       'chart.js',
       'textAngular',
+      'slick',
       'BlurAdmin.theme.components',
       'BlurAdmin.theme.inputs'
   ]);

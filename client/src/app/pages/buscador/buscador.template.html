@@ -1,29 +1,35 @@
 <div class="row buscador">
   <div class="col-md-3 sidebar sidebar-skin-white left">
     <div class="sidebar-block equal-padding">
-      <form class="form-group input-group" ng-submit="vm.buscar()">
+      <form class="form-group input-group responsive" ng-submit="vm.buscar()">
         <input type="text" class="form-control" placeholder="Producto.." ng-model="vm.busqueda.nombre">
-        <span class="input-group-btn">
+        <span class="input-group-btn always">
           <button class="btn btn-primary" type="button" ng-click="vm.buscar()"><i class="fa fa-search"></i></button>
+        </span>
+
+        <span class="input-group-btn filter">
+          <button type="button" class="btn btn-default btn-icon" ng-click="vm.showFilters()">
+            <i class="fa fa-filter"></i>
+          </button>
         </span>
       </form>
     </div>
 
-    <div class="category">Buscar en</div>
+    <div class="category responsive optional-filter" ng-show="vm.user && vm.user.privilegio !== 'administrador'">Buscar en</div>
 
-    <div class="sidebar-block equal-padding">
+    <div class="sidebar-block equal-padding responsive optional-filter" ng-show="vm.user && vm.user.privilegio !== 'administrador'">
       <div class="form-group input-group">
         <div class="input-demo radio-demo row">
           <div class="col-md-12">
             <label class="radio-inline custom-radio nowrap">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="all" ng-model="vm.busqueda.useFerreterias" ng-change="vm.buscar()">
               <span>Todas las ferreterias</span>
             </label>
           </div>
 
           <div class="col-md-12">
             <label class="radio-inline custom-radio nowrap">
-              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option1">
+              <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="own" ng-model="vm.busqueda.useFerreterias" ng-change="vm.buscar()">
               <span>Mis Ferreterias</span>
             </label>
           </div>
@@ -31,31 +37,12 @@
       </div>
     </div>
 
-    <!-- <div class="category">Precio</div>
+    <div class="category responsive optional-filter">Ubicacion</div>
 
-    <div class="sidebar-block">
-      <div class="slider slider-horizontal" id=""><div class="slider-track"><div class="slider-selection" style="left: 24.2424%; width: 20.202%;"></div><div class="slider-handle min-slider-handle" style="left: 24.2424%;" tabindex="0"></div><div class="slider-handle max-slider-handle" style="left: 44.4444%;" tabindex="0"></div></div><div class="tooltip tooltip-main top" style="left: 34.3434%; margin-left: -33px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">250 : 450</div></div><div class="tooltip tooltip-min top" style="left: 24.2424%; margin-left: -18px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">250</div></div><div class="tooltip tooltip-max bottom" style="top: 18px; left: 44.4444%; margin-left: -18px;"><div class="tooltip-arrow"></div><div class="tooltip-inner">450</div></div></div><input data-slider="default" type="text" value="250,450" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]" data-slider-handle="square" style="display: none;" data="value: '250,450'">
-      <div class="form-group input-group margin-none">
-        <div class="row margin-none">
-          <div class="col-xs-6 padding-none">
-            <input class="form-control" type="text" placeholder="Min..">
-          </div>
-          <div class="col-xs-6 padding-none">
-            <input class="form-control" type="text" placeholder="Max..">
-          </div>
-        </div>
-        <div class="input-group-btn">
-          <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
-        </div>
-      </div>
-    </div> -->
-
-    <div class="category">Ubicacion</div>
-
-    <div class="sidebar-block equal-padding">
+    <div class="sidebar-block equal-padding responsive optional-filter">
       <div class="form-group input-group">
         <label class="checkbox-inline custom-checkbox nowrap">
-          <input type="checkbox" id="inlineCheckbox01" value="option1">
+          <input type="checkbox" id="inlineCheckbox01" value="option1" ng-model="vm.busqueda.nearToMe" ng-change="vm.buscar()">
           <span>Cerca de mi Ubicacion</span>
         </label>
       </div>
@@ -66,18 +53,49 @@
     <nav class="navbar navbar-default buscador">
       <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn" ng-class="vm.isMapMode ? 'btn-primary' : 'btn-default'" ng-click="vm.changeMode()">
-          <i class="fa fa-map-o" aria-hidden="true"></i>
+          <i class="fa fa-map-o" aria-hidden="true"></i> Mapa
         </button>
         <button type="button" class="btn" ng-class="vm.isListMode ? 'btn-primary' : 'btn-default'" ng-click="vm.changeMode()">
-          <i class="fa fa-th-list" aria-hidden="true"></i>
+          <i class="fa fa-th-list" aria-hidden="true"></i> Lista
         </button>
       </div>
     </nav>
 
     <div class="result-body">
-      <div class="map" ng-if="vm.isMapMode">
-        <ng-map default-style="true" center="[-17.387015, -66.162159]" zoom="14">
+      <div class="map" ng-show="vm.isMapMode">
+        <ng-map id="search_map" default-style="true" center="-17.393101, -66.158813" zoom="13" ng-class="{'full': vm.ferreterias.length === 0}">
+          <marker position="'current-location'" icon="{ url:'assets/img/position.png' }"></marker>
+          <marker id="marker-{{ item.id }}" position="{{ item.aUbicacion }}"
+            ng-repeat="item in vm.markers"
+            icon="{ url:'assets/img/building.png' }"
+            on-click="vm.showFerreteriaInMap(item)"></marker>
+
+          <info-window id="foo-iw">
+            <div ng-non-bindable="">
+              {{ vm.ferreteria.aNombre }}<br/>
+            </div>
+          </info-window>
         </ng-map>
+
+        <div class="ferreterias" ng-if="vm.ferreterias.length > 0 && vm.isMapMode && vm.isLoaded">
+          <slick init-onload=true data="vm.ferreterias" slides-to-show="4" slides-to-scroll="1" responsive="vm.responsive">
+            <div class="ferreteria" ng-repeat="item in vm.ferreterias" ng-click="vm.showFerreteriaInMap(null, item)">
+              <div class="body">
+                <img src="{{ item.aImagen || './assets/pictures/empty.png' }}" alt="">
+  
+                <div class="description">
+                  <div class="name-product">
+                    {{:: item.aNombre }}
+                  </div>
+                  <div class="detail">
+                    <i class="fa fa-map-marker"></i>
+                    {{:: item.aDireccion }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </slick>
+        </div>
       </div>
 
       <div class="grid" ng-if="vm.isListMode">
@@ -87,7 +105,7 @@
           * No se encontraron resultados
         </div>
 
-        <div class="grid-item" ng-repeat="group in vm.groups">
+        <div class="grid-item" ng-repeat="group in vm.groups" ng-hide="vm.isLoading">
           <div class="category" ng-click="group.isExpanded = !group.isExpanded">
             <i class="fa" ng-class="group.isExpanded ? 'fa-arrow-circle-down' : 'fa-arrow-circle-right'"></i>
             {{:: group.scNombre }}
@@ -98,11 +116,11 @@
           </div>
   
           <div class="products" ng-show="group.isExpanded">
-            <div class="product-item" ng-repeat="item in group.products">
+            <div class="product-item " ng-repeat="item in group.products | orderBy: 'minDistance'" ng-click="vm.openProductDetail(item)">
               <div class="body">
                 <img src="{{ item.pImagen }}" alt="">
   
-                <div class="description">
+                <div class="description single">
                   <div class="name">
                     {{:: item.pNombre }}
                   </div>
@@ -112,23 +130,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="footer">
-        <div class="paginacion" ng-show="vm.results">
-          <ul uib-pagination total-items="vm.total"
-              ng-model="vm.page"
-              max-size="vm.maxSize"
-              items-per-page="vm.itemsPerPage"
-              class="pagination-sm"
-              boundary-links="true"
-              force-ellipses="true"
-              ng-change="vm.buscar()"
-              first-text="Primero"
-              last-text="Ultimo"
-              next-text="Siguiente"
-              previous-text="Previo"></ul>
-        </div>
-      </div> -->
     </div>
   </div>
 </div>

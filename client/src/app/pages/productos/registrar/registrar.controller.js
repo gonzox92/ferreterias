@@ -73,11 +73,13 @@
         templateUrl: 'app/pages/upc/buscador/buscador.template.html',
         controller: 'UPCBuscadorController',
         controllerAs: 'vm',
+        size: 'lg',
         resolve: {}
       });
 
       upcModal.result.then(function(upc) {
        vm.producto.UPC = upc.id;
+       vm.producto.pNombre = upc.nombre;
        vm.isValidUPC = true;
       }, function() {
         $log.log('Borrar fue cancelado')

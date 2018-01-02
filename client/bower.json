@@ -52,12 +52,15 @@
     "angular-xeditable": "~0.5.0",
     "angular-ui-select": "^0.19.6",
     "restangular": "^1.6.1",
-    "ngmap": "^1.18.4",
     "angular-local-storage": "^0.7.1",
     "ng-file-upload": "^12.2.13",
     "ng-dialog": "^1.4.0",
     "masonry": "^4.2.0",
-    "js-shortid": "shortid#^0.1.1"
+    "js-shortid": "shortid#^0.1.1",
+    "angular-slick": "^0.2.1",
+    "slick-carousel": "^1.8.1",
+    "ngmap": "1.18.4",
+    "JsBarcode": "jsbarcode#^3.8.0"
   },
   "resolutions": {
     "angular": "~1.5.9",
@@ -113,6 +116,13 @@
     "masonry": {
       "main": [
         "./dist/masonry.pkgd.js"
+      ]
+    },
+    "slick-carousel": {
+      "main": [
+        "./slick/slick.css",
+        "./slick/slick-theme.css",
+        "./slick/slick.js"
       ]
     }
   }

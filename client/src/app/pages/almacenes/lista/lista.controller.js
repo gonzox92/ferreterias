@@ -52,6 +52,27 @@
       });
     };
 
+    vm.convertAlmacen = function(almacen) {
+      var days = JSON.parse(almacen.aHorario).map(function(day, index) {
+        day.order = index + 1 === 7 ? 0 : index + 1;
+        return day;
+      });
+
+      var today = _.findWhere(days, { order: (new Date()).getDay() })
+      var beforeTime = moment(today.from, 'HH:mm');
+      var afterTime = moment(today.to, 'HH:mm');
+
+      if (!today.enabled) {
+        almacen.aHorario = 'Hoy Cerrado';
+      } else if (moment().isBetween(beforeTime, afterTime)) {
+        almacen.aHorario = 'Abierto: ' + today.from + ' - ' + today.to
+      } else {
+        almacen.aHorario = 'Cerrado: ' + today.from + ' - ' + today.to
+      }
+
+      return almacen;
+    }
+
     vm.buscar = function() {
       vm.isLoading = false;
       vm.busqueda.page = vm.page;
@@ -60,33 +81,13 @@
       if (vm.user.privilegio !== 'administrador') {
         var id = (vm.user.propietario || vm.user.vendedor).id;
         Restangular.one('propietarios', id).customGET('almacenes', vm.busqueda).then(function(resp) {
-          vm.almacenes = ((resp || {}).almacenes || []);
-
+          vm.almacenes = ((resp || {}).almacenes || []).map(vm.convertAlmacen);
           vm.hayFerreterias = vm.almacenes.length > 0;
           vm.isLoading = true;
         });
       } else {
         Restangular.all('almacenes').customGET('', vm.busqueda).then(function(resp) {
-          vm.almacenes = (resp.data || []).map(function(almacen) {
-            var days = JSON.parse(almacen.aHorario).map(function(day, index) {
-              day.order = index + 1 === 7 ? 0 : index + 1;
-              return day;
-            });
-
-            var today = _.findWhere(days, { order: (new Date()).getDay() })
-            var beforeTime = moment(today.from, 'HH:mm');
-            var afterTime = moment(today.to, 'HH:mm');
-
-            if (!today.enabled) {
-              almacen.aHorario = 'Hoy Cerrado';
-            } else if (moment().isBetween(beforeTime, afterTime)) {
-              almacen.aHorario = 'Abierto: ' + today.from + ' - ' + today.to
-            } else {
-              almacen.aHorario = 'Cerrado: ' + today.from + ' - ' + today.to
-            }
-
-            return almacen;
-          });
+          vm.almacenes = (resp.data || []).map(vm.convertAlmacen );
 
           vm.total = (resp || {}).total || 0;
           vm.page = (resp || {}).current_page || 0;

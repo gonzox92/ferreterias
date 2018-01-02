@@ -1,0 +1,80 @@
+<div class="row product-more-detail-info">
+  <div class="category" ng-click="vm.isProductExpanded = !vm.isProductExpanded">
+    <i class="fa" ng-class="!vm.isProductExpanded ? 'fa-arrow-circle-down' : 'fa-arrow-circle-right'"></i>
+    Información del Producto
+
+    <div class="close" ng-click="vm.closeDialog()">
+      <i class="fa fa-times-circle" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <div class="col-xs-12 col-sm-7 col-md-8">
+    <h4>
+      Nombre
+    </h4>
+    <p>
+      {{:: vm.item.producto }}
+    </p>
+  </div>
+
+  <div class="row col-xs-12 col-sm-5 col-md-4">
+    <div class="col-xs-6">
+      <h4>
+        Precio
+      </h4>
+      <p>
+        {{:: vm.item.pPrecio }}
+      </p>
+    </div>
+
+    <div class="col-xs-6">
+      <h4>
+        Cantidad
+      </h4>
+      <p>
+        {{:: vm.item.pCantidadEnMano }}
+      </p>
+    </div>
+  </div>
+
+  <h4 style="margin-left: 16px;">
+    Descripcion
+  </h4>
+  <div class="col-xs-12" ng-bind-html="vm.item.pDescripcion ">
+  </div>
+</div>
+
+<div class="row product-more-detail-info">
+  <div class="category" ng-click="vm.isProveedorExpanded = !vm.isProveedorExpanded">
+    <i class="fa" ng-class="!vm.isProveedorExpanded ? 'fa-arrow-circle-down' : 'fa-arrow-circle-right'"></i>
+    Proveedor
+  </div>
+
+  <div class="col-xs-12 col-sm-3 col-md-4 visible-md visible-lg">
+    <img src="{{:: vm.item.pLogo }}" alt="" style="width: 100%;">
+  </div>
+
+  <div class="col-xs-12 col-sm-9 col-md-8">
+    <i class="fa fa-cog"></i> {{:: vm.item.pNombre }}
+  </div>
+</div>
+
+<div class="row product-more-detail-info">
+  <div class="category" ng-click="vm.isFerreteriaExpanded = !vm.isFerreteriaExpanded">
+    <i class="fa" ng-class="!vm.isFerreteriaExpanded ? 'fa-arrow-circle-down' : 'fa-arrow-circle-right'"></i>
+    Ferreteria
+  </div>
+
+  <div class="col-xs-12 col-sm-3 col-md-4 visible-md visible-lg">
+    <img class="ferreteria-imagen" src="{{:: vm.item.aImagen || './assets/pictures/empty.png' }}" alt="">
+  </div>
+
+  <div class="col-xs-12 col-sm-9 col-md-8">
+    <i class="fa fa-building-o"></i> {{:: vm.item.aNombre }} <br>
+    <i class="fa fa-map-marker"></i> {{:: vm.item.aDireccion }} <br>
+
+    <ng-map id="search_map" default-style="true" center="{{vm.center[0]}}, {{vm.center[1]}}" zoom="17" ng-if="vm.showMap && vm.item.aUbicacion">
+      <marker position="{{vm.item.aUbicacion}}" icon="{ url:'assets/img/building.png' }"></marker>
+    </ng-map>
+  </div>
+</div>

@@ -1,100 +1,70 @@
-<style>
-  .product-detail {
-    display: flex;
-  }
-
-  .product-detail .image-detail {
-    width: 360px;
-    padding: 16px;
-  }
-
-  .product-detail .image-detail > img {
-    width: 100%;
-    min-height: 140px;
-  }
-
-  .product-detail .description {
-    width: 100%;
-  }
-
-  .title-product {
-    font-weight: 600;
-    font-size: 28px;
-    line-height: 32px;
-  }
-
-  .price-product {
-    font-size: 30px;
-    font-weight: 300;
-    color: #1b867b;
-    margin: 24px 0;
-  }
-
-  .stock-product {
-    font-size: 18px;
-    margin: 0 0 16px;
-  }
-
-  .description-product {
-    margin: 0 0 16px;
-  }
-
-  .more-details-product img {
-    width: 120px;
-    height: 100px;
-  }
-</style>
-
-
-<div class="product-detail">
-  <div class="image-detail">
-    <img src="{{ vm.product.pImagen }}" alt="">
+<div class="row product-detail-info">
+  <div class="close" ng-click="vm.closeDialog()">
+    <i class="fa fa-times-circle" aria-hidden="true"></i>
   </div>
 
-  <div class="description">
-    <uib-tabset active="$tabSetStatus.activeTab">
-      <uib-tab heading="Producto">
-        <p>
-          <div class="title-product">{{ vm.product.pNombre }}</div>
+  <div class="col-xs-12 col-sm-4 col-md-3 UPC">
+    <div class="title row" style="margin: 0;">
+      <div class="col-xs-10">
+          {{:: vm.item.pNombre }}
+      </div>
+      
+      <div class="col-xs-2 visible-xs">
+        <button type="button" class="btn btn-default btn-icon" ng-click="vm.showCodeItems()">
+          <i class="fa fa-info"></i>
+        </button>
+      </div>
+    </div>
 
-          <div class="price-product">{{ vm.product.pPrecio }} Bs</div>
+    <img src="{{:: vm.item.pImagen }}" class="code-item visible-md visible-lg" alt="Producto">
+    <div class="code-item wrapper-barcode visible-md visible-lg">
+      <svg id="barcode"></svg>
+    </div>
+  </div>
 
-          <div class="stock-product">
-            <b>Cantidad: </b> {{ vm.product.pCantidadEnMano }}
-          </div>
+  <div class="col-xs-12 col-sm-8 col-md-9 info">
+    <spinner ng-show="vm.isLoading"></spinner>
 
-          <div class="description-product">
-            {{ vm.product.pDescripcion }}
-          </div>
-
-          <div class="more-details-product">
-            <p>
-              <b>Proveedor: </b> {{ vm.product.proveedor }}
-            </p>
-
-            <img src="{{ vm.product.pLogo }}" alt="">
-          </div>
-        </p>
-      </uib-tab>
-
-      <uib-tab heading="Mapa" ng-click="vm.loadMap()">
-        <div class="more-details-product">
-          <p>
-            <b>Almacen: </b> {{ vm.product.aNombre }}
-          </p>
-
-          <p>
-            <b>Direccion: </b> {{ vm.product.aDireccion }}
+    <div class="row product" ng-repeat="product in vm.products">
+      <div class="col-xs-10">
+        <div class="title">
+          {{:: product.producto }}
+        </div>
+        <div class="address" style="font-weight: 300;">
+          <i class="fa fa-building-o"></i> {{:: product.aNombre }} <br>
+          <i class="fa fa-map-marker"></i> {{:: product.aDireccion }} <br>
+          
+          <p class="distance" ng-show="product">
+            {{ product.labelDistance }}
           </p>
         </div>
-        
-        <ng-map id="mapBusqueda"
-                zoom="15"
-                center="{{ vm.product.aUbicacion }}"
-                default-style="true"
-                lazy-init="true">  
-          <marker position="{{ vm.product.aUbicacion }}" draggable="false"></marker>
-      </uib-tab>
-    </uib-tabset>
+      </div>
+      <div class="col-xs-2">
+        <button type="button" class="btn btn-primary btn-with-icon visible-md visible-lg" ng-click="vm.openItemInfo(product)">
+          <i class="fa fa-inbox"></i> Detalle
+        </button>
+
+        <button type="button" class="btn btn-primary btn-icon visible-xs" ng-click="vm.openItemInfo(product)">
+          <i class="fa fa-inbox"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="paginacion" ng-if="vm.hayProductos">
+        <ul uib-pagination total-items="vm.total"
+            ng-model="vm.page"
+            max-size="vm.maxSize"
+            items-per-page="vm.itemsPerPage"
+            class="pagination-sm"
+            boundary-links="true"
+            force-ellipses="true"
+            ng-change="vm.buscar()"
+            first-text="Primero"
+            last-text="Ultimo"
+            next-text="Siguiente"
+            previous-text="Previo"></ul>
+      </div>
+    </div>
   </div>
 </div>
