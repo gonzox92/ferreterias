@@ -27,13 +27,13 @@
           }
 
           if (resp.user.privilegio === 'administrador') {
-            $state.go('dashboard.global');
+            $state.go('dashboard.ferreterias');
           }
           if (resp.user.privilegio === 'vendedor') {
             $state.go('buscador');
           }
           if (resp.user.privilegio === 'propietario') {
-            $state.go('dashboard.global');
+            $state.go('dashboard.summary');
           }
         } else {
           toastr.error('Usuario y/o contraseña incorrectos', 'Login');

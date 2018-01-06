@@ -17,7 +17,7 @@
           icon: 'ion-stats-bars',
           order: 100,
           visible: true,
-          privileges: ['administrador', 'propietario', 'vendedor']
+          privileges: ['administrador', 'propietario']
         },
       })
       .state('dashboard.ferreterias', {
