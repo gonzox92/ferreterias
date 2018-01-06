@@ -9,8 +9,6 @@ class UPCController extends Controller
 {
     public function index()
     {
-    //   return UPC::all();
-
       $limit = request()->limit != null ? request()->limit : '10';
       $id = request()->id != null ? request()->id : '%';
       $nombre = request()->nombre != null ? request()->nombre : '';

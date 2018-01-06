@@ -2,7 +2,12 @@
   <div class="col-md-3 sidebar sidebar-skin-white left">
     <div class="sidebar-block equal-padding">
       <form class="form-group input-group responsive" ng-submit="vm.buscar()">
-        <input type="text" class="form-control" placeholder="Producto.." ng-model="vm.busqueda.nombre">
+        <input type="text" ng-model="vm.busqueda.nombre" placeholder="Producto.." 
+                uib-typeahead="product for product in vm.getSuggestions($viewValue)" 
+                typeahead-loading="loadingLocations" 
+                typeahead-no-results="noResults" 
+                class="form-control">
+        <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
         <span class="input-group-btn always">
           <button class="btn btn-primary" type="button" ng-click="vm.buscar()"><i class="fa fa-search"></i></button>
         </span>
@@ -13,6 +18,9 @@
           </button>
         </span>
       </form>
+      <div ng-show="noResults" ng-click="noResults = false">
+        <i class="glyphicon glyphicon-remove"></i> Sin sugerencias
+      </div>
     </div>
 
     <div class="category responsive optional-filter" ng-show="vm.user && vm.user.privilegio !== 'administrador'">Buscar en</div>

@@ -270,6 +270,21 @@
       return deg * (Math.PI/180)
     }
 
-    // vm.buscar();
+    vm.getSuggestions = function(val) {
+      var busqueda = {
+        nombre: val,
+        limit: 5
+      };
+      
+      return Restangular.one('upc').get(busqueda).then(function(resp) {
+        var data = (resp || {}).data || [];
+
+        var names = data.map(function(entity) {
+          return entity.nombre;
+        });
+        console.log(names)
+        return names;
+      });
+    };
   }
 })();
