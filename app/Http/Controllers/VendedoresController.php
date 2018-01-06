@@ -35,7 +35,7 @@ class VendedoresController extends Controller
     {
         $id->update($request->all());
 
-        return response()->json($product, 200);
+        return response()->json($id, 200);
     }
 
     public function delete(Vendedor $id)

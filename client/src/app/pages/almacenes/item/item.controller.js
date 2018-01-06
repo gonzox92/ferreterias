@@ -144,7 +144,7 @@
         aNombre: resp.aNombre || '',
         aImagen: resp.aImagen || '/assets/pictures/empty.png',
         aDireccion: resp.aDireccion || '',
-        aUbicacion: resp.aUbicacion || 'current-location',
+        aUbicacion: resp.aUbicacion || '[-17.387015, -66.162159]',
         aHorario: resp.aHorario,
         idPropietario: resp.idPropietario
       };

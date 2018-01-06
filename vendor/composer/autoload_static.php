@@ -10,12 +10,13 @@ class ComposerStaticInit1cd9751ce308ac23c9830066eade86dd
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
-        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         'f4e9c7747917193061b46ee142399603' => __DIR__ . '/..' . '/dingo/api/src/helpers.php',
@@ -110,6 +111,7 @@ class ComposerStaticInit1cd9751ce308ac23c9830066eade86dd
         'C' => 
         array (
             'Cron\\' => 5,
+            'Crisu83\\ShortId\\' => 16,
             'Carbon\\' => 7,
         ),
         'A' => 
@@ -293,6 +295,10 @@ class ComposerStaticInit1cd9751ce308ac23c9830066eade86dd
         array (
             0 => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron',
         ),
+        'Crisu83\\ShortId\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/crisu83/shortid/src',
+        ),
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
@@ -371,6 +377,8 @@ class ComposerStaticInit1cd9751ce308ac23c9830066eade86dd
         'App\\Http\\Controllers\\ProductoController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProductoController.php',
         'App\\Http\\Controllers\\PropietarioController' => __DIR__ . '/../..' . '/app/Http/Controllers/PropietarioController.php',
         'App\\Http\\Controllers\\ProveedoresController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProveedoresController.php',
+        'App\\Http\\Controllers\\SubCategoriasController' => __DIR__ . '/../..' . '/app/Http/Controllers/SubCategoriasController.php',
+        'App\\Http\\Controllers\\UPCController' => __DIR__ . '/../..' . '/app/Http/Controllers/UPCController.php',
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Controllers\\VendedoresController' => __DIR__ . '/../..' . '/app/Http/Controllers/VendedoresController.php',
         'App\\Http\\Controllers\\VentasController' => __DIR__ . '/../..' . '/app/Http/Controllers/VentasController.php',
@@ -390,6 +398,8 @@ class ComposerStaticInit1cd9751ce308ac23c9830066eade86dd
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\SubCategoria' => __DIR__ . '/../..' . '/app/SubCategoria.php',
+        'App\\UPC' => __DIR__ . '/../..' . '/app/UPC.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'App\\Vendedor' => __DIR__ . '/../..' . '/app/Vendedor.php',
         'App\\Venta' => __DIR__ . '/../..' . '/app/Venta.php',
@@ -411,6 +421,7 @@ class ComposerStaticInit1cd9751ce308ac23c9830066eade86dd
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'CreateVendedorsTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_15_025305_create_vendedors_table.php',
         'CreateVentasTable' => __DIR__ . '/../..' . '/database/migrations/2017_08_12_173249_create_ventas_table.php',
+        'Crisu83\\ShortId\\ShortId' => __DIR__ . '/..' . '/crisu83/shortid/src/ShortId.php',
         'Cron\\AbstractField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/AbstractField.php',
         'Cron\\CronExpression' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/CronExpression.php',
         'Cron\\DayOfMonthField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/DayOfMonthField.php',

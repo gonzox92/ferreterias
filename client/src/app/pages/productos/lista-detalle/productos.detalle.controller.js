@@ -43,7 +43,7 @@
     vm.buscar = function () {
       vm.isLoading = true;
       var id = vm.user.privilegio === 'vendedor' ? vm.user.vendedor.idAlmacen : $stateParams.id;
-      Restangular.one('almacenes', id).customGET('productos', vm.busqueda).then(function (resp) {
+      Restangular.one('almacenes', id).customGET('showProductos', vm.busqueda).then(function (resp) {
         vm.categoria = (resp || {}).categoria;
         vm.productos = ((resp || {}).productos || []).map(function(item) {
           return item;

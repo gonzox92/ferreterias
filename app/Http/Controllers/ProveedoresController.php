@@ -9,6 +9,15 @@ class ProveedoresController extends Controller
 {
     public function index()
     {
+        $limit = request()->limit != null ? request()->limit : '10';
+        $nombre = request()->nombre != null ? request()->nombre : '';
+        $productos = Proveedor::where('pNombre', 'like', '%'. $nombre .'%')->paginate($limit);
+
+        return response()->json($productos, 200);
+    }
+
+    public function indexAll()
+    {
         $nombre = request()->nombre != null ? request()->nombre : '';
         $productos = Proveedor::where('pNombre', 'like', '%'. $nombre .'%')->get();
 

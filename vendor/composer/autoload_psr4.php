@@ -49,6 +49,7 @@ return array(
     'Dingo\\Api\\' => array($vendorDir . '/dingo/api/src'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Cron\\' => array($vendorDir . '/mtdowling/cron-expression/src/Cron'),
+    'Crisu83\\ShortId\\' => array($vendorDir . '/crisu83/shortid/src'),
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'App\\' => array($baseDir . '/app'),
 );

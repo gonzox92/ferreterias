@@ -22,7 +22,7 @@ class CategoriasController extends Controller
 
     public function store(Request $request)
     {
-        $categorias = Categoria::create($request->all());
+        $categoria = Categoria::create($request->all());
 
         return response()->json($categoria, 201);
     }
@@ -31,12 +31,13 @@ class CategoriasController extends Controller
     {
         $id->update($request->all());
 
-        return response()->json($product, 200);
+        return response()->json($id, 200);
     }
 
     public function delete(Categoria $id)
     {
         $id->delete();
+        DB::delete('DELETE FROM sub_categorias WHERE idCategoria = ?', [$id->id]);
 
         return response()->json(null, 204);
     }

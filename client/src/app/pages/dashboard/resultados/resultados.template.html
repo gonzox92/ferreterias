@@ -1,0 +1,57 @@
+<div class="row">
+  <h3>Reporte de Ferreterias</h3>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <i class="fa fa-industry" aria-hidden="true"></i>
+      201 Ferreterias Registradas
+    </div>
+
+    <br><br>
+
+    <div class="col-sm-12">
+      <div class="panel panel-default bootstrap-panel">
+        <div class="panel-heading">Top Ferreterias Visitadas</div>
+        <div class="panel-body">
+          <div class="col-md-12 report-result small">
+            <spinner ng-show="vm.isLoading1"></spinner>
+            <canvas id="reportTop" ng-if="vm.displayReport1"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div class="panel panel-default bootstrap-panel">
+        <div class="panel-heading">Cantidad de Productos</div>
+        <div class="panel-body">
+          <div class="col-md-12 report-result small" style="overflow: auto;">
+            <spinner ng-show="vm.isLoading2"></spinner>
+            <div class="vertical-scroll" ng-if="vm.displayReport2">
+              <table class="table table-striped">
+                <tbody>
+                <tr ng-repeat="item in vm.topFerreterias">
+                  <td>{{item.name}}</td>
+                  <td>{{item.qty}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-6">
+      <div class="panel panel-default bootstrap-panel">
+        <div class="panel-heading">Visitas por Usuario</div>
+        <div class="panel-body">
+          <div class="col-md-12 report-result small">
+            <spinner ng-show="vm.isLoading3"></spinner>
+            <canvas id="reportVisitas" ng-if="vm.displayReport3"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

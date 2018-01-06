@@ -14,11 +14,6 @@ class PropietarioController extends Controller
         $nombre = request()->nombre != null ? request()->nombre : '';
         $propietarios = Propietario::where('pNombre', 'like', '%'. $nombre .'%')->get();
 
-        // $propietarios = DB::table('propietarios')
-        //     ->join('users', 'propietarios.idUser', '=', 'users.id')
-        //     ->select('propietarios.*', 'users.id', 'users.name')
-        //     ->where('pNombre', 'like', '%'. $nombre .'%');
-
         return response()->json($propietarios, 200);
     }
 

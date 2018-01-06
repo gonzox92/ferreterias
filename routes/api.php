@@ -26,6 +26,7 @@ Route::delete('articles/{article}', 'ArticleController@delete');
 
 // Products
 Route::get('productos', 'ProductoController@index');
+Route::get('productos_lista', 'ProductoController@list');
 Route::get('productos/{id}', 'ProductoController@show');
 Route::post('productos', 'ProductoController@store');
 Route::get('search', 'ProductoController@search');
@@ -34,6 +35,7 @@ Route::delete('productos/{id}', 'ProductoController@delete');
 
 // Proveedores
 Route::get('proveedores', 'ProveedoresController@index');
+Route::get('all-proveedores', 'ProveedoresController@indexAll');
 Route::get('proveedores/{id}', 'ProveedoresController@show');
 Route::post('proveedores', 'ProveedoresController@store');
 Route::put('proveedores/{id}', 'ProveedoresController@update');
@@ -42,12 +44,14 @@ Route::delete('proveedores/{id}', 'ProveedoresController@delete');
 // Almacenes
 Route::get('almacenes', 'AlmacenController@index');
 Route::get('almacenes/{id}', 'AlmacenController@show');
-Route::get('almacenes/{id}/productos', 'AlmacenController@showProductos');
+Route::get('almacenes/{id}/productos', 'AlmacenController@productos');
+Route::get('almacenes/{id}/showProductos', 'AlmacenController@showProductos');
 Route::get('almacenes/{id}/vendedores', 'AlmacenController@showVendedores');
 Route::get('almacenes/{id}/categorias', 'AlmacenController@showCategorias');
 Route::post('almacenes', 'AlmacenController@store');
 Route::put('almacenes/{id}', 'AlmacenController@update');
 Route::delete('almacenes/{id}', 'AlmacenController@delete');
+Route::get('almacenes_fecha', 'AlmacenController@reporte_fechas');
 
 // Cantidades
 Route::get('cantidades', 'CantidadesController@index');
@@ -97,6 +101,13 @@ Route::post('categorias', 'CategoriasController@store');
 Route::put('categorias/{id}', 'CategoriasController@update');
 Route::delete('categorias/{id}', 'CategoriasController@delete');
 
+// SubCategorias
+Route::get('subcategorias', 'SubCategoriasController@index');
+Route::get('subcategorias/{id}', 'SubCategoriasController@show');
+Route::post('subcategorias', 'SubCategoriasController@store');
+Route::put('subcategorias/{id}', 'SubCategoriasController@update');
+Route::delete('subcategorias/{id}', 'SubCategoriasController@delete');
+
 // Route::get('fileentry', 'FileEntryController@index');
 Route::get('fileentry/get/{filename}', ['as' => 'getentry', 'uses' => 'FileEntryController@get']);
 Route::post('fileentry/add',['as' => 'addentry', 'uses' => 'FileEntryController@add']);
@@ -110,3 +121,10 @@ Route::get('ordenes/{id}', 'OrdenVentaController@show');
 Route::post('ordenes', 'OrdenVentaController@store');
 Route::put('ordenes/{id}', 'OrdenVentaController@update');
 Route::delete('ordenes/{id}', 'OrdenVentaController@delete');
+
+// UPC
+Route::get('upc', 'UPCController@index');
+Route::get('upc/{id}', 'UPCController@show');
+Route::post('upc', 'UPCController@store');
+Route::put('upc/{id}', 'UPCController@update');
+Route::delete('upc/{id}', 'UPCController@delete');

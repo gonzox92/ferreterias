@@ -1,144 +1,170 @@
-(function() {
-  angular
-    .module('BlurAdmin.pages.dashboard')
+(function () {
+  'use strict';
+
+  angular.module('BlurAdmin.pages.dashboard')
     .controller('dashboardProductosController', dashboardProductosController);
 
-  dashboardProductosController.$inject = [
-    '$element',
-    'baConfig',
-    'layoutPaths',
-    'Restangular'
-  ];
-
-  function dashboardProductosController($element, baConfig, layoutPaths, Restangular) {
+  dashboardProductosController.$inject = ['$timeout', 'Restangular'];
+  function dashboardProductosController($timeout, Restangular) {
     var vm = this;
+    var startMonth = moment().startOf('month');
+    var endMonth = moment().endOf('month');
 
-    vm.isLoading = true;
-    vm.haveResults = false;
-    vm.format = 'yyyy-MM-dd';
-    vm.productos = [];
-    vm.options = {
-      showWeeks: false
+    vm.topProductos = [
+      'Alicates para instaladores Knipex',
+      'Alicates de titanio',
+      'Tenazas pico de loro',
+      'Puntas de atornillar',
+      'Cutters detectables desechables',
+      'Destornilladores planos',
+      'Botas de protección Husqvarna',
+      'Cuerda trencilla en polipropileno',
+      'LEDs ultravioleta Philips',
+      'Linternas 3AA Propolymer Haz-Lo',
+      'Gafas de protección láser Univet 562',
+      'Equipo portaherramientas',
+      'Escaleras de aluminio KTL Advanced',
+      'Siliconas en spray Soudal',
+      'Adhesivo instantáneo UHU',
+      'Colas para PVC Soudal PVC',
+      'Tuberías y accesorios en PRFV Aiqsa'
+    ];
+
+    vm.topProveedores = [{
+      image: 'http://www.interempresas.net/FeriaVirtual/banners/B-238800.gif',
+      name: 'Industrias Peygran, S.L.',
+    }, {
+      image: 'http://www.interempresas.net/FeriaVirtual/banners/B-080326.gif',
+      name: 'Agencia Internacional de Comercio, S.L. - Aginco',
+    }, {
+      image: 'http://www.interempresas.net/FeriaVirtual/banners/B-189567.gif',
+      name: 'Unifersa 2006, S.A. - CLICKFER',
+    }, {
+      image: 'http://www.interempresas.net/FeriaVirtual/banners/B-809819.gif',
+      name: 'Proandamio',
+    }, {
+      image: 'http://www.interempresas.net/FeriaVirtual/banners/B-001310.gif',
+      name: 'Recanvis Agrícoles Albareda, S.L',
+    }, {
+      image: 'http://www.interempresas.net/FeriaVirtual/banners/B-003429.gif',
+      name: 'Makita, S.A.',
+    }, {
+      image: 'http://www.interempresas.net/FeriaVirtual/banners/B-192402.gif',
+      name: 'Incale, S.L.',
+    }, {
+      image: 'http://www.interempresas.net/FeriaVirtual/banners/B-205217.gif',
+      name: 'Pasema, S.A.',
+    }, {
+      image: 'http://www.interempresas.net/FeriaVirtual/banners/B-177361.gif',
+      name: 'Fein Power Tools Ibérica, S.L.U.',
+    }];
+
+    vm.topCategorias = [{
+      name: 'Brocas de metal duro',
+      qty: 23
+    }, {
+      name: 'Linternas',
+      qty: 12
+    }, {
+      name: 'Discos ranuradores',
+      qty: 45
+    }, {
+      name: 'Esmaltes',
+      qty: 65
+    }, {
+      name: 'Tuberías y accesorios de acero',
+      qty: 23
+    }, {
+      name: 'Gafas de protección',
+      qty: 9
+    }, {
+      name: 'Varios ferretería',
+      qty: 86
+    }]
+
+    var labels = vm.topCategorias.map(function(category) {
+      return category.name;
+    });
+    var data = vm.topCategorias.map(function(category) {
+      return category.qty;
+    });
+
+    vm.loadReport = function() {
+      vm.isLoading1 = true;
+      vm.isLoading2 = true;
+      vm.isLoading3 = true;
+
+      $timeout(vm.loadTopProductos, 600);
+      $timeout(vm.loadTopCategorias, 720);
+      $timeout(vm.loadTopProveedores, 420);
     };
 
-    vm.open = function(control) {
-      vm[control + 'Opened'] = true;
+    vm.loadTopProductos = function() {
+      vm.isLoading1 = false;
+      vm.displayReport1 = true;
     };
 
-    vm.generateReport = function() {
-      var layoutColors = baConfig.colors;
-      var id = 'pieChart';
+    vm.loadTopCategorias = function() {
+      vm.isLoading2 = false;
+      vm.displayReport2 = true;
 
-      vm.haveResults = false;
-      vm.isLoading = false;
-
-      var startDate = vm.startDate ? moment(vm.startDate).format('YYYY-MM-DD') : null;
-      var endDate = vm.endDate ? moment(vm.endDate).format('YYYY-MM-DD') : null;
-
-      Restangular.one('busquedas').customGET('', { from: startDate, to: endDate }).then(function(results) {
-        vm.isLoading = true;
-        vm.productos = results || [];
-        vm.haveResults = vm.productos.length > 0;
-
-        var pieChart = AmCharts.makeChart(id, {
-          type: 'pie',
-          startDuration: 0,
-          theme: 'blur',
-          addClassNames: true,
-          color: layoutColors.defaultText,
-          labelTickColor: layoutColors.borderDark,
+      var config = {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            fill: true,
+            backgroundColor: 'rgba(32,158,145, 0.6)',
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          title:{
+            display: false
+          },
+          tooltips: {
+            mode: 'index',
+            intersect: false,
+          },
+          hover: {
+            mode: 'nearest',
+            intersect: true
+          },
+          scales: {
+            xAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Categorias'
+              }
+            }],
+            yAxes: [{
+              display: true,
+              scaleLabel: {
+                display: true,
+                labelString: 'Productos'
+              }
+            }]
+          },
           legend: {
-            position: 'right',
-            marginRight: 100,
-            autoMargins: false,
-          },
-          innerRadius: '40%',
-          defs: {
-            filter: [
-              {
-                id: 'shadow',
-                width: '200%',
-                height: '200%',
-                feOffset: {
-                  result: 'offOut',
-                  in: 'SourceAlpha',
-                  dx: 0,
-                  dy: 0
-                },
-                feGaussianBlur: {
-                  result: 'blurOut',
-                  in: 'offOut',
-                  stdDeviation: 5
-                },
-                feBlend: {
-                  in: 'SourceGraphic',
-                  in2: 'blurOut',
-                  mode: 'normal'
-                }
-              }
-            ]
-          },
-          dataProvider: (results || []).slice(0, 10),
-          valueField: 'contador',
-          titleField: 'palabra',
-          export: {
-            enabled: true
-          },
-          creditsPosition: 'bottom-left',
-    
-          autoMargins: false,
-          marginTop: 10,
-          alpha: 0.8,
-          marginBottom: 0,
-          marginLeft: 0,
-          marginRight: 0,
-          pullOutRadius: 0,
-          pathToImages: layoutPaths.images.amChart,
-          responsive: {
-            enabled: true,
-            rules: [
-              // at 900px wide, we hide legend
-              {
-                maxWidth: 900,
-                overrides: {
-                  legend: {
-                    enabled: false
-                  }
-                }
-              },
-    
-              // at 200 px we hide value axis labels altogether
-              {
-                maxWidth: 200,
-                overrides: {
-                  valueAxes: {
-                    labelsEnabled: false
-                  },
-                  marginTop: 30,
-                  marginBottom: 30,
-                  marginLeft: 30,
-                  marginRight: 30
-                }
-              }
-            ]
+            display: false
           }
-        });
-    
-        pieChart.addListener('init', handleInit);
-    
-        pieChart.addListener('rollOverSlice', function (e) {
-          handleRollOver(e);
-        });
-    
-        function handleInit() {
-          pieChart.legend.addListener('rollOverItem', handleRollOver);
         }
-    
-        function handleRollOver(e) {
-          var wedge = e.dataItem.wedge.node;
-          wedge.parentNode.appendChild(wedge);
-        }
-      });
+      };
+
+      $timeout(function() {
+        var ctx = document.getElementById('reportCategorias').getContext('2d');
+        window.top = new Chart(ctx, config);
+      }, 100);
     };
+    
+    vm.loadTopProveedores = function() {
+      vm.isLoading3 = false;
+      vm.displayReport3 = true;
+    };
+
+    vm.loadReport();
   }
 })();

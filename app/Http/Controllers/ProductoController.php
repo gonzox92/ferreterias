@@ -17,87 +17,72 @@ class ProductoController extends Controller
     public function index()
     {
         $nombre = request()->nombre != null ? request()->nombre : '';
-        $limit = request()->limit != null ? request()->limit : '10';
-        $isAutocomplete = request()->isAutocomplete != null ? request()->isAutocomplete : 'true';
-        $orderByPrice = request()->orderByPrice != null ? request()->orderByPrice : '';
-        $idPropietario = request()->idPropietario != null ? request()->idPropietario : '';
-        $idVendedor = request()->idVendedor != null ? request()->idVendedor : '';
-
-        $desde = request()->desde != null ? request()->desde : '0';
-        $hasta = request()->hasta != null ? request()->hasta : '0';
-
-        $palabras = explode(',', $nombre);
-        $where = join(' OR ', array_map(array($this, 'convert'), $palabras));
-
-        if ($desde != '0') {
-            $where = $where . ' AND productos.pPrecio >= ' . $desde;  
-        }
-        if ($hasta != '0') {
-            $where = $where . ' AND productos.pPrecio <= ' . $hasta;
-        }
-
-        // if ($isAutocomplete)
-        // {
-        //     foreach ($palabras as $palabra)
-        //     {
-        //         if ($palabra != '')
-        //         {
-        //             DB::insert('INSERT INTO busquedas (palabra, contador, updated_at) VALUES (:palabra, 1, NOW()) ON DUPLICATE KEY UPDATE contador = contador + 1',
-        //                 ['palabra' => $palabra]);
-        //         }
-        //     }
-        // }
-
+        $limit = request()->limit != null ? request()->limit : '500';
+        $where = 'MATCH(pNombre) AGAINST (\'' . $nombre . '\' IN NATURAL LANGUAGE MODE)';
+        $whereFerreterias = 'SELECT id, aNombre, aUbicacion, aImagen, aDireccion ' . 
+            'FROM ferreterias INNER JOIN (SELECT DISTINCT idAlmacen FROM productos ' .
+            'WHERE MATCH(pNombre) AGAINST (\'' . $nombre . '\' IN NATURAL LANGUAGE MODE) LIMIT 100) AS tmpResult ' .
+            'ON (ferreterias.id = tmpResult.idAlmacen)';
+        $useFerreterias = request()->useFerreterias != null ? request()->useFerreterias : 'all';
         $productos = [];
+        $ferreterias = [];
 
-        if ($isAutocomplete == 'true')
-        {
-            $productos = DB::table('productos')
-                ->select('productos.pNombre')
-                ->whereRaw('productos.pNombre LIKE \'%' . $nombre . '%\'')
-                ->limit(5)
-                ->distinct()
-                ->get();
-        }
-        else if ($idPropietario != '')
-        {
-            $where = $where . ' AND propietarios.id = ' . $idPropietario;
+        if ($useFerreterias == 'own') {
+            $privilegio = request()->privilegio;
+            $ownerID = request()->ownerID;
 
-            $productos = DB::table('ferreterias')
-                ->join('propietarios', 'propietarios.id', '=', 'ferreterias.idPropietario')
-                ->join('productos', 'productos.idAlmacen', '=', 'ferreterias.id')
-                ->select('productos.*', 'ferreterias.aNombre', 'ferreterias.aDireccion', 'ferreterias.aUbicacion', 'ferreterias.aImagen')
-                ->whereRaw($where);
-        }
-        else if ($idVendedor != '')
-        {
-            $where = $where . ' AND vendedores.id = ' . $idVendedor;
-            
-            $productos = DB::table('ferreterias')
-                ->join('vendedores', 'vendedores.idAlmacen', '=', 'ferreterias.id')
-                ->join('productos', 'productos.idAlmacen', '=', 'ferreterias.id')
-                ->select('productos.*', 'ferreterias.aNombre', 'ferreterias.aDireccion', 'ferreterias.aUbicacion', 'ferreterias.aImagen')
-                ->whereRaw($where);
-        }
-        else
-        {
-            $productos = DB::table('productos')
-                ->join('ferreterias', 'productos.idAlmacen', '=', 'ferreterias.id')
-                ->join('proveedores', 'productos.idProveedor', '=', 'proveedores.id')
-                ->select('productos.*', 'ferreterias.aNombre', 'ferreterias.aDireccion', 'ferreterias.aUbicacion', 'ferreterias.aImagen', 'proveedores.pNombre AS proveedor', 'proveedores.pLogo')
-                ->whereRaw($where);
+            if ($privilegio == 'propietario') {
+                $where = $where . ' AND idAlmacen IN (SELECT id FROM ferreterias WHERE idPropietario = ' . $ownerID . ')';
+                $whereFerreterias = $whereFerreterias . ' AND idAlmacen IN (SELECT id FROM ferreterias WHERE idPropietario = ' . $ownerID . ')';
+            }
+
+            if ($privilegio == 'vendedor') {
+                $where = $where . ' AND idAlmacen IN (SELECT idAlmacen FROM vendedores WHERE id = ' . $ownerID . ')';
+                $whereFerreterias = $whereFerreterias . ' AND idAlmacen IN (SELECT idAlmacen FROM vendedores WHERE id = ' . $ownerID . ')';
+            }
         }
 
-        if ($orderByPrice != '')
-        {
-            $productos = $productos->orderBy('productos.pPrecio', $orderByPrice);
+        $productos = DB::table('productos')
+            ->select('pNombre', 'pImagen', 'UPC' , 'scNombre', 'idAlmacen', 'aUbicacion')
+            ->distinct()
+            ->join('ferreterias', 'productos.idAlmacen', '=', 'ferreterias.id')
+            ->whereRaw($where)
+            ->paginate($limit);
+
+        $ferreterias = DB::select(DB::raw($whereFerreterias));
+        
+        $productos['ferreterias'] = $ferreterias;
+
+        return response()->json($productos, 200);
+    }
+
+    public function list()
+    {
+        $upc = request()->upc != null ? request()->upc : '';
+        $limit = request()->limit != null ? request()->limit : '50';
+        $useFerreterias = request()->useFerreterias != null ? request()->useFerreterias : 'all';
+        $where = 'UPC = \'' . $upc . '\'';
+
+        if ($useFerreterias == 'own') {
+            $privilegio = request()->privilegio;
+            $ownerID = request()->ownerID;
+
+            if ($privilegio == 'propietario') {
+                $where = $where . ' AND ferreterias.id IN (SELECT id FROM ferreterias WHERE idPropietario = ' . $ownerID . ')';
+            }
+
+            if ($privilegio == 'vendedor') {
+                $where = $where . ' AND ferreterias.id IN (SELECT idAlmacen FROM vendedores WHERE id = ' . $ownerID . ')';
+            }
         }
-            
-        if ($isAutocomplete == 'false')
-        {
-            $productos = $productos->paginate($limit);
-        }
-            
+
+        $productos = DB::table('productos')
+            ->select('productos.*', 'productos.pNombre as producto', 'aNombre', 'aImagen', 'aUbicacion', 'aDireccion', 'proveedores.pNombre', 'proveedores.pLogo')
+            ->join('ferreterias', 'productos.idAlmacen', '=', 'ferreterias.id')
+            ->join('proveedores', 'productos.idProveedor', '=', 'proveedores.id')
+            ->whereRaw($where)
+            ->paginate($limit);
+
         return response()->json($productos, 200);
     }
 
@@ -127,6 +112,8 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $product = Producto::create($request->all());
+        DB::update('UPDATE sub_categorias SET qtyProductos = qtyProductos + 1 WHERE id = ?', [$product->idCategoria]);
+        DB::update('UPDATE productos SET scNombre = (SELECT scNombre FROM sub_categorias WHERE sub_categorias.id = ?) WHERE id = ?', [$product->idCategoria, $product->id]);
 
         return response()->json($product, 201);
     }
@@ -134,6 +121,7 @@ class ProductoController extends Controller
     public function update(Request $request, Producto $id)
     {
         $id->update($request->all());
+        DB::update('UPDATE productos SET scNombre = (SELECT scNombre FROM sub_categorias WHERE sub_categorias.id = ?) WHERE id = ?', [$id->idCategoria, $id->id]);
 
         return response()->json($id, 200);
     }
@@ -141,6 +129,8 @@ class ProductoController extends Controller
     public function delete(Producto $id)
     {
         $id->delete();
+        DB::update('UPDATE sub_categorias SET qtyProductos = qtyProductos - 1 WHERE id = ?', [$id->idCategoria]);
+        // DB::update('UPDATE productos SET scNombre = (SELECT scNombre FROM sub_categorias WHERE sub_categorias.id = \'' . $product->idCategoria . '\') WHERE id = ?', [$product->id]);
 
         return response()->json(null, 204);
     }
