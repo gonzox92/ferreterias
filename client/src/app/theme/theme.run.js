@@ -38,8 +38,8 @@
       }
     }, 100);
 
-    // $rootScope.baseURL = 'http://localhost:8000/';
-    $rootScope.baseURL = window.location.origin + '/';
+    $rootScope.baseURL = 'http://localhost:8000/';
+    // $rootScope.baseURL = window.location.origin + '/';
     $rootScope.$baSidebarService = baSidebarService;
     $rootScope.$isLogged = !_.isEmpty(localStorageService.get('user'));
   }
